@@ -1,0 +1,45 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // =========================================
+    // 👤 USERS COLLECTION
+    // =========================================
+    match /users/{userId} {
+
+      // المدير فقط يمكنه قراءة جميع المستخدمين وتعديلهم
+      allow read, write: if
+        request.auth != null &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
+
+      // المستخدم نفسه يستطيع قراءة بياناته فقط
+      allow read: if
+        request.auth != null &&
+        request.auth.uid == userId;
+    }
+
+    // =========================================
+    // 📋 OBSERVATIONS COLLECTION
+    // =========================================
+    match /observations/{docId} {
+
+      // ✅ يمكن للجميع (المسجلين فقط) قراءة الملاحظات
+      allow read: if request.auth != null;
+
+      // 👷 المراقب (inspector) يستطيع فقط "الإضافة" وليس التعديل أو الحذف
+      allow create: if
+        request.auth != null &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "inspector";
+
+      // 🏗️ المقاول (contractor) يستطيع فقط "تحديث الحالة"
+      allow update: if
+        request.auth != null &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "contractor";
+
+      // 👑 المدير (admin) يستطيع كل شيء
+      allow create, update, delete: if
+        request.auth != null &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
+    }
+  }
+}
