@@ -1,651 +1,534 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Smart HSR | لوحة القيادة التنفيذية - نظام المراقبة وإدارة الجودة الرقمي</title>
+```react
+import React, { useState, useEffect, useRef } from 'react';
+import { 
+  Rocket, MessageCircle, BarChart3, Users, Zap, CheckCircle2, 
+  ArrowLeft, MonitorSmartphone, XCircle, ChevronDown, Sparkles, 
+  Menu, X, MapPin, Bot, Clock, Database, Utensils, UserPlus, CalendarDays, 
+  Settings, HeadphonesIcon, TrendingUp, ShieldCheck
+} from 'lucide-react';
 
-  <!-- META -->
-  <meta name="description" content="نظام Smart HSR للمراقبة وإدارة الجودة الرقمي - لوحة تحكم تنفيذية متقدمة لإدارة الملاحظات الميدانية وتحليل البيانات بتقنية الذكاء الاصطناعي">
-  <meta name="keywords" content="Smart HSR, إدارة الجودة, نظام المراقبة, لوحة تحكم, الذكاء الاصطناعي, تحليل البيانات">
-  <meta name="author" content="Smart HSR">
-  <meta name="robots" content="index, follow">
-  <meta property="og:title" content="Smart HSR | نظام المراقبة وإدارة الجودة الرقمي">
-  <meta property="og:description" content="لوحة تحكم تنفيذية متقدمة لإدارة الملاحظات الميدانية وتحليل البيانات بتقنية الذكاء الاصطناعي">
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="ar_SA">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Smart HSR | نظام المراقبة وإدارة الجودة الرقمي">
-  <meta name="twitter:description" content="لوحة تحكم تنفيذية متقدمة لإدارة الملاحظات الميدانية">
+// --- ANIMATION HELPER ---
+const FadeIn = ({ children, delay = 0, direction = 'up', className = '' }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const domRef = useRef();
 
-  <!-- ASSETS -->
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="alternate icon" href="favicon.ico">
-  <link rel="apple-touch-icon" href="favicon.svg">
-  <link rel="stylesheet" href="output.css">
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
-
-  <!-- STYLES (نفس تصميمك تماماً) -->
-  <style>
-    :root { --color-navy:#0A1931; --color-teal:#18A5A2; --color-light-teal:#ACE2E1; --color-gray-bg:#F7F9FC; --color-shadow-base:rgba(10,25,49,.4);}
-    body { font-family:'Tajawal',sans-serif; background-color:var(--color-gray-bg); color:var(--color-navy);}
-    .kpi-open-gradient{background:linear-gradient(135deg,#EF4444 0%,#B91C1C 100%);color:#fff;box-shadow:0 10px 20px rgba(185,28,28,.4)}
-    .kpi-closed-gradient{background:linear-gradient(135deg,#10B981 0%,#18A5A2 100%);color:#fff;box-shadow:0 10px 20px rgba(24,165,162,.4)}
-    .kpi-images-gradient{background:linear-gradient(135deg,#3B82F6 0%,#0A1931 100%);color:#fff;box-shadow:0 10px 20px rgba(59,130,246,.4)}
-    .kpi-missing-gradient{background:linear-gradient(135deg,#FCD34D 0%,#F97316 100%); color:var(--color-navy); box-shadow:0 10px 20px rgba(253,211,77,.4)}
-    .kpi-card-professional{transition:.3s; border-radius:1.5rem; position:relative; overflow:hidden; transform:perspective(1px) translateZ(0)}
-    .kpi-card-professional::before{content:""; position:absolute; bottom:0; left:0; right:0; height:5px; background-color:rgba(255,255,255,.2); transition:height .3s}
-    .kpi-card-professional:hover{transform:translateY(-8px) scale(1.02); z-index:10}
-    .kpi-card-professional:hover::before{height:100%; opacity:.1}
-    .ai-button-primary{background:var(--color-teal); color:#fff; transition:.3s; box-shadow:0 6px 15px rgba(24,165,162,.5)}
-    .ai-button-primary:hover:not(:disabled){background:#148f8c; transform:translateY(-2px); box-shadow:0 8px 20px rgba(24,165,162,.8)}
-    .ai-button-secondary{background:var(--color-navy); color:#fff; transition:.3s; box-shadow:0 4px 10px rgba(10,25,49,.6)}
-    .ai-button-secondary:hover:not(:disabled){background:#1a3053; transform:translateY(-2px); box-shadow:0 6px 15px rgba(10,25,49,.8)}
-    .ai-button-vision{background:#9333ea; color:#fff; transition:.3s; box-shadow:0 6px 15px rgba(147,51,234,.5)}
-    .ai-button-vision:hover:not(:disabled){background:#7e22ce; transform:translateY(-2px); box-shadow:0 8px 20px rgba(147,51,234,.8)}
-    .ai-button-root-cause{background:#881337; color:#fff; transition:.3s; box-shadow:0 6px 15px rgba(136,19,55,.5)}
-    .ai-button-root-cause:hover:not(:disabled){background:#9f1239; transform:translateY(-2px); box-shadow:0 8px 20px rgba(136,19,55,.8)}
-    .ai-button-comm{background:#F97316; color:#fff; transition:.3s; box-shadow:0 6px 15px rgba(249,115,22,.5)}
-    .ai-button-comm:hover:not(:disabled){background:#ea580c; transform:translateY(-2px); box-shadow:0 8px 20px rgba(249,115,22,.8)}
-    .ai-button-grounding{background:#10B981; color:#fff; transition:.3s; box-shadow:0 6px 15px rgba(16,185,129,.5)}
-    .ai-button-grounding:hover:not(:disabled){background:#059669; transform:translateY(-2px); box-shadow:0 8px 20px rgba(16,185,129,.8)}
-    .loading-spinner{border:4px solid rgba(255,255,255,.3); border-top:4px solid var(--color-light-teal); border-radius:50%; width:20px; height:20px; animation:spin 1s linear infinite; margin-left:8px}
-    .ai-button-primary .loading-spinner,.ai-button-vision .loading-spinner,.ai-button-comm .loading-spinner,.ai-button-grounding .loading-spinner,.ai-button-secondary .loading-spinner,.ai-button-root-cause .loading-spinner{border-top:4px solid #0A1931}
-    @keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
-    .image-container{position:relative; overflow:hidden; border-radius:.75rem; box-shadow:0 4px 10px var(--color-shadow-base)}
-    .image-label{position:absolute; bottom:0; right:0; background:var(--color-navy); color:#fff; padding:.5rem 1rem; font-size:.875rem; font-weight:700; border-top-left-radius:.75rem}
-    .observation-item{transition:.2s; border-right:4px solid transparent; cursor:pointer}
-    .observation-item:hover{background:#E6F3F3; border-right-color:var(--color-teal)}
-    .observation-item.active{background:#E6F3F3; border-right-color:var(--color-navy); box-shadow:0 0 10px rgba(0,0,0,.1)}
-    .comparison-wrapper{position:relative; max-width:100%; overflow:hidden; user-select:none; cursor:ew-resize; border-radius:.75rem}
-    .comparison-wrapper img,.comparison-wrapper video{display:block; width:100%; height:auto}
-    .comparison-wrapper .after-image{position:absolute; top:0; left:0; height:100%; width:50%; overflow:hidden}
-    .comparison-wrapper .after-image img,.comparison-wrapper .after-image video{position:absolute; top:0; left:0; width:100%; height:auto}
-    .comparison-wrapper .comparison-divider{position:absolute; top:0; left:50%; width:4px; height:100%; background:var(--color-teal); transform:translateX(-50%); cursor:grab; z-index:10; box-shadow:0 0 10px rgba(24,165,162,.8); border-radius:2px; transition:width .1s}
-    .comparison-wrapper .comparison-divider:active{cursor:grabbing}
-    .comparison-wrapper .comparison-divider-handle{position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:40px; height:40px; background:#fff; border:3px solid var(--color-teal); border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 15px rgba(0,0,0,.3)}
-    .comparison-label{position:absolute; z-index:5; padding:.5rem 1rem; font-size:.875rem; font-weight:700; color:#fff; border-radius:.5rem; opacity:.9; box-shadow:0 2px 5px rgba(0,0,0,.2)}
-    .label-before{top:10px; right:10px; background:#B91C1C}
-    .label-after{top:10px; left:10px; background:#10B981}
-    .communication-draft{white-space:pre-wrap; text-align:right; direction:rtl; font-family:'Tajawal',sans-serif; border-right:4px solid var(--color-teal); padding-right:1rem; line-height:1.8; background:#f8fafc}
-    .kpi-insight-container{border-radius:1.5rem; box-shadow:0 10px 30px rgba(0,0,0,.1); border-top:5px solid var(--color-navy)}
-    .source-link{color:#0d9488; text-decoration:none; transition:color .2s}
-    .source-link:hover{color:var(--color-navy); text-decoration:underline}
-    audio{width:100%; margin-top:10px}
-    .modal{display:none; position:fixed; z-index:100; left:0; top:0; width:100%; height:100%; overflow:auto; background:rgba(0,0,0,.6); align-items:center; justify-content:center}
-    .modal-content{background:#fefefe; margin:5% auto; padding:30px; border-radius:1.5rem; width:90%; max-width:800px; box-shadow:0 10px 40px rgba(0,0,0,.3); animation:slide-up .3s ease-out; position:relative}
-    .input-group-wrapper{display:flex; gap:1rem}
-    .input-group{flex-grow:1; text-align:center}
-    @media print{
-      body{background:#fff!important; color:#000!important; width:210mm; min-height:297mm; margin:0}
-      .no-print,#observationsList,#hero,#operational-dashboard,#ai-features,footer,.modal{display:none!important}
-      #observationDetail{display:block!important; max-width:100%!important; margin:0!important; padding:0!important; box-shadow:none!important; border:none!important}
-      .kpi-insight-container,.bg-white{box-shadow:none!important; border:none!important; padding:0!important; margin:0!important}
-      .comparison-wrapper{cursor:default}
-      .comparison-divider,.comparison-label{display:none!important}
-      .comparison-wrapper .after-image{width:100%!important; overflow:visible!important}
-      .comparison-wrapper .after-image img{position:static!important}
-      .grid.grid-cols-1.md\3a grid-cols-3{display:block!important; border:1px solid #ccc; margin-bottom:10px}
-      .grid.grid-cols-1.md\3a grid-cols-3>div{border:none!important; padding:5px}
-      .print-logo{display:block!important}
-    }
-  </style>
-</head>
-
-<body class="text-gray-800">
-<!-- ✅ الهيدر الموحد للنظام -->
-<header id="smartHeader"
-  style="
-    background:linear-gradient(90deg,#0b2b3a 0%,#0ea5a1 100%);
-    color:white;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:12px 22px;
-    position:sticky;
-    top:0;
-    z-index:999;
-    box-shadow:0 4px 15px rgba(0,0,0,.1);
-  ">
-  <div style="display:flex;align-items:center;gap:10px;">
-    <img src='Smart_HSR_Dashboard_Logo.svg' alt='Smart HSR' style='height:36px;'>
-    <span style="font-weight:900;font-size:1.1rem;">Smart HSR Dashboard</span>
-  </div>
-  <div id="userInfo" style="display:flex;align-items:center;gap:14px;font-weight:600;">
-    <span id="userRole" style="background:rgba(255,255,255,.2);padding:6px 14px;border-radius:999px;">
-      <!-- سيتم تعبئة الاسم والدور تلقائيًا -->
-    </span>
-    <button id="logoutBtn"
-      style="background:white;color:#0b2b3a;font-weight:800;border:none;border-radius:999px;padding:8px 16px;cursor:pointer;transition:.3s;">
-      🚪 خروج
-    </button>
-  </div>
-</header>
-
-  <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="flex justify-start mb-6 no-print">
-      <button id="logout-btn" class="ai-button-secondary rounded-full px-4 py-2 text-sm font-bold flex items-center shadow-lg transition duration-300 transform hover:scale-105" onclick="smartLogout()" title="تسجيل الخروج الآمن">
-        <i data-lucide="log-out" class="w-4 h-4 ml-2"></i> تسجيل الخروج
-      </button>
-    </div>
-
-    <!-- HERO -->
-    <section id="hero" class="text-center py-12 md:py-16 bg-white rounded-3xl shadow-2xl mb-12 border-b-8 border-t-8 border-teal-100 no-print">
-      <h1 class="text-5xl md:text-7xl font-extrabold text-gray-900 tracking-tight" style="color:var(--color-navy);">
-        Smart HSR <span style="color:var(--color-teal);">Dashboard</span>
-      </h1>
-      <h2 class="text-xl md:text-3xl font-extrabold text-gray-600 mt-4">نظام المراقبة وإدارة الجودة الرقمي</h2>
-      <p class="mt-4 text-lg max-w-4xl mx-auto text-gray-500 font-medium">
-        "منصة تنفيذية ذكية لإدارة الجودة والمراقبة الرقمية، توفر رؤية دقيقة للأداء وتدعم اتخاذ القرار المبني على البيانات."
-      </p>
-    </section>
-
-    <!-- OBSERVATIONS -->
-    <section id="observations-log" class="my-20">
-      <div class="text-center mb-12 no-print">
-        <h3 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-3" style="color:var(--color-navy);">سجل الملاحظات التفاعلي: دقة الصورة والنص</h3>
-        <p class="mt-3 text-lg text-gray-600">عرض تفصيلي للملاحظات الميدانية مع أدوات التحليل الآلي.</p>
-        <button id="add-observation-btn" class="ai-button-primary rounded-full px-6 py-2 text-md font-bold mt-4 flex items-center justify-center mx-auto" onclick="openModal('smartInputModal')">
-          <i data-lucide="plus-circle" class="w-5 h-5 ml-2"></i> إضافة ملاحظة جديدة (الإدخال الذكي)
-        </button>
-      </div>
-
-      <div class="bg-white p-6 md:p-8 rounded-3xl shadow-2xl grid grid-cols-1 lg:grid-cols-3 gap-8 border border-gray-200">
-        <!-- List + Filter -->
-        <div class="lg:col-span-1 border-b lg:border-b-0 lg:border-l border-gray-300 lg:pr-6 pb-6 lg:pb-0 no-print">
-          <h4 class="text-2xl font-bold mb-4" style="color:var(--color-teal);">تصفية الملاحظات</h4>
-          <select id="observationFilter" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-[--color-teal] focus:border-[--color-teal] text-gray-700 shadow-sm transition-all duration-300" onchange="handleFilterChange()">
-            <option value="الكل">عرض كل الملاحظات</option>
-            <option value="جديد">جديد</option>
-            <option value="قيد التنفيذ">قيد التنفيذ</option>
-            <option value="تمت المعالجة">تمت المعالجة</option>
-            <option value="جودة">جودة</option>
-            <option value="صيانة">صيانة</option>
-            <option value="سلامة">سلامة</option>
-            <option value="بيئة">بيئة</option>
-          </select>
-
-          <h4 class="text-2xl font-bold mt-8 mb-3" style="color:var(--color-navy);">المـلاحظــات</h4>
-          <div id="observationsList" class="space-y-3 max-h-[500px] overflow-y-auto pr-2">
-            <div class="text-center text-gray-500 mt-10">... جاري تحميل البيانات ...</div>
-          </div>
-        </div>
-
-        <!-- Details -->
-        <div class="lg:col-span-2 bg-gray-50 p-6 rounded-2xl border border-gray-200 shadow-inner">
-          <div class="print-logo hidden mb-6 p-4 border-b border-gray-300">
-            <h2 class="text-3xl font-extrabold text-gray-900" style="color:var(--color-navy);">تقرير Smart HSR التنفيذي</h2>
-            <p id="printTitle" class="text-xl font-bold text-teal-600 mt-2"></p>
-          </div>
-
-          <h4 class="text-2xl font-extrabold mb-4 border-b-2 border-gray-300 pb-2" style="color:var(--color-teal);">
-            عرض التفاصيل والتحليل (AI Insights)
-          </h4>
-
-          <div id="observationDetail" class="hidden">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm font-medium mb-6 p-4 bg-white rounded-xl shadow-sm border">
-              <div class="border-b md:border-b-0 md:border-l p-2"><span class="block text-gray-500">العنوان:</span><span id="detailTitle" class="block font-bold text-gray-800"></span></div>
-              <div class="border-b md:border-b-0 md:border-l p-2"><span class="block text-gray-500">التصنيف:</span><span id="detailType" class="block font-bold text-teal-600"></span></div>
-              <div class="p-2"><span class="block text-gray-500">الموقع:</span><span id="detailLocation" class="block font-bold text-gray-800"></span></div>
-              <div class="border-b md:border-b-0 md:border-l p-2"><span class="block text-gray-500">تاريخ البلاغ:</span><span id="detailDate" class="block font-bold text-gray-800"></span></div>
-              <div class="border-b md:border-b-0 md:border-l p-2"><span class="block text-gray-500">حالة المعالجة:</span><span id="detailStatus" class="inline-block px-3 py-1 text-sm font-semibold rounded-full text-white"></span></div>
-              <div class="p-2"><span class="block text-gray-500">معرف البلاغ:</span><span id="detailID" class="block font-bold text-gray-800"></span></div>
-            </div>
-
-            <div class="bg-white p-5 rounded-2xl shadow-md mb-6 border-l-4 border-teal-500">
-              <h5 class="text-xl font-bold mb-3" style="color:var(--color-navy);">وصف الملاحظة</h5>
-              <p id="detailDescription" class="text-gray-700 leading-relaxed"></p>
-              <div id="actionPlanContainer" class="mt-4 p-3 bg-teal-50 rounded-lg hidden">
-                <h6 class="font-bold text-teal-700">خطة العمل المقترحة (Gemini AI)</h6>
-                <p id="actionPlan" class="text-sm text-teal-900 mt-1"></p>
-              </div>
-            </div>
-
-            <div id="resolutionNoteContainer" class="bg-green-50 p-5 rounded-2xl shadow-md mb-6 border-l-4 border-green-500 hidden">
-              <h5 class="text-xl font-bold mb-3 text-green-700">📝 المذكرة الختامية للإغلاق</h5>
-              <p id="resolutionNote" class="text-gray-700 leading-relaxed"></p>
-            </div>
-
-            <div id="imageComparisonWrapper" class="comparison-wrapper mb-6 hidden">
-              <img id="beforeImage" class="before-image w-full h-auto" alt="صورة قبل الإصلاح" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==">
-              <div id="afterImageContainer" class="after-image"><img id="afterImage" class="w-full h-auto" alt="صورة بعد الإصلاح" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></div>
-              <div id="comparisonDivider" class="comparison-divider no-print"><div class="comparison-divider-handle"><i data-lucide="arrow-left-right" class="w-4 h-4 text-teal-600"></i></div></div>
-              <span class="comparison-label label-before no-print">قبل</span><span class="comparison-label label-after no-print">بعد</span>
-            </div>
-
-            <div id="mediaContainer" class="image-container mb-6 hidden"><div id="mediaContent" class="w-full h-auto rounded-xl"></div><span class="image-label">مرفق الملاحظة</span></div>
-
-            <div id="noImageMessage" class="bg-yellow-100 p-4 rounded-xl text-center text-yellow-800 font-medium mb-6 hidden">
-              <i data-lucide="alert-triangle" class="w-5 h-5 inline-block ml-2"></i> لا تتوفر صورة أو فيديو لهذه الملاحظة.
-            </div>
-
-            <div id="aiAnalysisSection" class="bg-white p-5 rounded-2xl shadow-md border-t-4 border-gray-200">
-              <h5 class="text-xl font-bold mb-4" style="color:var(--color-navy);">أدوات التحليل الذكي (Gemini AI)</h5>
-              <div class="flex flex-wrap gap-3 no-print">
-                <button id="vision-btn" class="ai-button-vision rounded-full px-4 py-2 text-sm font-bold flex items-center" onclick="analyzeImage('vision')">
-                  <i data-lucide="eye" class="w-4 h-4 ml-2"></i> تحليل الصور بالرؤية (Vision)
-                </button>
-                <button id="root-cause-btn" class="ai-button-root-cause rounded-full px-4 py-2 text-sm font-bold flex items-center" onclick="analyzeImage('root-cause')">
-                  <i data-lucide="microscope" class="w-4 h-4 ml-2"></i> تحليل السبب الجذري
-                </button>
-                <button id="comm-btn" class="ai-button-comm rounded-full px-4 py-2 text-sm font-bold flex items-center" onclick="generateCommunicationDraft()">
-                  <i data-lucide="send" class="w-4 h-4 ml-2"></i> صياغة أمر العمل
-                </button>
-                <button id="pdf-report-btn" class="ai-button-grounding rounded-full px-4 py-2 text-sm font-bold flex items-center" onclick="generatePdfReport()">
-                  <i data-lucide="file-text" class="w-4 h-4 ml-2"></i> توليد تقرير PDF
-                </button>
-              </div>
-
-              <div id="aiResultContainer" class="mt-5 p-4 bg-gray-50 rounded-xl border border-gray-200 hidden">
-                <h6 id="aiResultTitle" class="font-bold text-lg mb-2" style="color:var(--color-teal);"></h6>
-                <div id="aiResultContent" class="text-gray-700"></div>
-              </div>
-            </div>
-
-            <div id="actionButtons" class="mt-6 pt-4 border-t border-gray-300 flex justify-end gap-3 no-print">
-              <button id="updateStatusBtn" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-full shadow-lg transition duration-150" onclick="alert('تم تحويل الحالة إلى قيد التنفيذ (تجريبي)')">
-                تحديث الحالة إلى "قيد التنفيذ"
-              </button>
-              <button id="completeObservationBtn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full shadow-lg transition duration-150" onclick="openModal('closeoutModal')">
-                <i data-lucide="lock" class="w-4 h-4 ml-2"></i> الإغلاق التنفيذي (صورة بعد)
-              </button>
-              <button id="alreadyCompletedBtn" class="bg-green-600 text-white font-bold py-2 px-4 rounded-full shadow-lg transition duration-150 hidden" disabled>
-                <i data-lucide="check" class="w-4 h-4 ml-2"></i> الملاحظة مغلقة وموثقة
-              </button>
-            </div>
-          </div>
-
-          <div id="detailPlaceholder" class="text-center space-y-4">
-            <p class="text-gray-500 mt-16 text-lg">الرجاء اختيار ملاحظة من القائمة لعرض الصورة والمذكرة التفصيلية.</p>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M17 10h.01"/>
-            </svg>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- KPIs -->
-    <section id="operational-dashboard" class="my-20 no-print">
-      <div class="text-center mb-12">
-        <h3 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-3" style="color:var(--color-navy);">📊 مؤشرات الأداء الحيوية (Vital Metrics)</h3>
-        <p class="mt-3 text-lg text-gray-600">تتبع البلاغات وحالة التوثيق بالصور لضمان كفاءة الإغلاق.</p>
-      </div>
-
-      <div id="kpiContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        <div class="p-6 bg-white rounded-2xl shadow-xl border-t-4 border-gray-200">
-          <p class="text-xl font-medium text-gray-500">جاري التحميل...</p>
-          <p class="text-5xl font-extrabold text-gray-700 mt-2">--</p>
-        </div>
-      </div>
-
-      <div class="mt-12 text-center">
-        <button id="kpi-insight-button" class="ai-button-secondary rounded-full px-8 py-3 text-lg font-bold flex items-center justify-center mx-auto" onclick="generateKpiInsights()">
-          <i data-lucide="bar-chart-3" class="w-5 h-5 ml-2"></i> ✨ توليد تقرير تنفيذي لملخص اللوحة (Gemini AI)
-        </button>
-        <div id="kpi-insight-result" class="mt-6 text-sm"></div>
-      </div>
-    </section>
-
-    <!-- AI features (static) -->
-    <section id="ai-features" class="my-20 bg-white p-8 md:p-12 rounded-3xl shadow-2xl border-t-8 border-[--color-teal] no-print">
-      <div class="text-center mb-12">
-        <h3 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-3" style="color:var(--color-navy);">🧠 الذكاء الاصطناعي في صميم العملية</h3>
-        <p class="mt-3 text-lg text-gray-600">استفد من نماذج Gemini لتحويل البيانات إلى قرارات قابلة للتنفيذ.</p>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-7 gap-8 text-center">
-        <div class="p-4 rounded-xl border border-gray-100 bg-gray-50 hover:shadow-lg transition-shadow duration-300 flex flex-col items-center">
-          <span class="text-4xl block mb-2" style="color:#9333ea;">👁️</span><h4 class="font-extrabold text-lg mb-1" style="color:var(--color-navy);">تحليل الرؤية</h4>
-          <p class="text-xs text-gray-600">وصف المشكلة وتحديد حالة الإغلاق المثالية.</p>
-        </div>
-        <div class="p-4 rounded-xl border border-gray-100 bg-gray-50 hover:shadow-lg transition-shadow duration-300 flex flex-col items-center">
-          <span class="text-4xl block mb-2" style="color:var(--color-teal);">⚙️</span><h4 class="font-bold text-lg mb-1" style="color:var(--color-navy);">خطة عمل آلية</h4>
-          <p class="text-xs text-gray-600">توليد خطوات تنفيذية لمعالجة الملاحظة.</p>
-        </div>
-        <div class="p-4 rounded-xl border border-gray-100 bg-gray-50 hover:shadow-lg transition-shadow duration-300 flex flex-col items-center">
-          <span class="text-4xl block mb-2" style="color:var(--color-teal);">🚨</span><h4 class="font-bold text-lg mb-1" style="color:var(--color-navy);">تقييم المخاطر</h4>
-          <p class="text-xs text-gray-600">تحديد الأولوية والإطار الزمني في هيكل JSON.</p>
-        </div>
-        <div class="p-4 rounded-xl border border-gray-100 bg-gray-50 hover:shadow-lg transition-shadow duration-300 flex flex-col items-center">
-          <span class="text-4xl block mb-2" style="color:#881337;">🔬</span><h4 class="font-bold text-lg mb-1" style="color:var(--color-navy);">تحليل السبب الجذري</h4>
-          <p class="text-xs text-gray-600">اقتراح سبب جذري ونصيحة وقائية.</p>
-        </div>
-        <div class="p-4 rounded-xl border border-gray-100 bg-gray-50 hover:shadow-lg transition-shadow duration-300 flex flex-col items-center">
-          <span class="text-4xl block mb-2" style="color:#F97316;">✉️</span><h4 class="font-bold text-lg mb-1" style="color:var(--color-navy);">صياغة الاتصال</h4>
-          <p class="text-xs text-gray-600">توليد مسودة أمر عمل أو بريد إلكتروني.</p>
-        </div>
-        <div class="p-4 rounded-xl border border-gray-100 bg-gray-50 hover:shadow-lg transition-shadow duration-300 flex flex-col items-center">
-          <span class="text-4xl block mb-2" style="color:var(--color-navy);">🔊</span><h4 class="font-bold text-lg mb-1" style="color:var(--color-navy);">تقرير الإغلاق الصوتي</h4>
-          <p class="text-xs text-gray-600">تلخيص التقرير وتحويله إلى ملف صوتي.</p>
-        </div>
-        <div class="p-4 rounded-xl border border-gray-100 bg-gray-50 hover:shadow-lg transition-shadow duration-300 flex flex-col items-center">
-          <span class="text-4xl block mb-2" style="color:#10B981;">🌐</span><h4 class="font-bold text-lg mb-1" style="color:var(--color-navy);">البحث عن المعايير</h4>
-          <p class="text-xs text-gray-600">استخدام البحث المدعوم لاستحضار المعايير العالمية.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="text-center mt-20 py-12 border-t-4 border-teal-200 bg-white rounded-t-3xl shadow-2xl no-print">
-      <div class="max-w-6xl mx-auto px-4">
-        <h3 class="text-3xl md:text-4xl font-extrabold mb-4" style="color:var(--color-navy);">ابدأ رحلة التحول الرقمي مع Smart HSR</h3>
-        <p class="mt-3 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">نظام ذكي يُحول بيانات الميدان إلى قرارات استراتيجية تنفيذيّة</p>
-        <a href="http://wa.me/966507006849" target="_blank" class="mt-8 inline-block bg-[--color-teal] text-white font-bold py-4 px-12 rounded-full text-xl hover:bg-[--color-navy] transition-all duration-300 transform hover:scale-105 shadow-lg">اطلب عرضًا تجريبيًا الآن</a>
-        <div class="mt-12 pt-8 border-t border-gray-200">
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-gray-600 mb-6">
-            <div><h4 class="font-bold text-gray-800 mb-2">حول النظام</h4><p>نظام Smart HSR للمراقبة وإدارة الجودة الرقمي</p></div>
-            <div><h4 class="font-bold text-gray-800 mb-2">الدعم الفني</h4><p>Blumark24@gmail.com</p></div>
-            <div><h4 class="font-bold text-gray-800 mb-2">المبيعات والاستفسارات</h4><p>0507006849</p></div>
-          </div>
-          <div class="text-xs text-gray-500">
-            <p class="mb-2">&copy; 2025 Smart HSR. جميع الحقوق محفوظة.</p>
-            <p id="userInfo">جاري الاتصال بالخدمة...</p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </main>
-
-  <!-- MODALS -->
-  <div id="smartInputModal" class="modal no-print">
-    <div class="modal-content">
-      <span class="close-btn" onclick="closeModal('smartInputModal')">&times;</span>
-      <h2 class="text-3xl font-extrabold mb-6 pb-2 border-b" style="color:var(--color-navy);">وحدة الإدخال الذكي للملاحظات (Smart HSR)</h2>
-
-      <div id="modalStep1">
-        <p class="text-lg text-gray-600 mb-4">الخطوة 1: أدخل تفاصيل الملاحظة (النص، الموقع، الصورة)</p>
-        <textarea id="rawObservationInput" rows="5" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-[--color-teal] focus:border-[--color-teal] text-gray-700 shadow-sm" placeholder="مثال: يوجد تجمع للمياه على طريق الخدمة عند الكيلو 52..." oninput="checkSmartInputState()"></textarea>
-
-        <div class="mt-4 input-group-wrapper">
-          <div class="input-group p-4 border-2 border-dashed border-gray-300 rounded-xl bg-white hover:border-teal-500 transition-colors">
-            <label class="block text-sm font-medium text-gray-700 mb-2">الموقع الجغرافي (GPS):</label>
-            <p id="locationStatus" class="text-sm font-semibold text-gray-500">لم يتم التحديد بعد</p>
-            <input type="hidden" id="inputLatitude"><input type="hidden" id="inputLongitude">
-            <button id="getLocationBtn" class="ai-button-primary rounded-full px-4 py-2 text-sm font-bold mt-2 flex items-center justify-center mx-auto" onclick="getLocation()" type="button">
-              <i data-lucide="map-pin" class="w-4 h-4 ml-2"></i> تحديد الموقع الحالي
-            </button>
-          </div>
-
-          <div class="input-group p-4 border-2 border-dashed border-gray-300 rounded-xl bg-white hover:border-teal-500 transition-colors">
-            <label class="block text-sm font-medium text-gray-700 mb-2">رفع صورة الملاحظة:</label>
-            <p id="fileStatus" class="text-sm font-semibold text-gray-500">لم يتم اختيار ملف بعد</p>
-            <!-- ملاحظة: تم تقييد الرفع للصور فقط لضمان الحفظ الدائم عبر ImgBB -->
-            <input type="file" id="fileUploadInput" accept="image/*" class="hidden" onchange="handleFileUpload(event)">
-            <button class="ai-button-secondary rounded-full px-4 py-2 text-sm font-bold mt-2 flex items-center justify-center mx-auto" onclick="document.getElementById('fileUploadInput').click()" type="button">
-              <i data-lucide="upload" class="w-4 h-4 ml-2"></i> اختيار ملف
-            </button>
-          </div>
-        </div>
-
-        <div class="mt-6 text-center">
-          <button id="processSmartInputBtn" class="ai-button-vision rounded-full px-8 py-3 text-lg font-bold flex items-center justify-center mx-auto" onclick="processSmartInput()" disabled>
-            <i data-lucide="cpu" class="w-5 h-5 ml-2"></i> بدء التحليل الذكي وتوليد التقرير
-          </button>
-        </div>
-      </div>
-
-      <div id="modalResult" class="mt-8 pt-6 border-t border-gray-200 hidden">
-        <h3 class="text-2xl font-bold mb-4" style="color:var(--color-teal);">الخطوة 2: معالجة البيانات</h3>
-        <div id="modalResultContent"></div>
-        <div class="mt-6 text-center">
-          <button class="ai-button-primary rounded-full px-6 py-2 text-md font-bold" onclick="closeModal('smartInputModal')">إغلاق ومراجعة التقرير الجديد</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="closeoutModal" class="modal no-print">
-    <div class="modal-content">
-      <span class="close-btn" onclick="closeModal('closeoutModal'); clearAfterUpload();">&times;</span>
-      <h2 class="text-3xl font-extrabold mb-6 pb-2 border-b text-green-700">🔒 لوحة الإغلاق التنفيذي للملاحظة #<span id="closeoutId"></span></h2>
-      <p class="text-lg text-gray-600 mb-4">لإغلاق الملاحظة، يجب توثيق عملية الإصلاح بـ <b>صورة "بعد الإصلاح"</b> ومذكرة ختامية.</p>
-
-      <div class="p-6 bg-gray-50 rounded-xl border border-gray-200">
-        <h3 class="text-xl font-bold mb-3" style="color:var(--color-navy);">1. توثيق صورة الإغلاق (After Photo)</h3>
-        <div class="input-group p-4 border-2 border-dashed border-red-300 rounded-xl bg-white hover:border-red-500 transition-colors">
-          <label class="block text-sm font-medium text-gray-700 mb-2">رفع صورة <b>بعد الإصلاح/المعالجة</b> (<span class="text-red-500 font-bold">إلزامي</span>):</label>
-          <p id="afterFileStatus" class="text-sm font-semibold text-gray-500">لم يتم اختيار ملف بعد</p>
-          <input type="file" id="afterFileUploadInput" accept="image/*" class="hidden" onchange="handleAfterFileUpload(event)">
-          <button class="ai-button-primary rounded-full px-4 py-2 text-sm font-bold mt-2 flex items-center justify-center mx-auto" onclick="document.getElementById('afterFileUploadInput').click()" type="button">
-            <i data-lucide="camera" class="w-4 h-4 ml-2"></i> اختيار صورة الإغلاق
-          </button>
-        </div>
-
-        <h3 class="text-xl font-bold mt-6 mb-3" style="color:var(--color-navy);">2. المذكرة الختامية</h3>
-        <textarea id="resolutionNoteInput" rows="4" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-green-500 focus:border-green-500 text-gray-700 shadow-sm" placeholder="اكتب المذكرة الختامية..."></textarea>
-      </div>
-
-      <div class="mt-6 text-center">
-        <button id="finalCloseoutBtn" class="bg-green-600 hover:bg-green-700 rounded-full px-8 py-3 text-lg font-bold flex items-center justify-center mx-auto transition-colors" onclick="completeObservation()" disabled>
-          <i data-lucide="check-square" class="w-5 h-5 ml-2"></i> تأكيد الإغلاق النهائي للملاحظة
-        </button>
-      </div>
-    </div>
-  </div>
-
-<!-- APP LOGIC (Firebase + Firestore + ImgBB) -->
-<script type="module">
-  // =============================
-  // 0) إعدادات عامة
-  // =============================
-  const IMGBB_API_KEY = 'fa1275ad54913c2eada7b0ea054dae80'; // مفتاحك
-  const COLLECTION = 'observations';
-
-  // ✅ التهيئة الموحدة عبر firebase-core.js
-  import { app, auth, db } from "./firebase-core.js";
-
-  // =============================
-  // 2) حالة واجهة المستخدم + بيانات
-  // =============================
-  let observationsData = [];          
-  let currentSelectedObservation = null;
-  const statusMap = {
-    "PENDING": { color:'bg-red-600', text:'قيد الانتظار' },
-    "IN_PROGRESS": { color:'bg-yellow-600', text:'قيد التنفيذ' },
-    "COMPLETED": { color:'bg-green-600', text:'تمت المعالجة' }
-  };
-
-  let currentFile = null, currentFileUrl = null;
-  let currentAfterFile = null, currentAfterFileUrl = null;
-
-  // =============================
-  // 3) خدمات مساعدة (ImgBB + أدوات عامة)
-  // =============================
-  async function uploadImageBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = e => resolve(e.target.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  }
-
-  function kpis() {
-    const totalReports = observationsData.length;
-    const openReports  = observationsData.filter(o => o.status !== 'COMPLETED').length;
-    const closedReports = totalReports - openReports;
-    const reportsWithImages = observationsData.filter(o => !!o.imagePath).length;
-    return { totalReports, openReports, closedReports, reportsWithImages };
-  }
-
-  function renderKPIs() {
-    const { totalReports, openReports, closedReports, reportsWithImages } = kpis();
-    const kpiContainer = document.getElementById('kpiContainer');
-    kpiContainer.innerHTML = '';
-    const kpiData = [
-      {title:'إجمالي الملاحظات', value:totalReports, icon:'clipboard-list', gradientClass:'kpi-closed-gradient'},
-      {title:'ملاحظات مفتوحة/انتظار', value:openReports, icon:'alert-triangle', gradientClass:'kpi-open-gradient'},
-      {title:'ملاحظات مغلقة/معالجة', value:closedReports, icon:'check-circle', gradientClass:'kpi-closed-gradient'},
-      {title:'ملاحظات موثقة بالصور', value:reportsWithImages, icon:'image', gradientClass:'kpi-images-gradient'}
-    ];
-    kpiData.forEach(kpi=>{
-      kpiContainer.innerHTML += `
-        <div class="kpi-card-professional p-6 ${kpi.gradientClass} flex items-center justify-between shadow-2xl">
-          <div><p class="text-sm md:text-md font-medium">${kpi.title}</p>
-          <p class="text-4xl md:text-5xl font-extrabold mt-1">${kpi.value}</p></div>
-          <i data-lucide="${kpi.icon}" class="w-10 h-10 opacity-70"></i>
-        </div>`;
-    });
-    lucide.createIcons();
-  }
-
-  // =============================
-  // 4) ربط Firestore
-  // =============================
-  async function loadFromFirestore() {
-    try {
-      const q = query(collection(db, COLLECTION), orderBy('createdAt','desc'));
-      const snapshot = await getDocs(q);
-      const arr = [];
-      snapshot.forEach(d=>{
-        const data = d.data();
-        arr.push({
-          docId:d.id,
-          id: data.displayId || 0,
-          type:data.type || 'MAINTENANCE',
-          date:data.date || '',
-          title:data.title || '',
-          status:data.status || 'PENDING',
-          details:data.details || '',
-          hasImage: !!data.imagePath,
-          isComparative: !!data.isComparative,
-          location:data.location || '',
-          isVideo:false,
-          imagePath:data.imagePath || null,
-          actionPlan:data.actionPlan || '',
-          riskAssessment:data.riskAssessment || { priority:'Medium', timeframe:'72 hours' },
-          resolutionNote:data.resolutionNote || null,
-          afterImagePath:data.afterImagePath || null,
-          createdAt:data.createdAt?.toMillis ? data.createdAt.toMillis(): (data.createdAt || Date.now()),
-          isNewInput:false
-        });
-      });
-      observationsData = arr;
-      document.getElementById('userInfo').textContent = '✅ تم الاتصال بنجاح بقاعدة بيانات Smart HSR.';
-    } catch (e) {
-      console.warn('⚠️ فشل الاتصال بـ Firestore.', e);
-      document.getElementById('userInfo').textContent = '⚠️ فشل الاتصال. الوضع التجريبي مفعّل.';
-    }
-  }
-
-  // ... (باقي الكود كما هو بدون تعديل)
-</script>
-
-<!-- Smart HSR Assistant (Chatbase) -->
-<script>
-  (function(){
-    // Ensure Chatbase proxy is initialised only once
-    if(!window.chatbase || window.chatbase("getState") !== "initialized"){
-      window.chatbase = (...args) => {
-        if(!window.chatbase.q){ window.chatbase.q = []; }
-        window.chatbase.q.push(args);
-      };
-      window.chatbase = new Proxy(window.chatbase, {
-        get(target, prop){
-          if(prop === "q"){ return target.q; }
-          return (...a) => target(prop, ...a);
+  useEffect(() => {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(domRef.current);
         }
       });
+    }, { threshold: 0.1 });
+
+    if (domRef.current) observer.observe(domRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const getTransform = () => {
+    switch (direction) {
+      case 'up': return 'translateY(30px)';
+      case 'down': return 'translateY(-30px)';
+      case 'left': return 'translateX(30px)'; // Flipped for RTL
+      case 'right': return 'translateX(-30px)'; // Flipped for RTL
+      default: return 'translateY(30px)';
     }
-    const onLoad = function(){
-      const script = document.createElement("script");
-      script.src = "https://www.chatbase.co/embed.min.js";
-      // ✅ Official Chatbase assistant ID used for Smart HSR
-      script.id = "55P9LCwiBxOhS1khs3-VT";
-      script.domain = "www.chatbase.co";
-      document.body.appendChild(script);
-      // Customise assistant appearance and identity
-      setTimeout(() => {
-        try {
-          window.chatbase('config', {
-            color: '#0EA5A1',
-            backgroundColor: '#0B2B3A',
-            title: 'Smart HSR Assistant 🤖',
-            subtitle: 'مساعدك الذكي للمدن الذكية',
-            showWelcomeMessage: true
-          });
-        } catch(e){ console.log('Chatbase config pending...', e); }
-      }, 2500);
-    };
-    if(document.readyState === "complete"){
-      onLoad();
-    } else {
-      window.addEventListener("load", onLoad);
-    }
-  })();
-</script>
+  };
 
+  return (
+    <div
+      ref={domRef}
+      className={`transition-all duration-1000 ease-out ${className}`}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'none' : getTransform(),
+        transitionDelay: `${delay}ms`
+      }}
+    >
+      {children}
+    </div>
+  );
+};
 
+// --- MOCKUP COMPONENTS ---
+const DashboardMockup = () => (
+  <div className="relative w-full max-w-lg mx-auto transform transition-transform hover:scale-[1.02] duration-500">
+    <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/20 to-purple-500/20 blur-2xl rounded-full" />
+    <div className="relative bg-white/80 backdrop-blur-xl border border-white/40 rounded-2xl shadow-2xl overflow-hidden" dir="ltr">
+      {/* Header */}
+      <div className="h-12 border-b border-gray-100 flex items-center px-4 justify-between bg-white/50">
+        <div className="flex gap-2">
+          <div className="w-3 h-3 rounded-full bg-red-400" />
+          <div className="w-3 h-3 rounded-full bg-amber-400" />
+          <div className="w-3 h-3 rounded-full bg-green-400" />
+        </div>
+        <div className="text-xs font-semibold text-gray-500 bg-gray-100 px-3 py-1 rounded-full">Blumark24 OS</div>
+      </div>
+      {/* Body */}
+      <div className="p-6 flex gap-6">
+        {/* Sidebar */}
+        <div className="w-16 flex flex-col gap-4 items-center pt-2">
+          <div className="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center"><BarChart3 size={16} /></div>
+          <div className="w-8 h-8 rounded-lg text-gray-400 flex items-center justify-center"><Users size={16} /></div>
+          <div className="w-8 h-8 rounded-lg text-gray-400 flex items-center justify-center"><Settings size={16} /></div>
+        </div>
+        {/* Main Content */}
+        <div className="flex-1 space-y-4">
+          <div className="flex justify-between items-center">
+            <div>
+              <div className="text-xl font-bold text-gray-800">SAR 42,500</div>
+              <div className="text-xs text-green-500 flex items-center gap-1"><TrendingUp size={12}/> +24% this week</div>
+            </div>
+            <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 p-[2px]">
+              <div className="w-full h-full bg-white rounded-full flex items-center justify-center text-xs font-bold">AI</div>
+            </div>
+          </div>
+          {/* Chart placeholder */}
+          <div className="h-32 bg-gray-50 rounded-xl border border-gray-100 flex items-end px-2 pb-2 gap-2">
+            {[40, 70, 45, 90, 65, 85, 100].map((h, i) => (
+              <div key={i} className="flex-1 bg-gradient-to-t from-blue-500 to-blue-300 rounded-t-sm" style={{ height: `${h}%` }}></div>
+            ))}
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="p-3 bg-purple-50 rounded-xl border border-purple-100">
+              <div className="text-xs text-purple-600 mb-1">Active Orders</div>
+              <div className="text-lg font-bold">124</div>
+            </div>
+            <div className="p-3 bg-blue-50 rounded-xl border border-blue-100">
+              <div className="text-xs text-blue-600 mb-1">AI Interactions</div>
+              <div className="text-lg font-bold">892</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
 
-
-<!-- Firebase Auth & Role-check -->
-<script type="module">
-  /* 
-    This script centralizes authentication and role-check logic.
-    It imports the already‑initialized auth and db instances from firebase‑core.js,
-    then listens for changes to the authentication state. When a user signs in,
-    it fetches the user's role from Firestore and updates the header badge accordingly.
-    If the account is inactive or the role document is missing, the user is signed out
-    and redirected to the landing page. Administrators are automatically redirected
-    to the admin dashboard, while observers and contractors remain on this page.
-  */
-  import { auth, db } from './firebase-core.js';
-  import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-  import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-
-  const roleBadge = document.getElementById('userRole');
-  const logoutBtn = document.getElementById('logoutBtn');
-
-  async function getUserRole(uid) {
-    // Retrieve the user's role from the "users" collection.
-    try {
-      const ref = doc(db, 'users', uid);
-      const snap = await getDoc(ref);
-      if (snap.exists()) {
-        return (snap.data().role || '').toLowerCase();
-      }
-    } catch (err) {
-      console.error("Firestore:", err);
-    }
-    return '';
+// --- DATA ---
+const pricingPlans = [
+  {
+    name: "START",
+    price: "399",
+    period: "مرة واحدة",
+    subtitle: "البداية الذكية لمشروعك",
+    color: "emerald",
+    features: [
+      { text: "صفحة هبوط واحدة احترافية", icon: MonitorSmartphone },
+      { text: "تصميم أساسي متوافق مع الجوال", icon: MonitorSmartphone },
+      { text: "زر واتساب مباشر", icon: MessageCircle },
+      { text: "ربط Google Maps أساسي", icon: MapPin },
+      { text: "بوت واتساب (ردود أساسية)", icon: Bot },
+      { text: "رد تلقائي 24/7", icon: Clock },
+      { text: "دعم فني أساسي", icon: HeadphonesIcon },
+    ],
+    missing: [
+      "فهم الرسائل الطبيعية", "جمع بيانات العملاء", "المنيو الذكي", "حجوزات وطلبات", "تقارير"
+    ],
+    time: "2-3 أيام",
+    gradient: "from-emerald-400 to-emerald-600"
+  },
+  {
+    name: "GROWTH",
+    price: "999",
+    period: "شهرياً",
+    subtitle: "باقة النمو والتواصل الذكي",
+    color: "blue",
+    popular: true,
+    features: [
+      { text: "موقع 5 صفحات احترافية", icon: MonitorSmartphone },
+      { text: "تصميم احترافي متوافق مع الجوال", icon: MonitorSmartphone },
+      { text: "زر واتساب مباشر", icon: MessageCircle },
+      { text: "تحسين الظهور في Google Maps", icon: MapPin },
+      { text: "بوت واتساب (AI Lite) يفهم الرسائل", icon: Bot },
+      { text: "رد تلقائي 24/7 ذكي", icon: Clock },
+      { text: "جمع بيانات العملاء والمهتمين", icon: Database },
+      { text: "المنيو الذكي (عرض المنتجات)", icon: Utensils, bold: true },
+      { text: "تحويل ذكي لموظف", icon: UserPlus },
+      { text: "تقارير AI بسيطة", icon: BarChart3 },
+      { text: "دعم فني شهري", icon: HeadphonesIcon },
+    ],
+    missing: ["حجوزات وطلبات تلقائية", "CRM بسيط"],
+    time: "3-7 أيام",
+    gradient: "from-blue-500 to-blue-700"
+  },
+  {
+    name: "PRO MAX",
+    price: "1999",
+    period: "شهرياً",
+    subtitle: "تشغيل متكامل ونمو بدون حدود",
+    color: "indigo",
+    features: [
+      { text: "موقع 7 صفحات Premium", icon: MonitorSmartphone },
+      { text: "تصميم فاخر عالي التحويل", icon: MonitorSmartphone },
+      { text: "زر واتساب مباشر", icon: MessageCircle },
+      { text: "سيطرة محلية قوية على Google Maps", icon: MapPin },
+      { text: "بوت واتساب (AI Pro) متقدم", icon: Bot },
+      { text: "فهم الرسائل + اقتراحات ذكية", icon: Sparkles },
+      { text: "المنيو الذكي المتقدم", icon: Utensils, bold: true },
+      { text: "حجوزات ومواعيد تلقائية", icon: CalendarDays },
+      { text: "استقبال طلبات كاملة", icon: Zap },
+      { text: "CRM بسيط + إدارة العملاء", icon: Users },
+      { text: "أتمتة تشغيلية (رسائل، تذكير)", icon: Settings },
+      { text: "تقارير AI متقدمة ورؤى للنمو", icon: TrendingUp },
+      { text: "دعم فني VIP بأولوية", icon: ShieldCheck },
+    ],
+    missing: [],
+    time: "5-10 أيام",
+    gradient: "from-indigo-800 to-indigo-950"
   }
+];
 
-  onAuthStateChanged(auth, async (user) => {
-    // Redirect unauthenticated users to the login page.
-    if (!user) {
-      return (window.location.href = 'login.html');
-    }
+// --- MAIN APP COMPONENT ---
+export default function App() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-    // Look up the user's role. If missing, sign out and redirect to landing.
-    const role = await getUserRole(user.uid);
-    const name = user.displayName || user.email;
-    roleBadge.textContent = `${name} — ${role || 'guest'}`;
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-    if (!role) {
-      await signOut(auth);
-      alert("حسابك غير مفعل أو لا يملك دورًا صالحًا. تواصل مع المدير للحصول على دعوة.");
-      return (window.location.href = 'landing.html');
-    }
+  return (
+    <div dir="rtl" className="min-h-screen bg-[#fafcff] font-sans text-slate-800 selection:bg-blue-200 selection:text-blue-900 overflow-x-hidden">
+      {/* Import Arabic Font (Cairo) */}
+      <style dangerouslySetInnerHTML={{__html: `
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap');
+        body { font-family: 'Cairo', sans-serif; }
+        .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.5); }
+        .text-gradient { background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .float-anim { animation: float 6s ease-in-out infinite; }
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-20px); } 100% { transform: translateY(0px); } }
+      `}} />
 
-    // Redirect administrators to the admin dashboard.
-    if (role === 'admin') {
-      console.log("🔁 المدير أُعيد إلى لوحة التحكم");
-      return (window.location.href = 'admin.html');
-    }
+      {/* --- NAVIGATION --- */}
+      <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/80 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5'}`}>
+        <div className="container mx-auto px-6 flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg">
+              B
+            </div>
+            <span className="text-2xl font-bold bg-gradient-to-r from-blue-900 to-blue-600 text-gradient">Blumark<span className="text-sm font-black align-top">24</span></span>
+          </div>
 
-    console.log("✅ تم التحقق من الجلسة:", user.email, "• الدور:", role);
-  });
+          {/* Desktop Nav */}
+          <div className="hidden md:flex items-center gap-8 font-semibold text-gray-600">
+            <a href="#services" className="hover:text-blue-600 transition-colors">خدماتنا</a>
+            <a href="#how-it-works" className="hover:text-blue-600 transition-colors">كيف نعمل</a>
+            <a href="#pricing" className="hover:text-blue-600 transition-colors">الباقات</a>
+            <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-full transition-all shadow-lg shadow-blue-600/30 font-bold">
+              ابدأ الآن
+            </button>
+          </div>
 
-  // Logout handler: clear local storage and return to login page.
-  logoutBtn.addEventListener('click', async () => {
-    await signOut(auth);
-    localStorage.clear();
-    window.location.href = 'login.html';
-  });
-</script>
+          {/* Mobile Toggle */}
+          <button className="md:hidden text-gray-600" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
+        </div>
 
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden absolute top-full left-0 w-full bg-white border-t border-gray-100 shadow-xl py-4 px-6 flex flex-col gap-4">
+            <a href="#services" onClick={() => setMobileMenuOpen(false)} className="text-lg font-semibold text-gray-700">خدماتنا</a>
+            <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="text-lg font-semibold text-gray-700">الباقات</a>
+            <button className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold w-full text-center">ابدأ الآن</button>
+          </div>
+        )}
+      </nav>
 
-</body>
-</html>
+      {/* --- HERO SECTION --- */}
+      <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        {/* Background Gradients */}
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-400/20 rounded-full blur-[120px] -z-10 translate-x-1/3 -translate-y-1/4"></div>
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-400/20 rounded-full blur-[100px] -z-10 -translate-x-1/3 translate-y-1/4"></div>
+
+        <div className="container mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+          <FadeIn direction="right">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 text-blue-700 font-semibold text-sm mb-6 border border-blue-100">
+              <Sparkles size={16} />
+              <span>الجيل الجديد من الحلول الرقمية للمطاعم</span>
+            </div>
+            <h1 className="text-5xl lg:text-7xl font-extrabold leading-[1.2] mb-6 text-gray-900">
+              نحول مطعمك إلى <br/>
+              <span className="bg-gradient-to-r from-blue-600 to-purple-600 text-gradient">ماكينة طلبات</span><br/>
+              خلال 30 يوم 🚀
+            </h1>
+            <p className="text-xl text-gray-600 mb-10 leading-relaxed max-w-lg">
+              نظام متكامل يدمج الذكاء الاصطناعي مع أحدث تقنيات التسويق لزيادة مبيعاتك، أتمتة عملياتك، وتقليل الضغط على موظفيك.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button className="bg-gray-900 hover:bg-gray-800 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-xl shadow-gray-900/20 flex items-center justify-center gap-2 group">
+                ابدأ رحلة النمو
+                <ArrowLeft className="group-hover:-translate-x-1 transition-transform" size={20} />
+              </button>
+              <button className="bg-white hover:bg-gray-50 text-gray-800 border-2 border-gray-200 px-8 py-4 rounded-xl font-bold text-lg transition-all flex items-center justify-center gap-2 group">
+                <MessageCircle className="text-green-500" size={24} />
+                تواصل واتساب
+              </button>
+            </div>
+            <div className="mt-10 flex items-center gap-6 text-sm text-gray-500 font-semibold">
+              <div className="flex items-center gap-2"><CheckCircle2 className="text-blue-500" size={18}/> إعداد سريع</div>
+              <div className="flex items-center gap-2"><CheckCircle2 className="text-blue-500" size={18}/> دعم فني مستمر</div>
+              <div className="flex items-center gap-2"><CheckCircle2 className="text-blue-500" size={18}/> نمو مستدام</div>
+            </div>
+          </FadeIn>
+
+          <FadeIn direction="left" delay={200} className="relative lg:h-[500px] flex items-center justify-center">
+             <div className="float-anim w-full">
+                <DashboardMockup />
+             </div>
+             {/* Decorative floating elements */}
+             <div className="absolute top-10 right-10 bg-white p-4 rounded-2xl shadow-xl border border-gray-100 flex items-center gap-3 animate-bounce" style={{animationDuration: '3s'}}>
+                <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600"><Zap size={20}/></div>
+                <div>
+                  <div className="text-sm font-bold text-gray-800">طلب جديد!</div>
+                  <div className="text-xs text-gray-500">تم الاستلام عبر البوت</div>
+                </div>
+             </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* --- PROBLEM -> SOLUTION SECTION --- */}
+      <section className="py-24 bg-white relative">
+        <div className="container mx-auto px-6">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold mb-6">هل تعاني من إدارة الطلبات بالطرق التقليدية؟</h2>
+            <p className="text-xl text-gray-500">الاعتماد على العمل اليدوي يضيع وقتك ويخسرك الكثير من العملاء المحتملين.</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 mb-16">
+            <FadeIn delay={100} className="bg-red-50 p-8 rounded-3xl border border-red-100">
+              <div className="w-14 h-14 bg-red-100 text-red-500 rounded-2xl flex items-center justify-center mb-6"><XCircle size={28}/></div>
+              <h3 className="text-xl font-bold mb-3 text-gray-900">فوضى في استقبال الطلبات</h3>
+              <p className="text-gray-600">رسائل ضائعة، تأخير في الرد، وعملاء غاضبون بسبب عدم التنظيم.</p>
+            </FadeIn>
+            <FadeIn delay={200} className="bg-orange-50 p-8 rounded-3xl border border-orange-100">
+               <div className="w-14 h-14 bg-orange-100 text-orange-500 rounded-2xl flex items-center justify-center mb-6"><Users size={28}/></div>
+              <h3 className="text-xl font-bold mb-3 text-gray-900">ضغط هائل على الموظفين</h3>
+              <p className="text-gray-600">موظفوك يضيعون وقتهم في الرد على استفسارات متكررة بدلاً من تجهيز الطلبات.</p>
+            </FadeIn>
+            <FadeIn delay={300} className="bg-gray-50 p-8 rounded-3xl border border-gray-200">
+               <div className="w-14 h-14 bg-gray-200 text-gray-500 rounded-2xl flex items-center justify-center mb-6"><BarChart3 size={28}/></div>
+              <h3 className="text-xl font-bold mb-3 text-gray-900">صعوبة في تتبع المبيعات</h3>
+              <p className="text-gray-600">لا توجد بيانات واضحة عن من هم عملائك وما هي الوجبات الأكثر مبيعاً.</p>
+            </FadeIn>
+          </div>
+
+          {/* The Solution */}
+          <FadeIn className="bg-gradient-to-br from-blue-900 to-indigo-900 rounded-[3rem] p-10 md:p-16 text-white text-center relative overflow-hidden shadow-2xl">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/30 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/30 rounded-full blur-3xl"></div>
+            
+            <div className="relative z-10">
+              <h2 className="text-3xl md:text-5xl font-bold mb-6">الحل الذكي مع Blumark24</h2>
+              <p className="text-xl text-blue-100 max-w-2xl mx-auto mb-10">
+                نظام آلي متكامل يستقبل الطلبات، يرد على العملاء، ويدير عملياتك 24/7 دون تدخل بشري.
+              </p>
+              <button className="bg-white text-blue-900 hover:bg-blue-50 px-8 py-4 rounded-xl font-bold text-lg transition-all">
+                اكتشف كيف يعمل النظام
+              </button>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* --- SERVICES AS OUTCOMES --- */}
+      <section id="services" className="py-24 bg-[#fafcff]">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-20">
+            <span className="text-blue-600 font-bold tracking-wider uppercase text-sm mb-2 block">القيمة التي نقدمها</span>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900">ليس مجرد موقع، بل <span className="text-blue-600">محرك نمو</span></h2>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-x-12 gap-y-16">
+            {[
+              { title: "زيادة الطلبات تلقائياً", desc: "بوت واتساب مدعوم بالذكاء الاصطناعي يرد على العملاء 24/7، يقترح منتجات، ويقفل المبيعات نيابة عنك.", icon: Bot, color: "bg-green-100 text-green-600" },
+              { title: "تجربة طلب استثنائية", desc: "منيو ذكي وتفاعلي يسهل على العميل اختيار وجبته وإتمام الطلب في ثوانٍ معدودة.", icon: Utensils, color: "bg-orange-100 text-orange-600" },
+              { title: "تحويل الزوار إلى عملاء", desc: "تصميم مواقع وصفحات هبوط احترافية ومحسنة (SEO) لتصدر نتائج البحث وجذب عملاء جدد.", icon: MonitorSmartphone, color: "bg-blue-100 text-blue-600" },
+              { title: "قرارات مبنية على الأرقام", desc: "لوحة تحكم ذكية (CRM) تمنحك تقارير مفصلة عن المبيعات، سلوك العملاء، وأداء حملاتك.", icon: BarChart3, color: "bg-purple-100 text-purple-600" },
+            ].map((service, idx) => (
+              <FadeIn key={idx} delay={idx * 100} className="flex gap-6 group">
+                <div className={`w-16 h-16 shrink-0 rounded-2xl flex items-center justify-center shadow-sm transition-transform group-hover:scale-110 duration-300 ${service.color}`}>
+                  <service.icon size={32} />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold mb-3 text-gray-900">{service.title}</h3>
+                  <p className="text-gray-600 text-lg leading-relaxed">{service.desc}</p>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- PRICING SECTION (CRITICAL) --- */}
+      <section id="pricing" className="py-24 bg-white relative">
+         <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent"></div>
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">3 باقات.. حلول تواكب نجاحك</h2>
+            <p className="text-xl text-gray-500">اختر الباقة المناسبة لنشاطك وخلّنا نساعدك تنمو أسرع</p>
+          </div>
+
+          <div className="flex flex-col lg:flex-row justify-center items-center lg:items-stretch gap-8 max-w-7xl mx-auto">
+            {pricingPlans.map((plan, idx) => (
+              <FadeIn 
+                key={idx} 
+                delay={idx * 150} 
+                className={`w-full max-w-md lg:w-1/3 flex flex-col rounded-[2.5rem] relative bg-white transition-all duration-300 ${plan.popular ? 'shadow-2xl shadow-blue-900/10 border-2 border-blue-500 lg:-translate-y-4' : 'shadow-xl shadow-gray-200/50 border border-gray-100'}`}
+              >
+                {plan.popular && (
+                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-6 py-1.5 rounded-full text-sm font-bold shadow-lg shadow-orange-500/30 flex items-center gap-1">
+                    <Sparkles size={14}/> الأكثر طلباً
+                  </div>
+                )}
+                
+                {/* Header */}
+                <div className={`p-8 rounded-t-[2.5rem] bg-gradient-to-br ${plan.gradient} text-white text-center`}>
+                  <h3 className="text-2xl font-extrabold tracking-wide mb-2 uppercase">{plan.name}</h3>
+                  <div className="flex items-end justify-center gap-1 mb-2">
+                    <span className="text-5xl font-black">{plan.price}</span>
+                    <span className="text-lg opacity-80 mb-1">ريال</span>
+                  </div>
+                  <div className="text-sm font-semibold bg-white/20 inline-block px-4 py-1 rounded-full backdrop-blur-sm mb-4">
+                    ({plan.period})
+                  </div>
+                  <p className="font-semibold opacity-90">{plan.subtitle}</p>
+                </div>
+
+                {/* Features */}
+                <div className="p-8 flex-1 flex flex-col">
+                  <ul className="space-y-4 mb-8 flex-1">
+                    {plan.features.map((feature, fIdx) => (
+                      <li key={fIdx} className="flex items-center gap-3 text-gray-700">
+                        <CheckCircle2 className={`shrink-0 ${plan.popular ? 'text-blue-500' : 'text-emerald-500'}`} size={20} />
+                        <span className={`text-sm md:text-base ${feature.bold ? 'font-bold' : 'font-medium'}`}>{feature.text}</span>
+                      </li>
+                    ))}
+                    {plan.missing.map((miss, mIdx) => (
+                      <li key={mIdx} className="flex items-center gap-3 text-gray-400 opacity-60">
+                        <XCircle className="shrink-0" size={20} />
+                        <span className="text-sm md:text-base line-through">{miss}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* Footer of Card */}
+                  <div className="border-t border-gray-100 pt-6 mt-auto">
+                    <div className="flex items-center justify-center gap-2 text-sm text-gray-500 mb-6 font-semibold bg-gray-50 py-2 rounded-lg">
+                      <Clock size={16}/> مدة التنفيذ: {plan.time}
+                    </div>
+                    <button className={`w-full py-4 rounded-xl font-bold text-lg transition-all ${
+                      plan.popular 
+                        ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/30' 
+                        : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
+                    }`}>
+                      اطلب الباقة الآن
+                    </button>
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+          
+          {/* Bottom Trust Indicators */}
+          <div className="mt-16 flex flex-wrap justify-center gap-8 text-gray-500 font-semibold text-sm md:text-base">
+            <div className="flex items-center gap-2"><TrendingUp size={20} className="text-blue-600"/> نمو مستدام</div>
+            <div className="flex items-center gap-2"><CheckCircle2 size={20} className="text-blue-600"/> مظهر احترافي</div>
+            <div className="flex items-center gap-2"><Zap size={20} className="text-blue-600"/> استجابة أسرع</div>
+            <div className="flex items-center gap-2"><Clock size={20} className="text-blue-600"/> توفير الوقت والجهد</div>
+            <div className="flex items-center gap-2"><Users size={20} className="text-blue-600"/> زيادة العملاء</div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- CTA SECTION --- */}
+      <section className="py-20">
+        <div className="container mx-auto px-6">
+          <div className="bg-gradient-to-r from-blue-900 via-indigo-800 to-purple-900 rounded-[3rem] p-12 md:p-20 text-center text-white relative overflow-hidden shadow-2xl">
+             {/* Abstract shapes */}
+             <div className="absolute top-0 right-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCI+CjxyZWN0IHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgZmlsbD0ibm9uZSI+PC9yZWN0Pgo8Y2lyY2xlIGN4PSI1IiBjeT0iNSIgcj0iMSIgZmlsbD0icmdiYSgyNTUsIDI1NSwgMjU1LCAwLjEpIj48L2NpcmNsZT4KPC9zdmc+')] opacity-50 z-0"></div>
+            
+            <div className="relative z-10">
+              <h2 className="text-4xl md:text-6xl font-extrabold mb-6">نحو نجاح أكبر.. بخطوات أذكى</h2>
+              <p className="text-xl md:text-2xl text-blue-100 mb-10 max-w-2xl mx-auto font-light">
+                لا تدع المنافسين يسبقونك. ابدأ اليوم في تحويل مطعمك إلى نظام رقمي متكامل يجلب لك الطلبات تلقائياً.
+              </p>
+              <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <button className="bg-white text-blue-900 hover:bg-gray-50 px-10 py-5 rounded-2xl font-bold text-xl transition-all shadow-xl flex items-center justify-center gap-3">
+                  ابدأ الآن
+                  <ArrowLeft size={24} />
+                </button>
+                <button className="bg-[#25D366] hover:bg-[#20bd5a] text-white px-10 py-5 rounded-2xl font-bold text-xl transition-all shadow-xl flex items-center justify-center gap-3">
+                  <MessageCircle size={28} />
+                  تحدث معنا واتساب
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- FOOTER --- */}
+      <footer className="bg-white border-t border-gray-100 pt-16 pb-8">
+        <div className="container mx-auto px-6">
+          <div className="grid md:grid-cols-4 gap-12 mb-12">
+            <div className="md:col-span-2">
+               <div className="flex items-center gap-2 mb-6">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
+                  B
+                </div>
+                <span className="text-xl font-bold text-gray-900">Blumark<span className="text-sm font-black align-top">24</span></span>
+              </div>
+              <p className="text-gray-500 leading-relaxed max-w-sm">
+                وكالة تسويق رقمي متخصصة في تقديم حلول ذكية ومتكاملة للمطاعم والمشاريع في المملكة العربية السعودية، نهدف إلى أتمتة أعمالك وزيادة مبيعاتك.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-bold text-gray-900 mb-6 text-lg">روابط سريعة</h4>
+              <ul className="space-y-4 text-gray-500 font-medium">
+                <li><a href="#" className="hover:text-blue-600 transition-colors">الرئيسية</a></li>
+                <li><a href="#services" className="hover:text-blue-600 transition-colors">الخدمات</a></li>
+                <li><a href="#pricing" className="hover:text-blue-600 transition-colors">الباقات والأسعار</a></li>
+                <li><a href="#" className="hover:text-blue-600 transition-colors">قصص النجاح</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-bold text-gray-900 mb-6 text-lg">تواصل معنا</h4>
+              <ul className="space-y-4 text-gray-500 font-medium">
+                <li className="flex items-center gap-3"><MessageCircle size={20} className="text-green-500"/> واتساب</li>
+                <li className="flex items-center gap-3"><MapPin size={20} className="text-blue-500"/> المملكة العربية السعودية</li>
+              </ul>
+            </div>
+          </div>
+          <div className="border-t border-gray-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-400 text-sm font-medium">
+            <p>© 2026 Blumark24. جميع الحقوق محفوظة.</p>
+            <div className="flex gap-4">
+              <a href="#" className="hover:text-blue-600">الشروط والأحكام</a>
+              <a href="#" className="hover:text-blue-600">سياسة الخصوصية</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      {/* --- FLOATING WHATSAPP BUTTON --- */}
+      <a 
+        href="#" 
+        className="fixed bottom-6 left-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:scale-110 hover:shadow-[#25D366]/50 transition-all duration-300 flex items-center justify-center group"
+      >
+        <MessageCircle size={32} />
+        {/* Tooltip */}
+        <span className="absolute right-full mr-4 bg-white text-gray-800 text-sm font-bold px-4 py-2 rounded-xl shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+          تحتاج مساعدة؟ تواصل معنا
+        </span>
+      </a>
+
+    </div>
+  );
+}
+
+```
