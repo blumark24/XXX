@@ -1,0 +1,23 @@
+<svg width="1350" height="250" viewBox="0 0 1350 250" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Blumark24 logo">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7FA6FF"/>
+      <stop offset="1" stop-color="#D9E8FF"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(12,8)">
+    <rect x="26" y="28" width="180" height="180" rx="46" transform="rotate(45 116 118)" stroke="url(#sky)" stroke-width="18"/>
+    <rect x="80" y="95" width="64" height="64" rx="12" transform="rotate(45 80 95)" fill="url(#sky)"/>
+    <rect x="8" y="108" width="34" height="34" rx="8" transform="rotate(45 8 108)" fill="url(#sky)"/>
+    <rect x="106" y="52" width="28" height="28" rx="6" transform="rotate(45 106 52)" fill="url(#sky)"/>
+  </g>
+  <text x="255" y="168" font-size="170" font-weight="800" font-family="Cairo, Tajawal, Arial, sans-serif" fill="#F1F1F1">Blumark</text>
+  <path d="M545 212 C665 174 775 168 868 182" stroke="#FF7A00" stroke-width="12" stroke-linecap="round"/>
+  <g transform="translate(1058,42)">
+    <circle cx="86" cy="64" r="54" stroke="#F1F1F1" stroke-width="9"/>
+    <path d="M86 37V47M110 64H99" stroke="#F1F1F1" stroke-width="7" stroke-linecap="round"/>
+    <path d="M49 64C57 46 70 37 86 37" stroke="#F1F1F1" stroke-width="7" fill="none"/>
+    <path d="M66 61L82 79L110 45" stroke="#F1F1F1" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="34" y="116" font-size="54" font-weight="700" fill="#F1F1F1" font-family="Cairo, Tajawal, Arial, sans-serif">24h</text>
+  </g>
+</svg>
