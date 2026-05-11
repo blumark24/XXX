@@ -1,0 +1,118 @@
+/* Blumark24 production UI upgrade layer
+   Purpose: mobile header precision, glass social icons, RTL-safe layout.
+   Link this file in index.html after the existing <style> block:
+   <link rel="stylesheet" href="assets/css/blumark24-upgrade.css?v=1">
+*/
+
+:root {
+  --bm-cyan: #00A8FF;
+  --bm-cyan-soft: rgba(0,168,255,0.14);
+  --bm-border: rgba(0,168,255,0.35);
+  --bm-white: #EAF6FF;
+}
+
+.site-header-row,
+.nav-layout-ltr {
+  direction: ltr;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.brand-logo {
+  width: clamp(180px, 16vw, 210px);
+  max-width: 45vw;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+}
+
+#menu-toggle,
+.menu-button {
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--bm-border);
+  box-shadow: 0 0 18px rgba(0,168,255,0.18);
+}
+
+.social-links {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  direction: ltr;
+  flex-wrap: wrap;
+}
+
+.social-link {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bm-white);
+  background: rgba(0,168,255,0.08);
+  border: 1px solid var(--bm-border);
+  box-shadow: 0 0 18px rgba(0,168,255,0.16);
+  transition: transform .2s ease, border-color .2s ease, background .2s ease;
+  text-decoration: none;
+}
+
+.social-link svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+.social-link:hover,
+.social-link:focus-visible {
+  transform: translateY(-2px);
+  background: var(--bm-cyan-soft);
+  border-color: rgba(0,168,255,0.65);
+  outline: none;
+}
+
+img:not(.brand-logo) {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  .brand-logo {
+    width: 155px;
+    max-width: 46vw;
+  }
+
+  #menu-toggle,
+  .menu-button {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    border-radius: 15px;
+  }
+
+  .social-links {
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .social-link {
+    width: 44px;
+    height: 44px;
+    border-radius: 13px;
+  }
+
+  .social-link svg {
+    width: 20px;
+    height: 20px;
+  }
+}
