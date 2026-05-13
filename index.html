@@ -267,7 +267,22 @@
   }
 
   /* MOBILE MENU */
-  #mobile-menu { display: none; }
+  #navbar > div { position: relative; }
+  #mobile-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 16px;
+    right: 16px;
+    z-index: 9999;
+    padding: 18px;
+    border-radius: 18px;
+    background: rgba(10, 15, 44, 0.94);
+    border: 1px solid rgba(0, 168, 255, 0.22);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow: 0 18px 50px rgba(0,0,0,.45), 0 0 28px rgba(0,168,255,.16);
+  }
   #mobile-menu.open { display: block; }
 
   /* CHATBOT */
@@ -443,7 +458,7 @@
     </div>
 
     <!-- Mobile Menu (all sizes — toggled by JS) -->
-    <div id="mobile-menu" class="mt-4 pb-4 border-t border-[rgba(0,168,255,0.1)]">
+    <div id="mobile-menu">
       <div class="flex flex-col gap-3 pt-4">
         <a href="#hero" class="text-gray-300 hover:text-[#00A8FF] py-2" onclick="closeMenu()">الرئيسية</a>
         <a href="#services" class="text-gray-300 hover:text-[#00A8FF] py-2" onclick="closeMenu()">خدماتنا</a>
