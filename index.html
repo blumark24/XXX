@@ -285,12 +285,18 @@
   }
   #mobile-menu.open { display: block; }
 
-  /* MOBILE HEADER REFINEMENTS — mobile only */
+  /* LOGO RESPONSIVE SIZING */
+  /* Mobile ≤767px */
   @media (max-width: 767px) {
-    #navbar { padding-top: 15px; padding-bottom: 15px; }
+    #navbar { padding-top: 18px; padding-bottom: 18px; }
     #navbar a[href="#hero"] img {
-      height: 54px !important;
+      width: 128px !important;
       max-width: 132px !important;
+      height: auto !important;
+    }
+    footer img[alt="Blumark24"] {
+      width: 108px !important;
+      height: auto !important;
     }
     #menu-toggle {
       width: 52px;
@@ -303,6 +309,17 @@
     }
     #mobile-menu.open {
       animation: menuSlideDown 0.22s ease;
+    }
+  }
+  /* Tablet 768–1024px */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    #navbar a[href="#hero"] img {
+      width: 140px !important;
+      height: auto !important;
+    }
+    footer img[alt="Blumark24"] {
+      width: 118px !important;
+      height: auto !important;
     }
   }
   @keyframes menuSlideDown {
@@ -473,7 +490,7 @@
 
       <!-- Logo (Left) -->
       <a href="#hero" class="flex-shrink-0 flex items-center" onclick="closeMenu()">
-        <img src="assets/branding/blumark24-logo-new.png" alt="Blumark24" style="height:44px;width:auto;object-fit:contain;max-width:180px">
+        <img src="assets/branding/blumark24-logo-new.png" alt="Blumark24" style="width:160px;height:auto;object-fit:contain;max-width:180px">
       </a>
 
       <!-- Menu Toggle (Right — all sizes) -->
@@ -1338,7 +1355,7 @@
       <!-- Brand -->
       <div class="md:col-span-2">
         <div class="mb-4">
-          <img src="assets/branding/blumark24-logo-new.png" alt="Blumark24" style="height:40px;width:auto;object-fit:contain;max-width:160px">
+          <img src="assets/branding/blumark24-logo-new.png" alt="Blumark24" style="width:135px;height:auto;object-fit:contain;max-width:160px">
         </div>
         <p class="text-gray-400 text-sm leading-relaxed max-w-sm">
           وكالة تسويق رقمي سعودية متخصصة في حلول الذكاء الاصطناعي لتحويل الأعمال ومواكبة رؤية 2030
