@@ -215,6 +215,7 @@
     border-color: rgba(0,168,255,0.5);
     box-shadow: 0 16px 48px rgba(0,0,0,0.5), 0 0 40px rgba(0,168,255,0.15), inset 0 1px 0 rgba(255,255,255,0.08);
     transform: scale(1.04);
+    padding-top: 80px;
   }
   .pricing-growth:hover { transform: scale(1.06) translateY(-8px); }
 
@@ -395,7 +396,7 @@
   @media (max-width: 768px) {
     .bento-grid { grid-template-columns: 1fr; }
     .bento-wide, .bento-tall { grid-column: span 1; grid-row: span 1; }
-    .pricing-growth { transform: scale(1); }
+    .pricing-growth { transform: scale(1); padding-top: 72px; }
   }
 
   /* TIMELINE */
@@ -803,7 +804,7 @@
       <!-- GROWTH PACKAGE (FEATURED) -->
       <div class="glass-card pricing-growth rounded-3xl p-8 reveal relative" style="transition-delay: 0.2s">
         <!-- Badge -->
-        <div class="badge absolute -top-4 right-1/2 translate-x-1/2 px-5 py-1.5 rounded-full text-white text-xs font-black tracking-wide whitespace-nowrap">
+        <div class="badge px-5 py-1.5 rounded-full text-white text-xs font-black tracking-wide whitespace-nowrap" style="position:absolute;top:18px;left:50%;transform:translateX(-50%);z-index:3;">
           <i class="fa-solid fa-star" style="color:#FFD700"></i> الأكثر طلباً
         </div>
 
