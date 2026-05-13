@@ -9,6 +9,11 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="icon" type="image/png" href="assets/branding/blumark24-logo-new.png">
+<meta property="og:image" content="assets/branding/blumark24-logo-new.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="assets/branding/blumark24-logo-new.png">
 <style>
   :root {
     --navy: #0A0F2C;
@@ -380,7 +385,36 @@
     .hero-title { font-size: 2rem !important; }
     .hero-sub { font-size: 1rem !important; }
   }
+
+  /* SOCIAL ICON BUTTONS */
+  .social-icon-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: rgba(255,255,255,0.85);
+    background: rgba(0,168,255,0.06);
+    border: 1px solid rgba(0,168,255,0.22);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.25s ease;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+  .social-icon-btn:hover {
+    color: #00A8FF;
+    border-color: rgba(0,168,255,0.6);
+    box-shadow: 0 0 14px rgba(0,168,255,0.25);
+    transform: translateY(-2px);
+    background: rgba(0,168,255,0.1);
+  }
 </style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Organization","name":"Blumark24","url":"https://blumark24.com","logo":"https://blumark24.com/assets/branding/blumark24-logo-new.png","sameAs":["https://www.instagram.com/blumark24","https://x.com/blumark24","https://www.linkedin.com/company/blumark24ksa/","https://www.tiktok.com/@blumark24"]}
+</script>
 </head>
 <body class="arabic-pattern">
 
@@ -391,52 +425,57 @@
 <div class="light-orb" id="light-orb"></div>
 
 <!-- ══════════════════════════════════════ NAVBAR ══════════════════════════════════════ -->
-<nav id="navbar" class="py-4">
+<nav id="navbar" class="py-3">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Main Header Row -->
     <div class="flex items-center justify-between">
-      <!-- Logo -->
-      <div class="flex items-center gap-3">
-        <div class="relative">
-          <div class="w-12 h-12 rounded-xl flex items-center justify-center neon-border" style="background: rgba(0,168,255,0.1)">
-            <svg width="28" height="28" viewBox="0 0 40 40" fill="none">
-              <path d="M20 4L36 12V28L20 36L4 28V12L20 4Z" stroke="#00A8FF" stroke-width="1.5" fill="rgba(0,168,255,0.1)"/>
-              <circle cx="20" cy="20" r="6" fill="#00A8FF" opacity="0.8"/>
-              <path d="M20 4V14M20 26V36M4 12L14 17M26 23L36 28M4 28L14 23M26 17L36 12" stroke="#00A8FF" stroke-width="1" opacity="0.5"/>
-            </svg>
-          </div>
-        </div>
-        <div>
-          <div class="text-xl font-black tracking-wide" style="color: #00A8FF; text-shadow: 0 0 15px rgba(0,168,255,0.5)">Blumark24</div>
-          <div class="text-xs font-light tracking-widest text-gray-400" style="font-size: 9px">MARKETING AGENCY</div>
-        </div>
-      </div>
 
-      <!-- Desktop Nav -->
-      <div class="hidden lg:flex items-center gap-8">
-        <a href="#hero" class="text-sm text-gray-300 hover:text-white transition-colors hover:text-[#00A8FF]">الرئيسية</a>
-        <a href="#services" class="text-sm text-gray-300 hover:text-[#00A8FF] transition-colors">خدماتنا</a>
-        <a href="#pricing" class="text-sm text-gray-300 hover:text-[#00A8FF] transition-colors">الباقات</a>
-        <a href="#why" class="text-sm text-gray-300 hover:text-[#00A8FF] transition-colors">لماذا Blumark</a>
-        <a href="#testimonials" class="text-sm text-gray-300 hover:text-[#00A8FF] transition-colors">آراء العملاء</a>
-        <a href="#contact" class="text-sm text-gray-300 hover:text-[#00A8FF] transition-colors">اتصل بنا</a>
-      </div>
+      <!-- Logo (Left) -->
+      <a href="#hero" class="flex-shrink-0 flex items-center" onclick="closeMenu()">
+        <img src="assets/branding/blumark24-logo-new.png" alt="Blumark24" style="height:44px;width:auto;object-fit:contain;max-width:180px">
+      </a>
 
-      <!-- CTA -->
-      <div class="flex items-center gap-3">
-        <a href="https://wa.me/966507006849?text=أريد الاستفسار عن خدمات Blumark24" target="_blank"
-           class="btn-primary hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-xl text-white text-sm font-bold">
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          ابدأ مشروعك الآن
+      <!-- Social Icons (Center — desktop only) -->
+      <div class="hidden lg:flex items-center gap-3">
+        <a href="https://www.instagram.com/blumark24?igsh=eDM3a2VycGFwcnlo" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="social-icon-btn">
+          <i class="fa-brands fa-instagram"></i>
         </a>
-        <!-- Mobile Menu Toggle -->
-        <button id="menu-toggle" class="lg:hidden p-2 rounded-lg glass" onclick="toggleMenu()">
-          <svg class="w-5 h-5 text-[#00A8FF]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-        </button>
+        <a href="https://x.com/blumark24?s=21" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" class="social-icon-btn">
+          <i class="fa-brands fa-x-twitter"></i>
+        </a>
+        <a href="https://www.linkedin.com/company/blumark24ksa/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="social-icon-btn">
+          <i class="fa-brands fa-linkedin-in"></i>
+        </a>
+        <a href="https://www.tiktok.com/@blumark24?_r=1&amp;_t=ZS-95yQcm1ZBxZ" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="social-icon-btn">
+          <i class="fa-brands fa-tiktok"></i>
+        </a>
       </div>
+
+      <!-- Menu Toggle (Right — all sizes) -->
+      <button id="menu-toggle" class="p-2 rounded-lg glass" onclick="toggleMenu()" aria-label="القائمة">
+        <svg class="w-5 h-5 text-[#00A8FF]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
     </div>
 
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="lg:hidden mt-4 pb-4 border-t border-[rgba(0,168,255,0.1)]">
+    <!-- Mobile Social Row (below main row, hidden on desktop) -->
+    <div class="lg:hidden flex justify-center gap-3 pt-3 mt-2 border-t border-[rgba(0,168,255,0.1)]">
+      <a href="https://www.instagram.com/blumark24?igsh=eDM3a2VycGFwcnlo" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="social-icon-btn" style="width:40px;height:40px;border-radius:12px;font-size:16px">
+        <i class="fa-brands fa-instagram"></i>
+      </a>
+      <a href="https://x.com/blumark24?s=21" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" class="social-icon-btn" style="width:40px;height:40px;border-radius:12px;font-size:16px">
+        <i class="fa-brands fa-x-twitter"></i>
+      </a>
+      <a href="https://www.linkedin.com/company/blumark24ksa/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="social-icon-btn" style="width:40px;height:40px;border-radius:12px;font-size:16px">
+        <i class="fa-brands fa-linkedin-in"></i>
+      </a>
+      <a href="https://www.tiktok.com/@blumark24?_r=1&amp;_t=ZS-95yQcm1ZBxZ" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="social-icon-btn" style="width:40px;height:40px;border-radius:12px;font-size:16px">
+        <i class="fa-brands fa-tiktok"></i>
+      </a>
+    </div>
+
+    <!-- Mobile Menu (all sizes — toggled by JS) -->
+    <div id="mobile-menu" class="mt-4 pb-4 border-t border-[rgba(0,168,255,0.1)]">
       <div class="flex flex-col gap-3 pt-4">
         <a href="#hero" class="text-gray-300 hover:text-[#00A8FF] py-2" onclick="closeMenu()">الرئيسية</a>
         <a href="#services" class="text-gray-300 hover:text-[#00A8FF] py-2" onclick="closeMenu()">خدماتنا</a>
@@ -444,7 +483,8 @@
         <a href="#why" class="text-gray-300 hover:text-[#00A8FF] py-2" onclick="closeMenu()">لماذا Blumark</a>
         <a href="#testimonials" class="text-gray-300 hover:text-[#00A8FF] py-2" onclick="closeMenu()">آراء العملاء</a>
         <a href="#contact" class="text-gray-300 hover:text-[#00A8FF] py-2" onclick="closeMenu()">اتصل بنا</a>
-        <a href="https://wa.me/966507006849" target="_blank" class="btn-primary flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-white text-sm font-bold mt-2">
+        <a href="https://wa.me/966507006849?text=أريد الاستفسار عن خدمات Blumark24" target="_blank" class="btn-primary flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-white text-sm font-bold mt-2">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
           ابدأ مشروعك الآن
         </a>
       </div>
@@ -653,7 +693,7 @@
       <!-- START PACKAGE -->
       <div class="glass-card pricing-start rounded-3xl p-8 reveal" style="transition-delay: 0.1s">
         <div class="flex items-center gap-3 mb-6">
-          <div class="text-3xl">🚀</div>
+          <div class="text-3xl"><i class="fa-solid fa-rocket" style="color:#10B981"></i></div>
           <div>
             <div class="text-xl font-black text-white">START</div>
             <div class="text-xs text-[#10B981]">البداية الذكية لمشروعك</div>
@@ -670,51 +710,51 @@
 
         <ul class="space-y-3 mb-8">
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">📄</span><span class="text-gray-300">صفحة هبوط احترافية</span>
+            <span class="text-lg"><i class="fa-regular fa-file-lines"></i></span><span class="text-gray-300">صفحة هبوط احترافية</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">📱</span><span class="text-gray-300">تصميم أساسي متوافق مع اجهزة الجوال</span>
+            <span class="text-lg"><i class="fa-solid fa-mobile-screen"></i></span><span class="text-gray-300">تصميم أساسي متوافق مع اجهزة الجوال</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">💬</span><span class="text-gray-300">زر واتساب مباشر</span>
+            <span class="text-lg"><i class="fa-brands fa-whatsapp"></i></span><span class="text-gray-300">زر واتساب مباشر</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">📍</span><span class="text-gray-300">ربط Google Maps أساسي</span>
+            <span class="text-lg"><i class="fa-solid fa-location-dot"></i></span><span class="text-gray-300">ربط Google Maps أساسي</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">🤖</span><span class="text-gray-300">بوت واتساب (ردود أساسية)</span>
+            <span class="text-lg"><i class="fa-solid fa-robot"></i></span><span class="text-gray-300">بوت واتساب (ردود أساسية)</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">⏰</span><span class="text-gray-300">رد تلقائي 24/7</span>
+            <span class="text-lg"><i class="fa-regular fa-clock"></i></span><span class="text-gray-300">رد تلقائي 24/7</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
           <li class="flex items-center gap-3 text-sm opacity-40">
-            <span class="text-lg">💡</span><span class="text-gray-400">فهم الرسائل الطبيعية</span>
+            <span class="text-lg"><i class="fa-solid fa-lightbulb"></i></span><span class="text-gray-400">فهم الرسائل الطبيعية</span>
             <span class="check-no mr-auto">✕</span>
           </li>
           <li class="flex items-center gap-3 text-sm opacity-40">
-            <span class="text-lg">👥</span><span class="text-gray-400">جمع بيانات العملاء</span>
+            <span class="text-lg"><i class="fa-solid fa-users"></i></span><span class="text-gray-400">جمع بيانات العملاء</span>
             <span class="check-no mr-auto">✕</span>
           </li>
           <li class="flex items-center gap-3 text-sm opacity-40">
-            <span class="text-lg">🛒</span><span class="text-gray-400">المنيو الذكي</span>
+            <span class="text-lg"><i class="fa-solid fa-cart-shopping"></i></span><span class="text-gray-400">المنيو الذكي</span>
             <span class="check-no mr-auto">✕</span>
           </li>
           <li class="flex items-center gap-3 text-sm opacity-40">
-            <span class="text-lg">📅</span><span class="text-gray-400">حجوزات وطلبات</span>
+            <span class="text-lg"><i class="fa-regular fa-calendar-days"></i></span><span class="text-gray-400">حجوزات وطلبات</span>
             <span class="check-no mr-auto">✕</span>
           </li>
           <li class="flex items-center gap-3 text-sm opacity-40">
-            <span class="text-lg">📊</span><span class="text-gray-400">تقارير</span>
+            <span class="text-lg"><i class="fa-solid fa-chart-bar"></i></span><span class="text-gray-400">تقارير</span>
             <span class="check-no mr-auto">✕</span>
           </li>
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">🎧</span><span class="text-gray-300">دعم فني أساسي</span>
+            <span class="text-lg"><i class="fa-solid fa-headphones"></i></span><span class="text-gray-300">دعم فني أساسي</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
         </ul>
@@ -735,11 +775,11 @@
       <div class="glass-card pricing-growth rounded-3xl p-8 reveal relative" style="transition-delay: 0.2s">
         <!-- Badge -->
         <div class="badge absolute -top-4 right-1/2 translate-x-1/2 px-5 py-1.5 rounded-full text-white text-xs font-black tracking-wide whitespace-nowrap">
-          ⭐ الأكثر طلباً
+          <i class="fa-solid fa-star" style="color:#FFD700"></i> الأكثر طلباً
         </div>
 
         <div class="flex items-center gap-3 mb-6 mt-2">
-          <div class="text-3xl">📈</div>
+          <div class="text-3xl"><i class="fa-solid fa-chart-line" style="color:#00A8FF"></i></div>
           <div>
             <div class="text-xl font-black text-white">GROWTH</div>
             <div class="text-xs text-[#00A8FF]">باقة النمو والتواصل الذكي</div>
@@ -756,56 +796,56 @@
 
         <ul class="space-y-3 mb-8">
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">📄</span><span class="text-gray-200">انشاء موقع احترافي متوافق مع الجوال</span>
+            <span class="text-lg"><i class="fa-regular fa-file-lines"></i></span><span class="text-gray-200">انشاء موقع احترافي متوافق مع الجوال</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">📱</span><span class="text-gray-200">تصميم احترافي متوافق مع الجوال</span>
+            <span class="text-lg"><i class="fa-solid fa-mobile-screen"></i></span><span class="text-gray-200">تصميم احترافي متوافق مع الجوال</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">💬</span><span class="text-gray-200">زر واتساب مباشر</span>
+            <span class="text-lg"><i class="fa-brands fa-whatsapp"></i></span><span class="text-gray-200">زر واتساب مباشر</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">📍</span><span class="text-gray-200">تحسين الظهور في Google Maps</span>
+            <span class="text-lg"><i class="fa-solid fa-location-dot"></i></span><span class="text-gray-200">تحسين الظهور في Google Maps</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">🤖</span><span class="text-gray-200">بوت واتساب (AI Lite) يفهم الرسائل الطبيعية</span>
+            <span class="text-lg"><i class="fa-solid fa-robot"></i></span><span class="text-gray-200">بوت واتساب (AI Lite) يفهم الرسائل الطبيعية</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">⏰</span><span class="text-gray-200">رد تلقائي 24/7 ذكي</span>
+            <span class="text-lg"><i class="fa-regular fa-clock"></i></span><span class="text-gray-200">رد تلقائي 24/7 ذكي</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">👥</span><span class="text-gray-200">جمع بيانات العملاء والمهتمين</span>
+            <span class="text-lg"><i class="fa-solid fa-users"></i></span><span class="text-gray-200">جمع بيانات العملاء والمهتمين</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">🛒</span>
+            <span class="text-lg"><i class="fa-solid fa-cart-shopping"></i></span>
             <span class="text-white font-semibold">المنيو الذكي (عرض المنتجات/الخدمات)</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">👔</span><span class="text-gray-200">تحويل ذكي لموظف</span>
+            <span class="text-lg"><i class="fa-solid fa-user-tie"></i></span><span class="text-gray-200">تحويل ذكي لموظف</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
           <li class="flex items-center gap-3 text-sm opacity-40">
-            <span class="text-lg">📅</span><span class="text-gray-400">حجوزات وطلبات تلقائية</span>
+            <span class="text-lg"><i class="fa-regular fa-calendar-days"></i></span><span class="text-gray-400">حجوزات وطلبات تلقائية</span>
             <span class="check-no mr-auto">✕</span>
           </li>
           <li class="flex items-center gap-3 text-sm opacity-40">
-            <span class="text-lg">👥</span><span class="text-gray-400">CRM بسيط</span>
+            <span class="text-lg"><i class="fa-solid fa-users"></i></span><span class="text-gray-400">CRM بسيط</span>
             <span class="check-no mr-auto">✕</span>
           </li>
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">📊</span><span class="text-gray-200">تقارير AI بسيطة</span>
+            <span class="text-lg"><i class="fa-solid fa-chart-bar"></i></span><span class="text-gray-200">تقارير AI بسيطة</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">🎧</span><span class="text-gray-200">دعم فني شهري</span>
+            <span class="text-lg"><i class="fa-solid fa-headphones"></i></span><span class="text-gray-200">دعم فني شهري</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
         </ul>
@@ -817,14 +857,14 @@
 
         <a href="https://wa.me/966507006849?text=أريد الاشتراك في باقة GROWTH" target="_blank"
            class="btn-primary w-full block text-center py-3.5 rounded-2xl font-black text-white text-base pulse-anim">
-          اشترك الآن — الأكثر طلباً 🔥
+          اشترك الآن — الأكثر طلباً
         </a>
       </div>
 
       <!-- PRO MAX PACKAGE -->
       <div class="glass-card pricing-pro rounded-3xl p-8 reveal" style="transition-delay: 0.3s">
         <div class="flex items-center gap-3 mb-6">
-          <div class="text-3xl">👑</div>
+          <div class="text-3xl"><i class="fa-solid fa-crown" style="color:#c0a060"></i></div>
           <div>
             <div class="text-xl font-black text-white">PRO MAX</div>
             <div class="text-xs text-[#00A8FF]">تشغيل متكامل ونمو بدون حدود</div>
@@ -841,56 +881,56 @@
 
         <ul class="space-y-3 mb-8">
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">📄</span><span class="text-gray-200">موقع 7 صفحات Premium</span>
+            <span class="text-lg"><i class="fa-regular fa-file-lines"></i></span><span class="text-gray-200">موقع 7 صفحات Premium</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">📱</span><span class="text-gray-200">تصميم فاخر عالي التحويل</span>
+            <span class="text-lg"><i class="fa-solid fa-mobile-screen"></i></span><span class="text-gray-200">تصميم فاخر عالي التحويل</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">💬</span><span class="text-gray-200">زر واتساب مباشر</span>
+            <span class="text-lg"><i class="fa-brands fa-whatsapp"></i></span><span class="text-gray-200">زر واتساب مباشر</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">📍</span><span class="text-gray-200">سيطرة محلية قوية على Google Maps</span>
+            <span class="text-lg"><i class="fa-solid fa-location-dot"></i></span><span class="text-gray-200">سيطرة محلية قوية على Google Maps</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">🤖</span><span class="text-gray-200">بوت واتساب (AI Pro) متقدم</span>
+            <span class="text-lg"><i class="fa-solid fa-robot"></i></span><span class="text-gray-200">بوت واتساب (AI Pro) متقدم</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">💡</span><span class="text-gray-200">فهم الرسائل + اقتراحات ذكية</span>
+            <span class="text-lg"><i class="fa-solid fa-lightbulb"></i></span><span class="text-gray-200">فهم الرسائل + اقتراحات ذكية</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">🍽️</span>
+            <span class="text-lg"><i class="fa-solid fa-utensils"></i></span>
             <span class="text-white font-semibold">المنيو الذكي المتقدم</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">📅</span><span class="text-gray-200">حجوزات ومواعيد تلقائية (مطاعم - عيادات - خدمات )</span>
+            <span class="text-lg"><i class="fa-regular fa-calendar-days"></i></span><span class="text-gray-200">حجوزات ومواعيد تلقائية (مطاعم - عيادات - خدمات )</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">🛒</span><span class="text-gray-200">استقبال طلبات كاملة (منتجات - توصيل - استلام)</span>
+            <span class="text-lg"><i class="fa-solid fa-cart-shopping"></i></span><span class="text-gray-200">استقبال طلبات كاملة (منتجات - توصيل - استلام)</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">👥</span><span class="text-gray-200">CRM بسيط + إدارة العملاء</span>
+            <span class="text-lg"><i class="fa-solid fa-users"></i></span><span class="text-gray-200">CRM بسيط + إدارة العملاء</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">⚙️</span><span class="text-gray-200">أتمتة تشغيلية (رسائل تأكيد - تذكير - إشعارات)</span>
+            <span class="text-lg"><i class="fa-solid fa-gear"></i></span><span class="text-gray-200">أتمتة تشغيلية (رسائل تأكيد - تذكير - إشعارات)</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">📊</span><span class="text-gray-200">تقارير AI متقدمة ورؤى للنمو</span>
+            <span class="text-lg"><i class="fa-solid fa-chart-bar"></i></span><span class="text-gray-200">تقارير AI متقدمة ورؤى للنمو</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
           <li class="flex items-center gap-3 text-sm">
-            <span class="text-lg">🎧</span><span class="text-gray-200">دعم فني VIP بأولوية</span>
+            <span class="text-lg"><i class="fa-solid fa-headphones"></i></span><span class="text-gray-200">دعم فني VIP بأولوية</span>
             <span class="check-yes mr-auto">✓</span>
           </li>
         </ul>
@@ -903,7 +943,7 @@
         <a href="https://wa.me/966507006849?text=أريد الاشتراك في باقة PRO MAX" target="_blank"
            class="w-full block text-center py-3 rounded-2xl font-bold text-white transition-all hover:scale-105"
            style="background: linear-gradient(135deg, rgba(30,58,138,0.5), rgba(0,168,255,0.2)); border: 1px solid rgba(0,168,255,0.4)">
-          احصل على PRO MAX 👑
+          احصل على PRO MAX
         </a>
       </div>
     </div>
@@ -914,16 +954,16 @@
         <span class="text-[#10B981]">✓</span> مظهر احترافي
       </div>
       <div class="flex items-center gap-2 text-gray-400 text-sm">
-        <span class="text-[#00A8FF]">⚡</span> استجابة أسرع
+        <span class="text-[#00A8FF]"><i class="fa-solid fa-bolt"></i></span> استجابة أسرع
       </div>
       <div class="flex items-center gap-2 text-gray-400 text-sm">
-        <span class="text-[#FF7A00]">⏰</span> توفير الوقت والجهد
+        <span class="text-[#FF7A00]"><i class="fa-regular fa-clock"></i></span> توفير الوقت والجهد
       </div>
       <div class="flex items-center gap-2 text-gray-400 text-sm">
-        <span class="text-[#10B981]">👥</span> زيادة العملاء
+        <span class="text-[#10B981]"><i class="fa-solid fa-users"></i></span> زيادة العملاء
       </div>
       <div class="flex items-center gap-2 text-gray-400 text-sm">
-        <span class="text-[#00A8FF]">📈</span> نمو مستدام
+        <span class="text-[#00A8FF]"><i class="fa-solid fa-chart-line"></i></span> نمو مستدام
       </div>
     </div>
   </div>
@@ -942,7 +982,7 @@
     <div class="bento-grid reveal">
       <!-- Service 1 - Wide -->
       <div class="glass-card bento-wide rounded-3xl p-8 flex items-center gap-8" style="transition-delay: 0.1s">
-        <div class="flex-shrink-0 w-20 h-20 rounded-2xl flex items-center justify-center text-4xl" style="background: rgba(0,168,255,0.1); border: 1px solid rgba(0,168,255,0.2)">🌐</div>
+        <div class="flex-shrink-0 w-20 h-20 rounded-2xl flex items-center justify-center text-4xl" style="background: rgba(0,168,255,0.1); border: 1px solid rgba(0,168,255,0.2)"><i class="fa-solid fa-globe" style="color:#00A8FF"></i></div>
         <div>
           <h3 class="text-2xl font-black text-white mb-2">تصميم وتطوير المواقع</h3>
           <p class="text-gray-400 leading-relaxed">مواقع ويب احترافية متجاوبة وعالية التحويل، مبنية بأحدث تقنيات 2026 مع تحسين كامل لمحركات البحث وسرعة تحميل فائقة</p>
@@ -956,20 +996,20 @@
 
       <!-- Service 2 - Tall -->
       <div class="glass-card bento-tall rounded-3xl p-8 flex flex-col" style="transition-delay: 0.2s">
-        <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-5" style="background: rgba(255,122,0,0.1); border: 1px solid rgba(255,122,0,0.2)">🤖</div>
+        <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-5" style="background: rgba(255,122,0,0.1); border: 1px solid rgba(255,122,0,0.2)"><i class="fa-solid fa-robot" style="color:#FF7A00"></i></div>
         <h3 class="text-xl font-black text-white mb-3">بوت واتساب الذكي</h3>
         <p class="text-gray-400 text-sm leading-relaxed flex-1">أنظمة ذكاء اصطناعي متقدمة لواتساب ترد على عملائك فوراً، تفهم اللغة الطبيعية، تحجز المواعيد، وترسل العروض تلقائياً</p>
         <div class="mt-6 space-y-3">
           <div class="flex items-center gap-3 p-3 rounded-xl" style="background: rgba(255,122,0,0.08); border: 1px solid rgba(255,122,0,0.15)">
-            <span class="text-[#FF7A00] text-xs">⚡</span>
+            <span class="text-[#FF7A00] text-xs"><i class="fa-solid fa-bolt"></i></span>
             <span class="text-xs text-gray-300">رد في أقل من ثانية</span>
           </div>
           <div class="flex items-center gap-3 p-3 rounded-xl" style="background: rgba(255,122,0,0.08); border: 1px solid rgba(255,122,0,0.15)">
-            <span class="text-[#FF7A00] text-xs">🧠</span>
+            <span class="text-[#FF7A00] text-xs"><i class="fa-solid fa-brain"></i></span>
             <span class="text-xs text-gray-300">يفهم عاميتك السعودية</span>
           </div>
           <div class="flex items-center gap-3 p-3 rounded-xl" style="background: rgba(255,122,0,0.08); border: 1px solid rgba(255,122,0,0.15)">
-            <span class="text-[#FF7A00] text-xs">📅</span>
+            <span class="text-[#FF7A00] text-xs"><i class="fa-regular fa-calendar-days"></i></span>
             <span class="text-xs text-gray-300">حجز مواعيد أوتوماتيك</span>
           </div>
         </div>
@@ -977,21 +1017,21 @@
 
       <!-- Service 3 -->
       <div class="glass-card rounded-3xl p-7" style="transition-delay: 0.3s">
-        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-4" style="background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2)">📊</div>
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-4" style="background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2)"><i class="fa-solid fa-chart-bar" style="color:#10B981"></i></div>
         <h3 class="text-lg font-black text-white mb-2">تقارير AI وتحليلات</h3>
         <p class="text-gray-400 text-sm">رؤى ذكية وتقارير شاملة تساعدك على فهم عملائك واتخاذ قرارات صح</p>
       </div>
 
       <!-- Service 4 -->
       <div class="glass-card rounded-3xl p-7" style="transition-delay: 0.4s">
-        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-4" style="background: rgba(0,168,255,0.1); border: 1px solid rgba(0,168,255,0.2)">📍</div>
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-4" style="background: rgba(0,168,255,0.1); border: 1px solid rgba(0,168,255,0.2)"><i class="fa-solid fa-location-dot" style="color:#00A8FF"></i></div>
         <h3 class="text-lg font-black text-white mb-2">Google Maps & تحسين محركات البحث</h3>
         <p class="text-gray-400 text-sm">سيطرة قوية على نتائج البحث المحلية وخرائط Google لجذب عملاء أكثر</p>
       </div>
 
       <!-- Service 5 - Wide -->
       <div class="glass-card bento-wide rounded-3xl p-8 flex items-center gap-8" style="transition-delay: 0.5s">
-        <div class="flex-shrink-0 w-20 h-20 rounded-2xl flex items-center justify-center text-4xl" style="background: rgba(30,58,138,0.2); border: 1px solid rgba(30,58,138,0.3)">🍽️</div>
+        <div class="flex-shrink-0 w-20 h-20 rounded-2xl flex items-center justify-center text-4xl" style="background: rgba(30,58,138,0.2); border: 1px solid rgba(30,58,138,0.3)"><i class="fa-solid fa-utensils" style="color:#00A8FF"></i></div>
         <div>
           <h3 class="text-2xl font-black text-white mb-2">المنيو الذكي للمطاعم</h3>
           <p class="text-gray-400 leading-relaxed">نظام قائمة رقمية تفاعلية مع صور عالية الجودة، فلترة، حجز طاولات، واستقبال طلبات التوصيل والاستلام — كل ذلك عبر واتساب</p>
@@ -1000,14 +1040,14 @@
 
       <!-- Service 6 -->
       <div class="glass-card rounded-3xl p-7" style="transition-delay: 0.6s">
-        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-4" style="background: rgba(0,168,255,0.1); border: 1px solid rgba(0,168,255,0.2)">👥</div>
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-4" style="background: rgba(0,168,255,0.1); border: 1px solid rgba(0,168,255,0.2)"><i class="fa-solid fa-users" style="color:#00A8FF"></i></div>
         <h3 class="text-lg font-black text-white mb-2">CRM وإدارة العملاء</h3>
         <p class="text-gray-400 text-sm">تتبع كامل لعملائك وتاريخ تفاعلهم وإرسال عروض مخصصة تلقائياً</p>
       </div>
 
       <!-- Service 7 -->
       <div class="glass-card rounded-3xl p-7" style="background: linear-gradient(135deg, rgba(255,122,0,0.08), rgba(30,58,138,0.08)); transition-delay: 0.7s">
-        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-4" style="background: rgba(255,122,0,0.15); border: 1px solid rgba(255,122,0,0.3)">⚙️</div>
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-4" style="background: rgba(255,122,0,0.15); border: 1px solid rgba(255,122,0,0.3)"><i class="fa-solid fa-gear" style="color:#FF7A00"></i></div>
         <h3 class="text-lg font-black text-white mb-2">أتمتة العمليات التشغيلية</h3>
         <p class="text-gray-400 text-sm">أتمتة شاملة لكل مهامك المتكررة — تذكيرات، فواتير، تأكيدات، ومتابعة تلقائية</p>
       </div>
@@ -1242,28 +1282,28 @@
       <!-- Contact Info -->
       <div class="space-y-5 reveal reveal-left" style="transition-delay: 0.2s">
         <div class="glass-card rounded-2xl p-5 flex items-center gap-4">
-          <div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl" style="background: rgba(0,168,255,0.15); border: 1px solid rgba(0,168,255,0.3)">💬</div>
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl" style="background: rgba(0,168,255,0.15); border: 1px solid rgba(0,168,255,0.3)"><i class="fa-brands fa-whatsapp" style="color:#00A8FF;font-size:20px"></i></div>
           <div>
             <div class="font-bold text-white text-sm">واتساب</div>
             <div class="text-[#00A8FF] text-sm">966507006849</div>
           </div>
         </div>
         <div class="glass-card rounded-2xl p-5 flex items-center gap-4">
-          <div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl" style="background: rgba(255,122,0,0.15); border: 1px solid rgba(255,122,0,0.3)">📧</div>
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl" style="background: rgba(255,122,0,0.15); border: 1px solid rgba(255,122,0,0.3)"><i class="fa-regular fa-envelope" style="color:#FF7A00;font-size:20px"></i></div>
           <div>
             <div class="font-bold text-white text-sm">البريد الإلكتروني</div>
             <div style="color:#FF7A00" class="text-sm">info@Blumark24.sa</div>
           </div>
         </div>
         <div class="glass-card rounded-2xl p-5 flex items-center gap-4">
-          <div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl" style="background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3)">📍</div>
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl" style="background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3)"><i class="fa-solid fa-location-dot" style="color:#10B981;font-size:20px"></i></div>
           <div>
             <div class="font-bold text-white text-sm">الموقع</div>
             <div class="text-gray-400 text-sm">المملكة العربية السعودية 🇸🇦</div>
           </div>
         </div>
         <div class="glass-card rounded-2xl p-5 flex items-center gap-4">
-          <div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl" style="background: rgba(0,168,255,0.15); border: 1px solid rgba(0,168,255,0.3)">⏰</div>
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl" style="background: rgba(0,168,255,0.15); border: 1px solid rgba(0,168,255,0.3)"><i class="fa-regular fa-clock" style="color:#00A8FF;font-size:20px"></i></div>
           <div>
             <div class="font-bold text-white text-sm">أوقات العمل</div>
             <div class="text-gray-400 text-sm">24/7 — نحن دائماً هنا</div>
@@ -1289,26 +1329,25 @@
     <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
       <!-- Brand -->
       <div class="md:col-span-2">
-        <div class="flex items-center gap-3 mb-4">
-          <div class="w-10 h-10 rounded-xl flex items-center justify-center neon-border" style="background: rgba(0,168,255,0.1)">
-            <svg width="20" height="20" viewBox="0 0 40 40" fill="none">
-              <path d="M20 4L36 12V28L20 36L4 28V12L20 4Z" stroke="#00A8FF" stroke-width="2" fill="rgba(0,168,255,0.1)"/>
-              <circle cx="20" cy="20" r="6" fill="#00A8FF" opacity="0.8"/>
-            </svg>
-          </div>
-          <div>
-            <div class="text-lg font-black" style="color: #00A8FF">Blumark</div>
-            <div class="text-xs text-gray-500" style="font-size: 8px; letter-spacing: 2px">MARKETING AGENCY</div>
-          </div>
+        <div class="mb-4">
+          <img src="assets/branding/blumark24-logo-new.png" alt="Blumark24" style="height:40px;width:auto;object-fit:contain;max-width:160px">
         </div>
         <p class="text-gray-400 text-sm leading-relaxed max-w-sm">
           وكالة تسويق رقمي سعودية متخصصة في حلول الذكاء الاصطناعي لتحويل الأعمال ومواكبة رؤية 2030
         </p>
         <div class="flex gap-3 mt-5">
-          <a href="#" class="w-9 h-9 rounded-xl flex items-center justify-center glass neon-border hover:scale-110 transition-transform text-sm">📷</a>
-          <a href="#" class="w-9 h-9 rounded-xl flex items-center justify-center glass neon-border hover:scale-110 transition-transform text-sm">🐦</a>
-          <a href="#" class="w-9 h-9 rounded-xl flex items-center justify-center glass neon-border hover:scale-110 transition-transform text-sm">💼</a>
-          <a href="https://wa.me/966507006849" target="_blank" class="w-9 h-9 rounded-xl flex items-center justify-center glass neon-border hover:scale-110 transition-transform text-sm">💬</a>
+          <a href="https://www.instagram.com/blumark24?igsh=eDM3a2VycGFwcnlo" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="social-icon-btn" style="width:40px;height:40px;border-radius:12px;font-size:16px">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+          <a href="https://x.com/blumark24?s=21" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" class="social-icon-btn" style="width:40px;height:40px;border-radius:12px;font-size:16px">
+            <i class="fa-brands fa-x-twitter"></i>
+          </a>
+          <a href="https://www.linkedin.com/company/blumark24ksa/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="social-icon-btn" style="width:40px;height:40px;border-radius:12px;font-size:16px">
+            <i class="fa-brands fa-linkedin-in"></i>
+          </a>
+          <a href="https://www.tiktok.com/@blumark24?_r=1&amp;_t=ZS-95yQcm1ZBxZ" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="social-icon-btn" style="width:40px;height:40px;border-radius:12px;font-size:16px">
+            <i class="fa-brands fa-tiktok"></i>
+          </a>
         </div>
       </div>
 
@@ -1353,7 +1392,7 @@
     <!-- Header -->
     <div class="p-4 flex items-center justify-between" style="background: linear-gradient(135deg, #00A8FF, #1E3A8A)">
       <div class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-sm">🤖</div>
+        <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-sm"><i class="fa-solid fa-robot text-white" style="font-size:14px"></i></div>
         <div>
           <div class="font-bold text-white text-sm">Blumark AI</div>
           <div class="text-xs text-blue-100 flex items-center gap-1">
@@ -1373,15 +1412,15 @@
         </div>
       </div>
       <div class="flex flex-wrap gap-2 mr-9">
-        <button onclick="quickReply('الباقات')" class="px-3 py-1 rounded-full text-xs glass neon-border text-[#00A8FF] hover:bg-[rgba(0,168,255,0.15)] transition-all">الباقات 💰</button>
-        <button onclick="quickReply('الخدمات')" class="px-3 py-1 rounded-full text-xs glass neon-border text-[#00A8FF] hover:bg-[rgba(0,168,255,0.15)] transition-all">الخدمات 🛠️</button>
+        <button onclick="quickReply('الباقات')" class="px-3 py-1 rounded-full text-xs glass neon-border text-[#00A8FF] hover:bg-[rgba(0,168,255,0.15)] transition-all">الباقات</button>
+        <button onclick="quickReply('الخدمات')" class="px-3 py-1 rounded-full text-xs glass neon-border text-[#00A8FF] hover:bg-[rgba(0,168,255,0.15)] transition-all">الخدمات</button>
         <button onclick="quickReply('استشارة')" class="px-3 py-1 rounded-full text-xs glass neon-border text-[#00A8FF] hover:bg-[rgba(0,168,255,0.15)] transition-all">استشارة مجانية</button>
       </div>
     </div>
     <!-- Input -->
     <div class="p-3 border-t border-[rgba(0,168,255,0.15)] flex gap-2">
       <input id="chat-input" type="text" placeholder="اكتب رسالتك..." class="flex-1 px-3 py-2 rounded-xl text-xs" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(0,168,255,0.2); color: white" onkeydown="if(event.key==='Enter')sendChat()">
-      <button onclick="sendChat()" class="btn-primary w-8 h-8 rounded-xl flex items-center justify-center text-white text-sm">➤</button>
+      <button onclick="sendChat()" class="btn-primary w-8 h-8 rounded-xl flex items-center justify-center text-white text-sm"><i class="fa-solid fa-paper-plane" style="font-size:13px"></i></button>
     </div>
   </div>
 
