@@ -1623,12 +1623,11 @@ async function _fetchChatbaseReply(userMessage) {
   _chatHistory.push({ role: 'user', content: userMessage });
   _addLoadingBubble();
   try {
-    const headers = { 'Content-Type': 'application/json' };
-    if (window.CHATBASE_API_KEY) headers['Authorization'] = 'Bearer ' + window.CHATBASE_API_KEY;
-    const res = await fetch('https://www.chatbase.co/api/v1/chat', {
+    // Calls the local Vercel proxy — API key stays server-side in CHATBASE_API_KEY env var
+    const res = await fetch('/api/chatbase', {
       method: 'POST',
-      headers,
-      body: JSON.stringify({ messages: _chatHistory, chatbotId: _CB_BOT, stream: false })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: _chatHistory, chatbotId: _CB_BOT })
     });
     const loading = document.getElementById('chat-loading');
     if (loading) loading.remove();
