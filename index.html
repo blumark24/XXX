@@ -336,6 +336,10 @@
     from { opacity: 0; transform: translateY(-6px); }
     to   { opacity: 1; transform: translateY(0); }
   }
+  @keyframes chatPulse {
+    0%, 100% { opacity: 0.35; transform: translateY(0); }
+    50%       { opacity: 1;    transform: translateY(-3px); }
+  }
 
   /* CHATBOT */
   #chatbot {
@@ -1581,11 +1585,10 @@ function closeChat() {
   document.getElementById('chatbot-panel').classList.remove('open');
 }
 
-const responses = {
-  'الباقات': 'لدينا 3 باقات:\n🚀 START: 399 ريال (مرة واحدة)\n📈 GROWTH: 999 ريال/شهر\n👑 PRO MAX: 1999 ريال/شهر\nأي باقة تناسبك؟',
-  'الخدمات': 'نقدم: تصميم مواقع، بوت واتساب ذكي، منيو رقمي للمطاعم، CRM، تقارير AI، وأتمتة كاملة للأعمال!',
-  'استشارة': 'رائع! 🎉 استشارتنا مجانية 100%. سأوصلك لفريقنا الآن عبر واتساب!',
-};
+// ── Chatbase config (chatbot ID is public — same as embed script) ──
+// To add an API key: set window.CHATBASE_API_KEY before this script, or see .env.local.example
+const _CB_BOT = 'DDk5ec6cIh-r1tCfEpmr0';
+const _chatHistory = [];
 
 function addMessage(text, isBot = true) {
   const msgs = document.getElementById('chat-messages');
@@ -1599,14 +1602,47 @@ function addMessage(text, isBot = true) {
   msgs.scrollTop = msgs.scrollHeight;
 }
 
-function quickReply(type) {
-  addMessage(type, false);
-  setTimeout(() => {
-    addMessage(responses[type] || 'شكراً! سيتواصل معك فريقنا قريباً على واتساب.');
-    if (type === 'استشارة') {
-      setTimeout(() => window.open('https://wa.me/966507006849?text=أريد استشارة مجانية', '_blank'), 1500);
-    }
-  }, 500);
+function _addLoadingBubble() {
+  const msgs = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.id = 'chat-loading';
+  div.className = 'flex gap-2';
+  div.innerHTML =
+    '<div class="w-7 h-7 rounded-full bg-[#00A8FF] flex items-center justify-center text-xs flex-shrink-0">B</div>' +
+    '<div class="bg-white/10 rounded-2xl rounded-tr-sm px-4 py-2.5 text-xs text-gray-200 max-w-48">' +
+    '<span style="display:inline-flex;gap:5px;align-items:center;">' +
+    '<span style="width:6px;height:6px;background:#00A8FF;border-radius:50%;animation:chatPulse 1.2s ease-in-out infinite 0s;display:inline-block"></span>' +
+    '<span style="width:6px;height:6px;background:#00A8FF;border-radius:50%;animation:chatPulse 1.2s ease-in-out infinite .2s;display:inline-block"></span>' +
+    '<span style="width:6px;height:6px;background:#00A8FF;border-radius:50%;animation:chatPulse 1.2s ease-in-out infinite .4s;display:inline-block"></span>' +
+    '</span></div>';
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+async function _fetchChatbaseReply(userMessage) {
+  _chatHistory.push({ role: 'user', content: userMessage });
+  _addLoadingBubble();
+  try {
+    const headers = { 'Content-Type': 'application/json' };
+    if (window.CHATBASE_API_KEY) headers['Authorization'] = 'Bearer ' + window.CHATBASE_API_KEY;
+    const res = await fetch('https://www.chatbase.co/api/v1/chat', {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ messages: _chatHistory, chatbotId: _CB_BOT, stream: false })
+    });
+    const loading = document.getElementById('chat-loading');
+    if (loading) loading.remove();
+    if (!res.ok) throw new Error('http_' + res.status);
+    const data = await res.json();
+    const reply = data.text || data.choices?.[0]?.message?.content || '';
+    if (!reply) throw new Error('empty');
+    _chatHistory.push({ role: 'assistant', content: reply });
+    addMessage(reply, true);
+  } catch (_err) {
+    const loading = document.getElementById('chat-loading');
+    if (loading) loading.remove();
+    addMessage('عذراً، حدثت مشكلة مؤقتة. فضلاً جرّب مرة أخرى أو <a href="https://wa.me/966507006849" target="_blank" rel="noopener" style="color:#00A8FF;text-decoration:underline">تواصل معنا عبر واتساب</a>.', true);
+  }
 }
 
 function sendChat() {
@@ -1615,9 +1651,15 @@ function sendChat() {
   if (!text) return;
   addMessage(text, false);
   inp.value = '';
-  setTimeout(() => {
-    addMessage('شكراً على رسالتك! 😊 سيتواصل معك أحد خبرائنا على واتساب في أقرب وقت. أو تواصل معنا مباشرة الآن.');
-  }, 700);
+  _fetchChatbaseReply(text);
+}
+
+function quickReply(type) {
+  addMessage(type, false);
+  if (type === 'استشارة') {
+    setTimeout(() => window.open('https://wa.me/966507006849?text=أريد استشارة مجانية', '_blank'), 2000);
+  }
+  _fetchChatbaseReply(type);
 }
 
 // ══════ SMOOTH SCROLL ══════
