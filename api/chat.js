@@ -1,40 +1,52 @@
-// Vercel Serverless Function - n8n AI Chat Proxy
-// No env vars needed - calls n8n webhook directly
+// Vercel Serverless Function — OpenAI Chat Completions proxy
+// Required env var: OPENAI_API_KEY
 
-const N8N_WEBHOOK = 'https://n8n-production-5f31.up.railway.app/webhook/website-chat';
-const REPLY_FIELDS = ['reply', 'text', 'message', 'output', 'response', 'data'];
+const OPENAI_MODEL = 'gpt-4o-mini';
 
-function extractReply(value, seen = new Set()) {
-  if (typeof value === 'string') {
-    const reply = value.trim();
-    return reply || null;
-  }
+const SYSTEM_PROMPT = `أنت "Blumark AI"، مساعد الأعمال الذكي الرسمي لشركة Blumark24.
 
-  if (!value || typeof value !== 'object' || seen.has(value)) return null;
-  seen.add(value);
+تمثّل شركة سعودية متخصصة في حلول الذكاء الاصطناعي والأتمتة والتسويق الرقمي للأعمال.
 
-  if (Array.isArray(value)) {
-    for (const item of value) {
-      const reply = extractReply(item, seen);
-      if (reply) return reply;
-    }
-    return null;
-  }
+قواعد الرد:
+- تحدّث بالعربية بأسلوب سعودي مهني ومختصر.
+- اجعل الردود قصيرة جداً، غالباً سطرين كحد أقصى.
+- اسأل سؤالاً واحداً فقط في كل مرة.
+- لا تعرض كل الباقات إلا إذا طلب العميل ذلك.
+- لا تكتب كلاماً عاماً أو طويلاً.
+- لا تعد بوعود غير مؤكدة.
+- اجعل العميل يشعر أنه يتحدث مع مساعد AI احترافي.
 
-  for (const field of REPLY_FIELDS) {
-    if (Object.prototype.hasOwnProperty.call(value, field)) {
-      const reply = extractReply(value[field], seen);
-      if (reply) return reply;
-    }
-  }
+الخدمات:
+- مواقع وصفحات هبوط احترافية.
+- بوت واتساب AI.
+- منيو ذكي للمطاعم والكافيهات.
+- ربط Google Maps وتحسين الظهور.
+- حجوزات وطلبات.
+- أتمتة تشغيلية.
+- تقارير ولوحات متابعة.
 
-  return null;
-}
+الباقات:
+START — 399 ريال مرة واحدة: بداية رقمية سريعة، صفحة هبوط، زر واتساب، خرائط، وردود واتساب أساسية.
+GROWTH — 999 ريال شهرياً: موقع 5 صفحات، بوت واتساب ذكي، جمع بيانات العملاء، منيو ذكي، حجوزات وطلبات، تقارير أساسية.
+ADVANCED — 1999 ريال شهرياً: موقع موسع، بوت AI متقدم، تكاملات، لوحة متابعة، تقارير متقدمة، دعم مميز.
 
-function describeResponseShape(value) {
-  if (Array.isArray(value)) return `array(length=${value.length})`;
-  if (value && typeof value === 'object') return `object(keys=${Object.keys(value).slice(0, 10).join(',') || 'none'})`;
-  return typeof value;
+آلية الحوار:
+ابدأ بفهم نوع النشاط والاحتياج.
+بعد وضوح الاحتياج، رشّح الباقة المناسبة فقط.
+اجمع البيانات تدريجياً: نوع النشاط، المدينة، اسم النشاط، رقم الواتساب.
+إذا طلب العميل التواصل مع شخص، وجّهه لواتساب: 966507006849.
+
+رسالة افتتاح مناسبة عند الحاجة:
+مرحباً بك في Blumark24. أنا مساعد الأعمال الذكي. ما نوع نشاطك؟`;
+
+function normalizeMessages(messages) {
+  return messages
+    .filter((message) => message && typeof message.content === 'string')
+    .map((message) => ({
+      role: message.role === 'assistant' ? 'assistant' : 'user',
+      content: message.content.slice(0, 4000)
+    }))
+    .slice(-12);
 }
 
 module.exports = async function handler(req, res) {
@@ -45,77 +57,60 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method Not Allowed' });
 
-  const { messages, sessionId } = req.body || {};
-
+  const { messages } = req.body || {};
   if (!messages || !Array.isArray(messages)) {
     return res.status(400).json({ error: 'Missing messages array' });
   }
 
-  // Get the latest user message from the chat history.
-  const lastUserMessage = [...messages].reverse().find((message) => message.role === 'user');
-  if (!lastUserMessage?.content) {
-    return res.status(400).json({ error: 'No user message found' });
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    console.error('[chat proxy] OPENAI_API_KEY is not set');
+    return res.status(500).json({ error: 'Server configuration error: missing OPENAI_API_KEY' });
   }
 
-  // Preserve an existing session ID when the frontend sends one; otherwise create a lightweight web session.
-  const session = sessionId || `web_${Date.now()}`;
+  const conversation = normalizeMessages(messages);
+  if (conversation.length === 0) {
+    return res.status(400).json({ error: 'No valid messages found' });
+  }
 
   try {
-    console.info('[chat proxy] sending POST request to n8n', { platform: 'Website' });
-    const upstream = await fetch(N8N_WEBHOOK, {
+    const upstream = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`
+      },
       body: JSON.stringify({
-        sessionId: session,
-        message: lastUserMessage.content,
-        name: 'زائر الموقع',
-        platform: 'Website'
+        model: OPENAI_MODEL,
+        messages: [
+          { role: 'system', content: SYSTEM_PROMPT },
+          ...conversation
+        ],
+        max_tokens: 300,
+        temperature: 0.5
       })
     });
 
-    const contentType = upstream.headers.get('content-type') || 'unknown';
-    const rawBody = await upstream.text();
-    let data = {};
+    const data = await upstream.json().catch(() => ({}));
 
-    try {
-      data = rawBody ? JSON.parse(rawBody) : {};
-    } catch (_parseError) {
-      console.error('[chat proxy] n8n returned non-JSON response', {
-        status: upstream.status,
-        contentType,
-        bodyLength: rawBody.length
-      });
-      return res.status(502).json({ error: 'Invalid response from AI service' });
-    }
-
-    const responseShape = describeResponseShape(data);
     if (!upstream.ok) {
-      console.error('[chat proxy] n8n request failed', {
+      console.error('[chat proxy] OpenAI request failed', {
         status: upstream.status,
-        contentType,
-        responseShape
+        type: data?.error?.type || 'unknown',
+        code: data?.error?.code || 'unknown'
       });
-      return res.status(502).json({ error: 'n8n request failed' });
+      return res.status(upstream.status).json({ error: data?.error?.message || 'OpenAI request failed' });
     }
 
-    const reply = extractReply(data);
+    const reply = data.choices?.[0]?.message?.content?.trim();
     if (!reply) {
-      console.error('[chat proxy] n8n response did not contain a supported reply field', {
-        status: upstream.status,
-        contentType,
-        responseShape
-      });
+      console.error('[chat proxy] OpenAI returned empty reply');
       return res.status(502).json({ error: 'Empty response from AI service' });
     }
 
-    console.info('[chat proxy] n8n response accepted', {
-      status: upstream.status,
-      contentType,
-      responseShape
-    });
     return res.status(200).json({ text: reply });
   } catch (err) {
-    console.error('[chat proxy] failed to reach n8n', { message: err.message });
+    console.error('[chat proxy] failed to reach OpenAI', { message: err.message });
     return res.status(500).json({ error: 'Failed to reach AI service' });
   }
 };
