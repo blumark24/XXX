@@ -1,52 +1,43 @@
-// Vercel Serverless Function — OpenAI Chat Completions proxy
-// Required env var: OPENAI_API_KEY
+// Vercel Serverless Function - Gemini API proxy
+// Required env var: GEMINI_API_KEY
 
-const OPENAI_MODEL = 'gpt-4o-mini';
+const GEMINI_MODEL = 'gemini-2.5-flash';
+const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 
 const SYSTEM_PROMPT = `أنت "Blumark AI"، مساعد الأعمال الذكي الرسمي لشركة Blumark24.
 
-تمثّل شركة سعودية متخصصة في حلول الذكاء الاصطناعي والأتمتة والتسويق الرقمي للأعمال.
+تحدث بالعربية أولاً وبأسلوب سعودي مهني وواضح.
+اجعل ردودك قصيرة جداً، وغالباً في سطر أو سطرين فقط.
+اسأل سؤالاً واحداً فقط في كل مرة.
+ابدأ بفهم نوع نشاط العميل واحتياجه.
+رشح باقة واحدة مناسبة فقط عند الحاجة: START أو GROWTH أو ADVANCED.
+اجمع البيانات تدريجياً دون إزعاج العميل: نوع النشاط، المدينة، الاسم، رقم الواتساب.
+لا تكتب كلاماً عاماً أو طويلاً، ولا تقدم وعوداً غير مؤكدة.
 
-قواعد الرد:
-- تحدّث بالعربية بأسلوب سعودي مهني ومختصر.
-- اجعل الردود قصيرة جداً، غالباً سطرين كحد أقصى.
-- اسأل سؤالاً واحداً فقط في كل مرة.
-- لا تعرض كل الباقات إلا إذا طلب العميل ذلك.
-- لا تكتب كلاماً عاماً أو طويلاً.
-- لا تعد بوعود غير مؤكدة.
-- اجعل العميل يشعر أنه يتحدث مع مساعد AI احترافي.
-
-الخدمات:
-- مواقع وصفحات هبوط احترافية.
-- بوت واتساب AI.
-- منيو ذكي للمطاعم والكافيهات.
-- ربط Google Maps وتحسين الظهور.
-- حجوزات وطلبات.
-- أتمتة تشغيلية.
-- تقارير ولوحات متابعة.
+خدمات Blumark24 تشمل المواقع وصفحات الهبوط، بوت واتساب AI، المنيو الذكي، تحسين Google Maps، الحجوزات والطلبات، الأتمتة التشغيلية، والتقارير.
 
 الباقات:
-START — 399 ريال مرة واحدة: بداية رقمية سريعة، صفحة هبوط، زر واتساب، خرائط، وردود واتساب أساسية.
-GROWTH — 999 ريال شهرياً: موقع 5 صفحات، بوت واتساب ذكي، جمع بيانات العملاء، منيو ذكي، حجوزات وطلبات، تقارير أساسية.
-ADVANCED — 1999 ريال شهرياً: موقع موسع، بوت AI متقدم، تكاملات، لوحة متابعة، تقارير متقدمة، دعم مميز.
+START: بداية رقمية سريعة للأعمال الصغيرة.
+GROWTH: موقع وبوت واتساب ذكي وجمع بيانات وحجوزات وتقارير أساسية.
+ADVANCED: حلول موسعة وتكاملات وتقارير متقدمة ودعم مميز.
 
-آلية الحوار:
-ابدأ بفهم نوع النشاط والاحتياج.
-بعد وضوح الاحتياج، رشّح الباقة المناسبة فقط.
-اجمع البيانات تدريجياً: نوع النشاط، المدينة، اسم النشاط، رقم الواتساب.
-إذا طلب العميل التواصل مع شخص، وجّهه لواتساب: 966507006849.
-
-رسالة افتتاح مناسبة عند الحاجة:
-مرحباً بك في Blumark24. أنا مساعد الأعمال الذكي. ما نوع نشاطك؟`;
+إذا طلب العميل التواصل مع شخص، وجهه إلى واتساب: 966507006849.`;
 
 function normalizeMessages(messages) {
   return messages
     .filter((message) => message && typeof message.content === 'string')
     .map((message) => ({
-      role: message.role === 'assistant' ? 'assistant' : 'user',
-      content: message.content.slice(0, 4000)
+      role: message.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: message.content.slice(0, 4000) }]
     }))
     .slice(-12);
+}
+
+function extractReply(data) {
+  return data?.candidates?.[0]?.content?.parts
+    ?.map((part) => part.text || '')
+    .join('')
+    .trim();
 }
 
 module.exports = async function handler(req, res) {
@@ -62,10 +53,10 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: 'Missing messages array' });
   }
 
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    console.error('[chat proxy] OPENAI_API_KEY is not set');
-    return res.status(500).json({ error: 'Server configuration error: missing OPENAI_API_KEY' });
+    console.error('[chat proxy] GEMINI_API_KEY is not set');
+    return res.status(500).json({ error: 'Server configuration error: missing GEMINI_API_KEY' });
   }
 
   const conversation = normalizeMessages(messages);
@@ -74,43 +65,46 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const upstream = await fetch('https://api.openai.com/v1/chat/completions', {
+    const upstream = await fetch(GEMINI_API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`
+        'x-goog-api-key': apiKey
       },
       body: JSON.stringify({
-        model: OPENAI_MODEL,
-        messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          ...conversation
-        ],
-        max_tokens: 300,
-        temperature: 0.5
+        system_instruction: {
+          parts: [{ text: SYSTEM_PROMPT }]
+        },
+        contents: conversation,
+        generationConfig: {
+          maxOutputTokens: 300,
+          temperature: 0.5
+        }
       })
     });
 
     const data = await upstream.json().catch(() => ({}));
 
     if (!upstream.ok) {
-      console.error('[chat proxy] OpenAI request failed', {
+      console.error('[chat proxy] Gemini request failed', {
         status: upstream.status,
-        type: data?.error?.type || 'unknown',
+        apiStatus: data?.error?.status || 'unknown',
         code: data?.error?.code || 'unknown'
       });
-      return res.status(upstream.status).json({ error: data?.error?.message || 'OpenAI request failed' });
+      return res.status(upstream.status).json({ error: data?.error?.message || 'Gemini request failed' });
     }
 
-    const reply = data.choices?.[0]?.message?.content?.trim();
+    const reply = extractReply(data);
     if (!reply) {
-      console.error('[chat proxy] OpenAI returned empty reply');
+      console.error('[chat proxy] Gemini returned empty reply', {
+        finishReason: data?.candidates?.[0]?.finishReason || 'unknown'
+      });
       return res.status(502).json({ error: 'Empty response from AI service' });
     }
 
     return res.status(200).json({ text: reply });
   } catch (err) {
-    console.error('[chat proxy] failed to reach OpenAI', { message: err.message });
+    console.error('[chat proxy] failed to reach Gemini', { message: err.message });
     return res.status(500).json({ error: 'Failed to reach AI service' });
   }
 };
