@@ -1,14 +1,32 @@
-// Vercel Serverless Function — OpenRouter proxy
-// Required env var: OPENROUTER_API_KEY (set in Vercel dashboard)
+// Vercel Serverless Function — OpenAI Chat Completions proxy
+// Required env var: OPENAI_API_KEY (set in Vercel dashboard)
 
-const SYSTEM_PROMPT = `أنت مساعد ذكاء اصطناعي متخصص لشركة Blumark24، وكالة تسويق رقمي سعودية.
-تخصصك: مواقع احترافية، بوت واتساب ذكي، منيو رقمي للمطاعم، CRM، أتمتة تشغيلية، وحلول Google Maps.
-الباقات:
-- START: 399 ريال (مرة واحدة) — موقع + صفحة هبوط
-- GROWTH: 999 ريال/شهر — موقع + بوت واتساب + منيو رقمي + تقارير AI
-- PRO MAX: 1999 ريال/شهر — الكل + CRM + أتمتة كاملة + دعم مخصص
-أجب دائماً باللغة العربية. كن مفيداً ومختصراً. رشّح الباقة المناسبة حسب احتياج العميل.
-رقم واتساب للتواصل: 966507006849`;
+const OPENAI_MODEL = 'gpt-4o-mini'; // low-cost, stable. Alt: 'gpt-4.1-mini'
+
+const SYSTEM_PROMPT = `أنت "مساعد Blumark24" الذكي، تمثّل وكالة تسويق رقمي سعودية متخصصة في حلول الذكاء الاصطناعي للأعمال.
+
+# الأسلوب
+- تحدّث بالعربية بلهجة سعودية مهنية ومهذبة ومختصرة.
+- اجعل كل رد قصيراً (سطر إلى ثلاثة أسطر كحد أقصى).
+- اطرح سؤالاً واحداً فقط في كل رد، ولا تُغرق العميل بأسئلة متعددة.
+- ركّز على فهم احتياج العميل أولاً قبل ترشيح أي باقة.
+
+# جمع بيانات العميل (تدريجياً وبشكل طبيعي)
+اجمع المعلومات خطوة بخطوة خلال الحوار، وليس دفعة واحدة:
+نوع النشاط → الهدف من المشروع → الاسم → رقم التواصل (واتساب).
+لا تطلب كل البيانات في رسالة واحدة.
+
+# الخدمات
+مواقع احترافية، بوت واتساب ذكي، منيو رقمي للمطاعم، CRM، أتمتة تشغيلية، وحلول Google Maps.
+
+# الباقات (رشّحها فقط عند وضوح احتياج العميل)
+- START — 399 ريال (مرة واحدة): موقع + صفحة هبوط. مناسبة للبدايات.
+- GROWTH — 999 ريال/شهر: موقع + بوت واتساب + منيو رقمي + تقارير AI. مناسبة للنمو.
+- ADVANCED — 1999 ريال/شهر: كل ما سبق + CRM + أتمتة كاملة + دعم مخصص. مناسبة للأعمال المتقدمة.
+
+# التواصل
+رقم واتساب للتواصل المباشر: 966507006849
+عند رغبة العميل في إتمام الطلب أو استشارة بشرية، وجّهه للتواصل عبر واتساب.`;
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -22,23 +40,21 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: 'Missing messages array' });
   }
 
-  const apiKey = process.env.OPENROUTER_API_KEY;
+  const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
-    console.error('[chat proxy] OPENROUTER_API_KEY is not set');
-    return res.status(500).json({ error: 'Server configuration error' });
+    console.error('[chat proxy] OPENAI_API_KEY is not set');
+    return res.status(500).json({ error: 'Server configuration error: missing OPENAI_API_KEY' });
   }
 
   try {
-    const upstream = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    const upstream = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-        'HTTP-Referer': 'https://blumark24.com',
-        'X-Title': 'Blumark24 Chat'
+        'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: 'meta-llama/llama-3.1-8b-instruct:free',
+        model: OPENAI_MODEL,
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
           ...messages
@@ -51,8 +67,8 @@ module.exports = async function handler(req, res) {
     const data = await upstream.json();
 
     if (!upstream.ok) {
-      console.error('[chat proxy] OpenRouter error:', upstream.status, JSON.stringify(data));
-      return res.status(upstream.status).json(data);
+      console.error('[chat proxy] OpenAI error:', upstream.status, JSON.stringify(data));
+      return res.status(upstream.status).json({ error: data?.error?.message || 'OpenAI request failed' });
     }
 
     const reply = data.choices?.[0]?.message?.content || '';
@@ -60,6 +76,6 @@ module.exports = async function handler(req, res) {
 
   } catch (err) {
     console.error('[chat proxy] fetch failed:', err.message);
-    return res.status(500).json({ error: 'Failed to reach OpenRouter' });
+    return res.status(500).json({ error: 'Failed to reach OpenAI' });
   }
 };
