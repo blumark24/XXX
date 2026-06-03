@@ -1599,20 +1599,36 @@ function closeChat() {
 // ── OpenRouter chat integration ──
 const _chatHistory = [];
 
-function _linkifyWa(text) {
-  if (typeof text !== 'string') return text;
-  if (/<a\s[^>]*href=["']https:\/\/wa\.me\//i.test(text)) return text;
-  return text.replace(
+function _escapeHtml(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+const _BLUMARK_OS_URL = 'https://blumark24-os.vercel.app';
+const _BLUMARK_OS_LABEL = 'Blumark24 OS لإدارة الأعمال';
+
+function _renderBotHtml(text) {
+  let out = _escapeHtml(text);
+  out = out.replace(
+    /\[\[BLUMARK24_OS_LINK\]\]/g,
+    `<a href="${_BLUMARK_OS_URL}" target="_blank" rel="noopener" style="color:#00A8FF;text-decoration:underline">${_BLUMARK_OS_LABEL}</a>`
+  );
+  out = out.replace(
     /https:\/\/wa\.me\/\d+/g,
     (url) => `<a href="${url}" target="_blank" rel="noopener" style="color:#00A8FF;text-decoration:underline">${url}</a>`
   );
+  return out;
 }
 
 function addMessage(text, isBot = true) {
   const msgs = document.getElementById('chat-messages');
   const div = document.createElement('div');
   div.className = 'flex gap-2' + (isBot ? '' : ' flex-row-reverse');
-  const display = isBot ? _linkifyWa(text) : text;
+  const display = isBot ? _renderBotHtml(text) : _escapeHtml(text);
   div.innerHTML = isBot
     ? `<div class="w-7 h-7 rounded-full bg-[#00A8FF] flex items-center justify-center text-xs flex-shrink-0">B</div>
        <div class="bg-white/10 rounded-2xl rounded-tr-sm px-4 py-2.5 text-xs text-gray-200 max-w-48 whitespace-pre-line">${display}</div>`
@@ -1658,7 +1674,7 @@ async function _fetchReply(userMessage) {
   } catch (_err) {
     const loading = document.getElementById('chat-loading');
     if (loading) loading.remove();
-    addMessage('عذراً، حدثت مشكلة مؤقتة. فضلاً جرّب مرة أخرى أو <a href="https://wa.me/966507006849" target="_blank" rel="noopener" style="color:#00A8FF;text-decoration:underline">تواصل معنا عبر واتساب</a>.', true);
+    addMessage('عذراً، حدثت مشكلة مؤقتة. فضلاً جرّب مرة أخرى أو تواصل عبر واتساب:\nhttps://wa.me/966507006849', true);
   }
 }
 
