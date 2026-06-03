@@ -38,7 +38,106 @@ https://wa.me/966501910097"
 قواعد صارمة:
 لا تستخدم رقم الدعم 966501910097 مع العملاء الجدد أو طلبات الاستشارة المجانية.
 لا تستخدم رقم المبيعات 966507006849 مع طلبات الدعم الفني للمشتركين.
-لا تذكر الرقمين معاً في رد واحد. اختر الرقم المناسب لحالة العميل فقط.`;
+لا تذكر الرقمين معاً في رد واحد. اختر الرقم المناسب لحالة العميل فقط.
+
+قواعد إخراج صارمة:
+ممنوع إظهار التفكير الداخلي أو شرح طريقة تفكيرك.
+ممنوع استخدام كلمات مثل THOUGHT أو Thought أو reasoning أو chain-of-thought أو "تحليل داخلي" أو "أفكر" أو "سأحلل" داخل الرد.
+أرسل النتيجة النهائية فقط، بدون مقدمات أو تعليق على نفسك.
+ممنوع استخدام Markdown links مثل [نص](رابط). الروابط تظهر كنص خام فقط، مثل: https://wa.me/966507006849`;
+
+// Deterministic shortcut routes — short-circuit Gemini for clear intents.
+// Order matters:
+//   1. Business-type signals (restaurant) qualify the lead before any handoff,
+//      so "عندي مطعم وأبغى بوت واتساب" answers with the restaurant qualifier
+//      instead of jumping straight to the sales link.
+//   2. Support is checked before sales so "أنا عميل مشترك ... واتساب" is not
+//      misrouted to the sales template.
+const SHORTCUT_ROUTES = [
+  {
+    name: 'restaurant',
+    keywords: ['مطعم'],
+    text: 'مناسب. لمطعمك نرشح بوت واتساب + منيو ذكي لتنظيم الطلبات والردود. هل عندك منيو جاهز؟'
+  },
+  {
+    name: 'support',
+    keywords: [
+      'أنا عميل مشترك',
+      'عميل مشترك',
+      'الدعم الفني',
+      'عندي مشكلة في الخدمة',
+      'النظام لا يعمل',
+      'البوت لا يعمل',
+      'متابعة اشتراك',
+      'مشكلة تشغيلية',
+      'خدمة العملاء',
+      'دعم'
+    ],
+    text: 'للدعم الفني وخدمة العملاء المشتركين، تقدر تتواصل عبر واتساب:\nhttps://wa.me/966501910097'
+  },
+  {
+    name: 'sales',
+    keywords: [
+      'استشارة مجانية',
+      'أبغى استشارة',
+      'احجز لي استشارة',
+      'استشارة',
+      'رقمكم',
+      'رابط الواتساب',
+      'واتساب',
+      'أبغى أتواصل',
+      'أبغى أبدأ',
+      'أبغى أطلب الخدمة',
+      'أبغى أكلم الفريق'
+    ],
+    text: 'أكيد. تقدر تبدأ باستشارة مجانية مع فريق Blumark24 عبر واتساب:\nhttps://wa.me/966507006849'
+  },
+  {
+    name: 'packages',
+    keywords: ['الباقات'],
+    text: 'لدينا START للبداية، GROWTH للنمو، و ADVANCED للأتمتة المتقدمة. ما نوع نشاطك عشان أرشح لك الأنسب؟'
+  },
+  {
+    name: 'services',
+    keywords: ['الخدمات'],
+    text: 'نقدم حلول AI للأعمال: مواقع احترافية، بوت واتساب، منيو ذكي، خرائط Google، حجوزات، وتقارير. ما نوع نشاطك؟'
+  }
+];
+
+function matchShortcut(text) {
+  if (!text || typeof text !== 'string') return null;
+  for (const route of SHORTCUT_ROUTES) {
+    if (route.keywords.some((kw) => text.includes(kw))) return route.text;
+  }
+  return null;
+}
+
+const REASONING_LEAK_PATTERNS = [
+  /THOUGHT\s*:/i,
+  /\breasoning\b/i,
+  /chain[\s-]?of[\s-]?thought/i,
+  /تحليل داخلي/,
+  /أفكر/,
+  /سأحلل/
+];
+
+function hasReasoningLeak(text) {
+  return REASONING_LEAK_PATTERNS.some((pattern) => pattern.test(text));
+}
+
+function stripMarkdownLinks(text) {
+  return text.replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '$2');
+}
+
+const SAFE_FALLBACK_REPLY = 'واضح. أقدر أساعدك بتحديد الحل الأنسب. ما نوع نشاطك التجاري؟';
+
+function lastUserMessageContent(messages) {
+  for (let i = messages.length - 1; i >= 0; i--) {
+    const m = messages[i];
+    if (m && m.role === 'user' && typeof m.content === 'string') return m.content;
+  }
+  return '';
+}
 
 function normalizeMessages(messages) {
   return messages
@@ -68,6 +167,11 @@ module.exports = async function handler(req, res) {
   const { messages } = req.body || {};
   if (!messages || !Array.isArray(messages)) {
     return res.status(400).json({ error: 'Missing messages array' });
+  }
+
+  const shortcut = matchShortcut(lastUserMessageContent(messages));
+  if (shortcut) {
+    return res.status(200).json({ text: shortcut });
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
@@ -111,15 +215,21 @@ module.exports = async function handler(req, res) {
       return res.status(upstream.status).json({ error: data?.error?.message || 'Gemini request failed' });
     }
 
-    const reply = extractReply(data);
-    if (!reply) {
+    const rawReply = extractReply(data);
+    if (!rawReply) {
       console.error('[chat proxy] Gemini returned empty reply', {
         finishReason: data?.candidates?.[0]?.finishReason || 'unknown'
       });
       return res.status(502).json({ error: 'Empty response from AI service' });
     }
 
-    return res.status(200).json({ text: reply });
+    const sanitizedReply = stripMarkdownLinks(rawReply);
+    if (hasReasoningLeak(sanitizedReply)) {
+      console.warn('[chat proxy] reasoning leak detected, returning safe fallback');
+      return res.status(200).json({ text: SAFE_FALLBACK_REPLY });
+    }
+
+    return res.status(200).json({ text: sanitizedReply });
   } catch (err) {
     console.error('[chat proxy] failed to reach Gemini', { message: err.message });
     return res.status(500).json({ error: 'Failed to reach AI service' });
