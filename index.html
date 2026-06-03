@@ -1599,14 +1599,24 @@ function closeChat() {
 // ── OpenRouter chat integration ──
 const _chatHistory = [];
 
+function _linkifyWa(text) {
+  if (typeof text !== 'string') return text;
+  if (/<a\s[^>]*href=["']https:\/\/wa\.me\//i.test(text)) return text;
+  return text.replace(
+    /https:\/\/wa\.me\/\d+/g,
+    (url) => `<a href="${url}" target="_blank" rel="noopener" style="color:#00A8FF;text-decoration:underline">${url}</a>`
+  );
+}
+
 function addMessage(text, isBot = true) {
   const msgs = document.getElementById('chat-messages');
   const div = document.createElement('div');
   div.className = 'flex gap-2' + (isBot ? '' : ' flex-row-reverse');
+  const display = isBot ? _linkifyWa(text) : text;
   div.innerHTML = isBot
     ? `<div class="w-7 h-7 rounded-full bg-[#00A8FF] flex items-center justify-center text-xs flex-shrink-0">B</div>
-       <div class="bg-white/10 rounded-2xl rounded-tr-sm px-4 py-2.5 text-xs text-gray-200 max-w-48 whitespace-pre-line">${text}</div>`
-    : `<div class="bg-[rgba(0,168,255,0.2)] rounded-2xl rounded-tl-sm px-4 py-2.5 text-xs text-white max-w-48">${text}</div>`;
+       <div class="bg-white/10 rounded-2xl rounded-tr-sm px-4 py-2.5 text-xs text-gray-200 max-w-48 whitespace-pre-line">${display}</div>`
+    : `<div class="bg-[rgba(0,168,255,0.2)] rounded-2xl rounded-tl-sm px-4 py-2.5 text-xs text-white max-w-48">${display}</div>`;
   msgs.appendChild(div);
   msgs.scrollTop = msgs.scrollHeight;
 }
