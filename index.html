@@ -366,7 +366,9 @@
   #chatbot-panel {
     position: absolute;
     bottom: 75px; left: 0;
-    width: 300px;
+    width: 250px;
+    height: 500px;
+    max-height: 62vh;
     max-width: calc(100vw - 32px);
     border-radius: 20px;
     overflow: hidden;
@@ -395,8 +397,8 @@
 
   @media (min-width: 641px) {
     #chatbot-panel {
-      width: clamp(320px, 24vw, 380px);
-      height: clamp(480px, 68vh, 620px);
+      width: 250px;
+      height: 500px;
       max-height: calc(100vh - 120px);
       left: 24px;
       right: auto;
@@ -411,9 +413,10 @@
       left: 16px;
       right: auto;
       bottom: 88px;
-      width: min(92vw, 360px);
-      height: min(560px, 72vh);
-      max-height: 72vh;
+      width: 250px;
+      max-width: calc(100vw - 32px);
+      height: 500px;
+      max-height: 62vh;
       flex-direction: column;
       overflow: hidden;
     }
