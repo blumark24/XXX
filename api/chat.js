@@ -60,27 +60,66 @@ const SHORTCUT_ROUTES = [
     keywords: [
       'سلام',
       'السلام عليكم',
-      'وعليكم السلام',
       'هلا',
-      'اهلا',
       'أهلا',
+      'اهلا',
       'أهلاً',
       'مرحبا',
       'مرحباً',
       'الو',
       'هاي'
     ],
-    text: 'وعليكم السلام ورحمة الله وبركاته. كيف أقدر أخدمك اليوم؟'
+    text: 'وعليكم السلام. أهلاً بك في Blumark24. كيف أقدر أخدمك اليوم؟'
   },
   {
     name: 'restaurant',
-    keywords: ['مطعم'],
-    text: 'مناسب. لمطعمك نرشح بوت واتساب + منيو ذكي لتنظيم الطلبات والردود. هل عندك منيو جاهز؟'
+    keywords: ['مطعم', 'مطهم', 'مطاعم'],
+    text: 'مناسب. للمطاعم نرشح موقع سريع + منيو ذكي + واتساب AI لتنظيم الطلبات والردود. هل عندك منيو جاهز؟'
+  },
+  {
+    name: 'cafe',
+    keywords: ['كافيه', 'مقهى', 'قهوة'],
+    text: 'مناسب. للكافيهات نرشح منيو ذكي + واتساب AI + خرائط Google لزيادة الطلبات والزيارات. هل عندك منيو جاهز؟'
   },
   {
     name: 'pharmacy',
     keywords: ['صيدلية', 'صيدليه', 'صيدليات', /pharmacy/i],
     text: 'مناسب. للصيدليات نرشح موقع تعريفي + واتساب AI للرد على الاستفسارات وتنظيم الطلبات. هل عندك خدمة توصيل حالياً؟'
+  },
+  {
+    name: 'clinic',
+    keywords: ['عيادة', 'عيادات', 'مركز طبي', 'طبيب'],
+    text: 'مناسب. للعيادات نرشح حجز مواعيد + واتساب AI + ربط Google Maps لتسهيل وصول العملاء. هل تحتاج حجوزات أم ردود فقط؟'
+  },
+  {
+    name: 'store',
+    keywords: ['متجر', 'محل', 'تجارة', 'بيع'],
+    text: 'مناسب. للمتاجر نرشح صفحة احترافية + واتساب AI لتنظيم الطلبات والاستفسارات. هل البيع عندك عبر واتساب حالياً؟'
+  },
+  {
+    name: 'car_wash',
+    keywords: ['مغسلة سيارات', 'مغسله سيارات', 'غسيل سيارات', 'مغسلة'],
+    text: 'مناسب. نرشح لك موقع سريع + حجز مواعيد + واتساب AI لتنظيم الطلبات. هل عندك خدمة حجز حالياً؟'
+  },
+  {
+    name: 'hotel',
+    keywords: ['فندق', 'فنادق', 'شقق مفروشة', 'شقق'],
+    text: 'مناسب. للفنادق نرشح موقع تعريفي + واتساب AI + حجوزات ذكية وتنظيم استفسارات العملاء. هل تستقبلون الحجوزات عبر واتساب حالياً؟'
+  },
+  {
+    name: 'salon',
+    keywords: ['صالون', 'مشغل', 'حلاق', 'سبا'],
+    text: 'مناسب. نرشح لك حجوزات ذكية + واتساب AI + صفحة تعريفية للخدمات والأسعار. هل عندك نظام حجز حالياً؟'
+  },
+  {
+    name: 'company',
+    keywords: ['شركة', 'مؤسسة', 'مكتب'],
+    text: 'مناسب. نقدر نساعدك بموقع احترافي + أتمتة تواصل + تقارير وتنظيم العملاء. ما أهم هدف عندك حالياً؟'
+  },
+  {
+    name: 'how_help',
+    keywords: ['كيف تخدمني', 'كيف تفيدني', 'وش تقدمون لي', 'كيف تساعدني', 'ايش تسوون', 'وش خدماتكم'],
+    text: 'نساعدك ببناء حضور رقمي يجيب عملاء: موقع، واتساب AI، منيو ذكي، حجوزات، وتحسين ظهورك في Google. ما نوع نشاطك؟'
   },
   {
     name: 'os',
@@ -157,9 +196,20 @@ function matchShortcut(text) {
 }
 
 const REASONING_LEAK_PATTERNS = [
-  /THOUGHT\s*:/i,
+  /\bTHOUGHT\b/i,
+  /\bThought\b/i,
   /\breasoning\b/i,
   /chain[\s-]?of[\s-]?thought/i,
+  /The user has/i,
+  /The user is/i,
+  /I need to/i,
+  /I should/i,
+  /A good next step/i,
+  /Now I need/i,
+  /Given the/i,
+  /Let me/i,
+  /analysis/i,
+  /internal reasoning/i,
   /تحليل داخلي/,
   /أفكر/,
   /سأحلل/
@@ -180,6 +230,23 @@ function maskOsUrl(text) {
 }
 
 const SAFE_FALLBACK_REPLY = 'واضح. أقدر أساعدك بتحديد الحل الأنسب. ما نوع نشاطك التجاري؟';
+const GENERAL_ACTIVITY_REPLY = 'مناسب. نقدر نساعدك بحضور رقمي وردود ذكية وتنظيم طلبات العملاء. ما الخدمة الأهم لك حالياً: موقع، واتساب AI، أو حجوزات؟';
+
+function sanitizeReply(text) {
+  if (!text || typeof text !== 'string') return SAFE_FALLBACK_REPLY;
+
+  const cleaned = stripMarkdownLinks(maskOsUrl(text)).trim();
+  if (!cleaned || hasReasoningLeak(cleaned)) return SAFE_FALLBACK_REPLY;
+
+  return cleaned;
+}
+
+function shouldUseGeneralActivityReply(text) {
+  const value = typeof text === 'string' ? text.trim() : '';
+  if (!value) return false;
+  if (value.length <= 24) return true;
+  return /(عندي|عندنا|نشاط|مشروع|أبغى|ابغى|ابي|أحتاج|احتاج|عشوائي|غير مطابق)/i.test(value);
+}
 
 function lastUserMessageContent(messages) {
   for (let i = messages.length - 1; i >= 0; i--) {
@@ -212,16 +279,21 @@ module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method Not Allowed' });
+  if (req.method !== 'POST') return res.status(200).json({ text: SAFE_FALLBACK_REPLY });
 
   const { messages } = req.body || {};
   if (!messages || !Array.isArray(messages)) {
     return res.status(200).json({ text: SAFE_FALLBACK_REPLY });
   }
 
-  const shortcut = matchShortcut(lastUserMessageContent(messages));
+  const userMessage = lastUserMessageContent(messages);
+  const shortcut = matchShortcut(userMessage);
   if (shortcut) {
     return res.status(200).json({ text: shortcut });
+  }
+
+  if (shouldUseGeneralActivityReply(userMessage)) {
+    return res.status(200).json({ text: GENERAL_ACTIVITY_REPLY });
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
@@ -273,10 +345,9 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({ text: SAFE_FALLBACK_REPLY });
     }
 
-    const sanitizedReply = maskOsUrl(stripMarkdownLinks(rawReply));
-    if (hasReasoningLeak(sanitizedReply)) {
+    const sanitizedReply = sanitizeReply(rawReply);
+    if (sanitizedReply === SAFE_FALLBACK_REPLY && hasReasoningLeak(rawReply)) {
       console.warn('[chat proxy] reasoning leak detected, returning safe fallback');
-      return res.status(200).json({ text: SAFE_FALLBACK_REPLY });
     }
 
     return res.status(200).json({ text: sanitizedReply });
