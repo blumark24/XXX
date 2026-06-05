@@ -367,15 +367,33 @@
     position: absolute;
     bottom: 75px; left: 0;
     width: 300px;
+    max-width: calc(100vw - 32px);
+    height: min(620px, 76vh);
+    max-height: 76vh;
     border-radius: 20px;
     overflow: hidden;
     display: none;
+    flex-direction: column;
     backdrop-filter: blur(30px);
     background: rgba(10,15,44,0.95);
     border: 1px solid rgba(0,168,255,0.4);
     box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 40px rgba(0,168,255,0.2);
   }
-  #chatbot-panel.open { display: block; animation: fadeInUp 0.3s ease; }
+  #chatbot-panel.open { display: flex; animation: fadeInUp 0.3s ease; }
+
+  #chat-messages {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    height: auto;
+    max-height: none;
+  }
+
+  #chatbot-panel > div:last-child {
+    flex: 0 0 auto;
+    position: relative;
+    bottom: auto;
+  }
 
   /* Larger chat panel on small phones so messages have room to breathe.
      Switches the panel from its desktop absolute-positioned 300px to a
@@ -392,7 +410,6 @@
       max-width: calc(100vw - 32px);
       height: min(620px, 76vh);
       max-height: 76vh;
-      flex-direction: column;
     }
     /* .open base rule sets display:block — override to flex so the
        panel can lay out header / messages / input in a column. Same
