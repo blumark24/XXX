@@ -377,6 +377,27 @@
   }
   #chatbot-panel.open { display: block; animation: fadeInUp 0.3s ease; }
 
+  /* Larger chat panel on small phones so messages have room to breathe.
+     Switches the panel from its desktop absolute-positioned 300px to a
+     viewport-anchored fixed box (room for max 420px). The floating
+     bubble at #chatbot { left:24px; bottom:24px } is intentionally not
+     touched. */
+  @media (max-width: 640px) {
+    #chatbot-panel {
+      position: fixed;
+      left: 16px;
+      bottom: 88px;
+      width: calc(100vw - 32px);
+      max-width: 420px;
+      height: min(520px, 72vh);
+      max-height: 72vh;
+    }
+    #chat-messages {
+      height: auto;
+      max-height: calc(72vh - 150px);
+    }
+  }
+
   /* HERO PARTICLES */
   .particle {
     position: absolute;
