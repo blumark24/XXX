@@ -920,11 +920,11 @@
           مدة التنفيذ: 3–7 أيام
         </div>
 
-        <a href="https://wa.me/966507006849?text=أريد الاشتراك في باقة START" target="_blank"
-           class="w-full block text-center py-3 rounded-2xl font-bold text-white transition-all hover:scale-105"
-           style="background: rgba(16,185,129,0.2); border: 1px solid rgba(16,185,129,0.4); hover:background: rgba(16,185,129,0.3)">
+        <button onclick="openSubscriptionForm('START')"
+           class="w-full block text-center py-3 rounded-2xl font-bold text-white transition-all hover:scale-105 cursor-pointer"
+           style="background: rgba(16,185,129,0.2); border: 1px solid rgba(16,185,129,0.4)">
           ابدأ الآن
-        </a>
+        </button>
       </div>
 
       <!-- GROWTH PACKAGE (FEATURED) -->
@@ -1011,10 +1011,10 @@
           مدة التنفيذ: 3–7 أيام
         </div>
 
-        <a href="https://wa.me/966507006849?text=أريد الاشتراك في باقة GROWTH" target="_blank"
-           class="btn-primary w-full block text-center py-3.5 rounded-2xl font-black text-white text-base pulse-anim">
+        <button onclick="openSubscriptionForm('GROWTH')"
+           class="btn-primary w-full block text-center py-3.5 rounded-2xl font-black text-white text-base pulse-anim cursor-pointer">
           اشترك الآن — الأكثر طلباً
-        </a>
+        </button>
       </div>
 
       <!-- PRO MAX PACKAGE -->
@@ -1096,11 +1096,11 @@
           مدة التنفيذ: 5-10 أيام
         </div>
 
-        <a href="https://wa.me/966507006849?text=أريد الاشتراك في باقة PRO MAX" target="_blank"
-           class="w-full block text-center py-3 rounded-2xl font-bold text-white transition-all hover:scale-105"
+        <button onclick="openSubscriptionForm('PRO MAX')"
+           class="w-full block text-center py-3 rounded-2xl font-bold text-white transition-all hover:scale-105 cursor-pointer"
            style="background: linear-gradient(135deg, rgba(30,58,138,0.5), rgba(0,168,255,0.2)); border: 1px solid rgba(0,168,255,0.4)">
           احصل على PRO MAX
-        </a>
+        </button>
       </div>
     </div>
 
@@ -1476,10 +1476,10 @@
         <!-- Final CTA -->
         <div class="glass-card rounded-2xl p-6 text-center" style="background: linear-gradient(135deg, rgba(0,168,255,0.1), rgba(30,58,138,0.1))">
           <p class="text-gray-300 text-sm mb-4">ابدأ اليوم واحصل على <span class="neon-text font-bold">استشارة مجانية</span> مع خبرائنا</p>
-          <a href="https://wa.me/966507006849?text=أريد استشارة مجانية" target="_blank"
-             class="btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-bold text-sm">
+          <button onclick="openSubscriptionForm('استشارة مجانية')"
+             class="btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-bold text-sm cursor-pointer">
             احجز استشارتك المجانية الآن
-          </a>
+          </button>
         </div>
       </div>
     </div>
@@ -1861,5 +1861,172 @@ document.querySelectorAll('.glass-card').forEach(card => {
     card.style.background = '';
   });
 });
-</script></body>
+</script>
+
+<!-- ══════════════════════ SUBSCRIPTION MODAL ══════════════════════ -->
+<div id="subscriptionModal" style="display:none;position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px)">
+  <div style="background:linear-gradient(135deg,#0d1a3a,#0a1628);border:1px solid rgba(0,168,255,0.3);border-radius:24px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,0.7),0 0 40px rgba(0,168,255,0.15);padding:28px 24px 24px;position:relative;">
+    <!-- Close -->
+    <button onclick="closeSubscriptionForm()" style="position:absolute;top:14px;left:16px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:10px;width:34px;height:34px;cursor:pointer;color:#94a3b8;font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;">×</button>
+
+    <!-- Header -->
+    <div style="text-align:center;margin-bottom:22px;padding-top:4px;">
+      <div style="width:48px;height:48px;background:linear-gradient(135deg,rgba(0,168,255,0.25),rgba(30,58,138,0.4));border:1px solid rgba(0,168,255,0.4);border-radius:16px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:10px;">
+        <i class="fa-brands fa-whatsapp" style="color:#00A8FF;font-size:22px;"></i>
+      </div>
+      <h2 style="font-family:'Cairo',sans-serif;font-size:1.25rem;font-weight:800;color:#e2e8f0;margin-bottom:4px;">طلب الاشتراك السريع</h2>
+      <p style="font-family:'Cairo',sans-serif;font-size:0.8rem;color:#64748b;">أكمل البيانات وسيصلك ردنا على واتساب فوراً</p>
+    </div>
+
+    <!-- Form -->
+    <form id="subscriptionForm" onsubmit="submitSubscriptionForm(event)" novalidate style="display:flex;flex-direction:column;gap:14px;">
+
+      <!-- Name -->
+      <div>
+        <label style="font-family:'Cairo',sans-serif;font-size:0.82rem;color:#94a3b8;display:block;margin-bottom:5px;">الاسم الكريم <span style="color:#ef4444;">*</span></label>
+        <input id="sf_name" type="text" placeholder="أدخل اسمك الكريم" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(0,168,255,0.2);border-radius:12px;padding:10px 14px;color:#e2e8f0;font-family:'Cairo',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='rgba(0,168,255,0.6)'" onblur="this.style.borderColor='rgba(0,168,255,0.2)'">
+      </div>
+
+      <!-- Phone -->
+      <div>
+        <label style="font-family:'Cairo',sans-serif;font-size:0.82rem;color:#94a3b8;display:block;margin-bottom:5px;">رقم الجوال <span style="color:#ef4444;">*</span></label>
+        <input id="sf_phone" type="tel" placeholder="05XXXXXXXX" dir="ltr" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(0,168,255,0.2);border-radius:12px;padding:10px 14px;color:#e2e8f0;font-family:'Cairo',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.2s;text-align:right;" onfocus="this.style.borderColor='rgba(0,168,255,0.6)'" onblur="this.style.borderColor='rgba(0,168,255,0.2)'">
+      </div>
+
+      <!-- Business Type -->
+      <div>
+        <label style="font-family:'Cairo',sans-serif;font-size:0.82rem;color:#94a3b8;display:block;margin-bottom:5px;">نوع النشاط التجاري <span style="color:#ef4444;">*</span></label>
+        <input id="sf_business" type="text" placeholder="مثال: مطعم، صالون، عيادة، متجر..." style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(0,168,255,0.2);border-radius:12px;padding:10px 14px;color:#e2e8f0;font-family:'Cairo',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='rgba(0,168,255,0.6)'" onblur="this.style.borderColor='rgba(0,168,255,0.2)'">
+      </div>
+
+      <!-- City -->
+      <div>
+        <label style="font-family:'Cairo',sans-serif;font-size:0.82rem;color:#94a3b8;display:block;margin-bottom:5px;">المدينة <span style="color:#64748b;font-size:0.75rem;">(اختياري)</span></label>
+        <input id="sf_city" type="text" placeholder="مثال: الرياض، جدة، الدمام..." style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(0,168,255,0.2);border-radius:12px;padding:10px 14px;color:#e2e8f0;font-family:'Cairo',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='rgba(0,168,255,0.6)'" onblur="this.style.borderColor='rgba(0,168,255,0.2)'">
+      </div>
+
+      <!-- Package -->
+      <div>
+        <label style="font-family:'Cairo',sans-serif;font-size:0.82rem;color:#94a3b8;display:block;margin-bottom:8px;">الباقة المطلوبة</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;" id="sf_packages">
+          <button type="button" class="sf-pkg-btn" data-pkg="START — 399 ريال" onclick="selectPackage(this)" style="background:rgba(255,255,255,0.04);border:1px solid rgba(0,168,255,0.2);border-radius:10px;padding:9px 8px;color:#e2e8f0;font-family:'Cairo',sans-serif;font-size:0.82rem;cursor:pointer;transition:all 0.2s;text-align:center;">START<br><span style="font-size:0.72rem;color:#64748b;">399 ريال</span></button>
+          <button type="button" class="sf-pkg-btn" data-pkg="GROWTH — 999 ريال شهرياً" onclick="selectPackage(this)" style="background:rgba(255,255,255,0.04);border:1px solid rgba(0,168,255,0.2);border-radius:10px;padding:9px 8px;color:#e2e8f0;font-family:'Cairo',sans-serif;font-size:0.82rem;cursor:pointer;transition:all 0.2s;text-align:center;">GROWTH<br><span style="font-size:0.72rem;color:#64748b;">999 ريال/شهر</span></button>
+          <button type="button" class="sf-pkg-btn" data-pkg="PRO MAX — 1999 ريال شهرياً" onclick="selectPackage(this)" style="background:rgba(255,255,255,0.04);border:1px solid rgba(0,168,255,0.2);border-radius:10px;padding:9px 8px;color:#e2e8f0;font-family:'Cairo',sans-serif;font-size:0.82rem;cursor:pointer;transition:all 0.2s;text-align:center;">PRO MAX<br><span style="font-size:0.72rem;color:#64748b;">1999 ريال/شهر</span></button>
+          <button type="button" class="sf-pkg-btn" data-pkg="أحتاج ترشيح الأنسب" onclick="selectPackage(this)" style="background:rgba(255,255,255,0.04);border:1px solid rgba(0,168,255,0.2);border-radius:10px;padding:9px 8px;color:#e2e8f0;font-family:'Cairo',sans-serif;font-size:0.82rem;cursor:pointer;transition:all 0.2s;text-align:center;">أحتاج ترشيح<br><span style="font-size:0.72rem;color:#64748b;">الأنسب لي</span></button>
+        </div>
+        <input type="hidden" id="sf_package">
+      </div>
+
+      <!-- Has Website -->
+      <div>
+        <label style="font-family:'Cairo',sans-serif;font-size:0.82rem;color:#94a3b8;display:block;margin-bottom:8px;">هل لديك موقع حالياً؟</label>
+        <div style="display:flex;gap:8px;" id="sf_website_btns">
+          <button type="button" class="sf-web-btn" data-val="نعم" onclick="selectWebsite(this)" style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(0,168,255,0.2);border-radius:10px;padding:9px 6px;color:#e2e8f0;font-family:'Cairo',sans-serif;font-size:0.85rem;cursor:pointer;transition:all 0.2s;">نعم</button>
+          <button type="button" class="sf-web-btn" data-val="لا" onclick="selectWebsite(this)" style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(0,168,255,0.2);border-radius:10px;padding:9px 6px;color:#e2e8f0;font-family:'Cairo',sans-serif;font-size:0.85rem;cursor:pointer;transition:all 0.2s;">لا</button>
+          <button type="button" class="sf-web-btn" data-val="غير متأكد" onclick="selectWebsite(this)" style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(0,168,255,0.2);border-radius:10px;padding:9px 6px;color:#e2e8f0;font-family:'Cairo',sans-serif;font-size:0.85rem;cursor:pointer;transition:all 0.2s;">غير متأكد</button>
+        </div>
+        <input type="hidden" id="sf_website">
+      </div>
+
+      <!-- Notes -->
+      <div>
+        <label style="font-family:'Cairo',sans-serif;font-size:0.82rem;color:#94a3b8;display:block;margin-bottom:5px;">ملاحظات مختصرة <span style="color:#64748b;font-size:0.75rem;">(اختياري)</span></label>
+        <textarea id="sf_notes" rows="3" placeholder="أي تفاصيل إضافية تودّ ذكرها..." style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(0,168,255,0.2);border-radius:12px;padding:10px 14px;color:#e2e8f0;font-family:'Cairo',sans-serif;font-size:0.9rem;outline:none;resize:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='rgba(0,168,255,0.6)'" onblur="this.style.borderColor='rgba(0,168,255,0.2)'"></textarea>
+      </div>
+
+      <!-- Error -->
+      <div id="sf_error" style="display:none;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);border-radius:10px;padding:10px 14px;color:#fca5a5;font-family:'Cairo',sans-serif;font-size:0.85rem;text-align:center;">
+        فضلاً أكمل الحقول المطلوبة.
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" style="background:linear-gradient(135deg,#00A8FF,#0077CC);border:none;border-radius:14px;padding:14px 20px;color:#fff;font-family:'Cairo',sans-serif;font-size:1rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 20px rgba(0,168,255,0.3);" onmouseover="this.style.transform='scale(1.02)';this.style.boxShadow='0 6px 28px rgba(0,168,255,0.45)'" onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 4px 20px rgba(0,168,255,0.3)'">
+        <i class="fa-brands fa-whatsapp" style="font-size:20px;"></i>
+        إرسال الطلب عبر واتساب
+      </button>
+
+    </form>
+  </div>
+</div>
+
+<script>
+// ─── Subscription Modal ───
+function openSubscriptionForm(pkg) {
+  const modal = document.getElementById('subscriptionModal');
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  // Pre-select package if provided
+  if (pkg) {
+    const map = { 'START': 'START — 399 ريال', 'GROWTH': 'GROWTH — 999 ريال شهرياً', 'PRO MAX': 'PRO MAX — 1999 ريال شهرياً', 'استشارة مجانية': 'أحتاج ترشيح الأنسب' };
+    const pkgVal = map[pkg] || pkg;
+    document.querySelectorAll('.sf-pkg-btn').forEach(b => {
+      const active = b.dataset.pkg === pkgVal;
+      b.style.background = active ? 'rgba(0,168,255,0.2)' : 'rgba(255,255,255,0.04)';
+      b.style.borderColor = active ? 'rgba(0,168,255,0.7)' : 'rgba(0,168,255,0.2)';
+      b.style.color = active ? '#00A8FF' : '#e2e8f0';
+    });
+    document.getElementById('sf_package').value = pkgVal;
+  }
+  document.getElementById('sf_error').style.display = 'none';
+}
+
+function closeSubscriptionForm() {
+  document.getElementById('subscriptionModal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function selectPackage(btn) {
+  document.querySelectorAll('.sf-pkg-btn').forEach(b => {
+    b.style.background = 'rgba(255,255,255,0.04)';
+    b.style.borderColor = 'rgba(0,168,255,0.2)';
+    b.style.color = '#e2e8f0';
+  });
+  btn.style.background = 'rgba(0,168,255,0.2)';
+  btn.style.borderColor = 'rgba(0,168,255,0.7)';
+  btn.style.color = '#00A8FF';
+  document.getElementById('sf_package').value = btn.dataset.pkg;
+}
+
+function selectWebsite(btn) {
+  document.querySelectorAll('.sf-web-btn').forEach(b => {
+    b.style.background = 'rgba(255,255,255,0.04)';
+    b.style.borderColor = 'rgba(0,168,255,0.2)';
+    b.style.color = '#e2e8f0';
+  });
+  btn.style.background = 'rgba(0,168,255,0.15)';
+  btn.style.borderColor = 'rgba(0,168,255,0.6)';
+  btn.style.color = '#00A8FF';
+  document.getElementById('sf_website').value = btn.dataset.val;
+}
+
+function submitSubscriptionForm(e) {
+  e.preventDefault();
+  const name = document.getElementById('sf_name').value.trim();
+  const phone = document.getElementById('sf_phone').value.trim();
+  const business = document.getElementById('sf_business').value.trim();
+  if (!name || !phone || !business) {
+    document.getElementById('sf_error').style.display = 'block';
+    return;
+  }
+  document.getElementById('sf_error').style.display = 'none';
+  const pkg = document.getElementById('sf_package').value || 'لم يتم التحديد';
+  const website = document.getElementById('sf_website').value || 'لم يتم التحديد';
+  const city = document.getElementById('sf_city').value.trim() || 'لم تُذكر';
+  const notes = document.getElementById('sf_notes').value.trim() || 'لا توجد';
+  const msg = `مرحباً، أريد الاشتراك في Blumark24 🌟\n\n👤 الاسم: ${name}\n📱 الجوال: ${phone}\n🏢 النشاط: ${business}\n📍 المدينة: ${city}\n📦 الباقة: ${pkg}\n🌐 موقع حالي: ${website}\n📝 ملاحظات: ${notes}`;
+  window.open('https://wa.me/966507006849?text=' + encodeURIComponent(msg), '_blank');
+  closeSubscriptionForm();
+}
+
+// Close on backdrop click
+document.getElementById('subscriptionModal').addEventListener('click', function(e) {
+  if (e.target === this) closeSubscriptionForm();
+});
+
+// Close on Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeSubscriptionForm();
+});
+</script>
+</body>
 </html>
