@@ -388,13 +388,33 @@
       left: 16px;
       right: auto;
       bottom: 88px;
-      width: min(92vw, 380px);
-      height: min(560px, 70vh);
-      max-height: 70vh;
+      width: 300px;
+      max-width: calc(100vw - 32px);
+      height: min(560px, 72vh);
+      max-height: 72vh;
+      flex-direction: column;
     }
+    /* .open base rule sets display:block — override to flex so the
+       panel can lay out header / messages / input in a column. Same
+       specificity as the base, declared later, so it wins on mobile. */
+    #chatbot-panel.open {
+      display: flex;
+    }
+    /* Header (first div) and input row (last div) keep their natural
+       height and never shrink, so the input is always pinned visible. */
+    #chatbot-panel > div:not(#chat-messages) {
+      flex: 0 0 auto;
+    }
+    /* Messages area is the only flexible child — it grows to fill
+       leftover space and scrolls internally. min-height: 0 defeats the
+       flex default of "don't shrink below content" so long histories
+       can't push the input below the panel. */
     #chat-messages {
+      flex: 1 1 auto;
+      min-height: 0;
       height: auto;
-      max-height: calc(70vh - 150px);
+      max-height: none;
+      overflow-y: auto;
     }
   }
 
