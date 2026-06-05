@@ -122,6 +122,31 @@ const SHORTCUT_ROUTES = [
     text: 'نساعدك ببناء حضور رقمي يجيب عملاء: موقع، واتساب AI، منيو ذكي، حجوزات، وتحسين ظهورك في Google. ما نوع نشاطك؟'
   },
   {
+    name: 'wellbeing',
+    keywords: ['كيفك', 'كيف الحال', 'كيفك يا حب'],
+    text: 'بخير، الله يسعدك. جاهز أساعدك في اختيار الحل الأنسب لنشاطك.'
+  },
+  {
+    name: 'who_are_you',
+    keywords: ['من أنتم', 'مين أنتم', 'وش شركتكم'],
+    text: 'Blumark24 شركة سعودية تقدم حلول ذكاء اصطناعي للأعمال: مواقع احترافية، واتساب AI، منيو ذكي، أتمتة، وتقارير نمو. ما نوع نشاطك؟'
+  },
+  {
+    name: 'how_generic',
+    keywords: ['كيف', 'كيف يعني'],
+    text: 'تقصد كيف نقدر نخدم نشاطك؟ نبدأ بفهم نوع نشاطك ثم نرشح لك الحل الأنسب: موقع، واتساب AI، حجوزات، أو أتمتة.'
+  },
+  {
+    name: 'acknowledgement',
+    keywords: ['اي', 'نعم', 'تمام', 'اوك', 'طيب'],
+    text: 'تمام. ما نوع نشاطك التجاري عشان أحدد لك الحل الأنسب؟'
+  },
+  {
+    name: 'unsure',
+    keywords: ['ماعرف', 'مدري', 'لا'],
+    text: 'ولا يهمك. اكتب لي نوع نشاطك فقط، مثل: مطعم، عيادة، متجر، كافيه، أو صيدلية.'
+  },
+  {
     name: 'os',
     keywords: [
       'Blumark24 OS',
@@ -200,6 +225,7 @@ const REASONING_LEAK_PATTERNS = [
   /\bThought\b/i,
   /\breasoning\b/i,
   /chain[\s-]?of[\s-]?thought/i,
+  /The user has provided/i,
   /The user has/i,
   /The user is/i,
   /I need to/i,
@@ -229,7 +255,7 @@ function maskOsUrl(text) {
   return text.replace(/https?:\/\/blumark24-os\.vercel\.app[^\s)"'،.]*\/?/gi, '[[BLUMARK24_OS_LINK]]');
 }
 
-const SAFE_FALLBACK_REPLY = 'واضح. أقدر أساعدك بتحديد الحل الأنسب. ما نوع نشاطك التجاري؟';
+const SAFE_FALLBACK_REPLY = 'فهمت عليك. اكتب لي نوع نشاطك أو الخدمة التي تحتاجها، وأنا أرشح لك الأنسب.';
 const GENERAL_ACTIVITY_REPLY = 'مناسب. نقدر نساعدك بحضور رقمي وردود ذكية وتنظيم طلبات العملاء. ما الخدمة الأهم لك حالياً: موقع، واتساب AI، أو حجوزات؟';
 
 function sanitizeReply(text) {
