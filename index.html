@@ -418,6 +418,24 @@
     }
   }
 
+  /* iOS Safari auto-zooms any focused input whose font-size is below
+     16px. The chat input ships with Tailwind text-xs (12px) which
+     triggers the zoom on iPhone. Force >=16px on chat inputs only so
+     the rest of the page is untouched. transform:none on :focus
+     defeats any inherited animation that would also nudge the layout. */
+  #chatbot-panel input,
+  #chatbot-panel textarea {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  #chatbot-panel input:focus,
+  #chatbot-panel textarea:focus {
+    font-size: 16px;
+    outline: none;
+    transform: none;
+  }
+
   /* HERO PARTICLES */
   .particle {
     position: absolute;
