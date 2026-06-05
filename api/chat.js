@@ -78,6 +78,11 @@ const SHORTCUT_ROUTES = [
     text: 'مناسب. لمطعمك نرشح بوت واتساب + منيو ذكي لتنظيم الطلبات والردود. هل عندك منيو جاهز؟'
   },
   {
+    name: 'pharmacy',
+    keywords: ['صيدلية', 'صيدليه', 'صيدليات', /pharmacy/i],
+    text: 'مناسب. للصيدليات نرشح موقع تعريفي + واتساب AI للرد على الاستفسارات وتنظيم الطلبات. هل عندك خدمة توصيل حالياً؟'
+  },
+  {
     name: 'os',
     keywords: [
       'Blumark24 OS',
@@ -211,7 +216,7 @@ module.exports = async function handler(req, res) {
 
   const { messages } = req.body || {};
   if (!messages || !Array.isArray(messages)) {
-    return res.status(400).json({ error: 'Missing messages array' });
+    return res.status(200).json({ text: SAFE_FALLBACK_REPLY });
   }
 
   const shortcut = matchShortcut(lastUserMessageContent(messages));
@@ -222,12 +227,12 @@ module.exports = async function handler(req, res) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     console.error('[chat proxy] GEMINI_API_KEY is not set');
-    return res.status(500).json({ error: 'Server configuration error: missing GEMINI_API_KEY' });
+    return res.status(200).json({ text: SAFE_FALLBACK_REPLY });
   }
 
   const conversation = normalizeMessages(messages);
   if (conversation.length === 0) {
-    return res.status(400).json({ error: 'No valid messages found' });
+    return res.status(200).json({ text: SAFE_FALLBACK_REPLY });
   }
 
   try {
@@ -257,7 +262,7 @@ module.exports = async function handler(req, res) {
         apiStatus: data?.error?.status || 'unknown',
         code: data?.error?.code || 'unknown'
       });
-      return res.status(upstream.status).json({ error: data?.error?.message || 'Gemini request failed' });
+      return res.status(200).json({ text: SAFE_FALLBACK_REPLY });
     }
 
     const rawReply = extractReply(data);
@@ -265,7 +270,7 @@ module.exports = async function handler(req, res) {
       console.error('[chat proxy] Gemini returned empty reply', {
         finishReason: data?.candidates?.[0]?.finishReason || 'unknown'
       });
-      return res.status(502).json({ error: 'Empty response from AI service' });
+      return res.status(200).json({ text: SAFE_FALLBACK_REPLY });
     }
 
     const sanitizedReply = maskOsUrl(stripMarkdownLinks(rawReply));
@@ -277,6 +282,6 @@ module.exports = async function handler(req, res) {
     return res.status(200).json({ text: sanitizedReply });
   } catch (err) {
     console.error('[chat proxy] failed to reach Gemini', { message: err.message });
-    return res.status(500).json({ error: 'Failed to reach AI service' });
+    return res.status(200).json({ text: SAFE_FALLBACK_REPLY });
   }
 };
