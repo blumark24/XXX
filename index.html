@@ -393,6 +393,17 @@
     bottom: auto;
   }
 
+  @media (min-width: 641px) {
+    #chatbot-panel {
+      width: 360px;
+      height: 520px;
+      max-height: calc(100vh - 120px);
+      left: 24px;
+      right: auto;
+      bottom: 96px;
+    }
+  }
+
   /* Compact mobile chat panel. The floating bubble stays untouched. */
   @media (max-width: 640px) {
     #chatbot-panel {
@@ -1588,6 +1599,16 @@
 
 <!-- SCRIPTS -->
 <script>
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+
+window.addEventListener('load', () => {
+  if (!window.location.hash) {
+    window.scrollTo(0, 0);
+  }
+});
+
 // ══════ NEURAL NETWORK PARTICLES ══════
 const canvas = document.getElementById('neural-canvas');
 const ctx = canvas.getContext('2d');
