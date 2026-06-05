@@ -368,8 +368,6 @@
     bottom: 75px; left: 0;
     width: 300px;
     max-width: calc(100vw - 32px);
-    height: min(620px, 76vh);
-    max-height: 76vh;
     border-radius: 20px;
     overflow: hidden;
     display: none;
@@ -395,11 +393,7 @@
     bottom: auto;
   }
 
-  /* Larger chat panel on small phones so messages have room to breathe.
-     Switches the panel from its desktop absolute-positioned 300px to a
-     viewport-anchored fixed box (room for max 420px). The floating
-     bubble at #chatbot { left:24px; bottom:24px } is intentionally not
-     touched. */
+  /* Compact mobile chat panel. The floating bubble stays untouched. */
   @media (max-width: 640px) {
     #chatbot-panel {
       position: fixed;
@@ -408,8 +402,11 @@
       bottom: 88px;
       width: 300px;
       max-width: calc(100vw - 32px);
-      height: min(620px, 76vh);
-      max-height: 76vh;
+      height: 420px;
+      max-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
     /* .open base rule sets display:block — override to flex so the
        panel can lay out header / messages / input in a column. Same
@@ -432,6 +429,30 @@
       height: auto;
       max-height: none;
       overflow-y: auto;
+    }
+
+    #neural-canvas {
+      display: none;
+    }
+
+    .light-orb {
+      display: none;
+    }
+
+    .float-anim,
+    .pulse-anim,
+    .fade-up,
+    .reveal,
+    .reveal-left,
+    .reveal-right {
+      animation: none !important;
+      transition: none !important;
+    }
+
+    .glass,
+    .glass-card {
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
     }
   }
 
