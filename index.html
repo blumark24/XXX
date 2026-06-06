@@ -444,11 +444,15 @@
     }
 
     #neural-canvas {
-      display: none;
+      display: block;
+      opacity: 0.18;
     }
 
     .light-orb {
-      display: none;
+      display: block;
+      opacity: 0.25;
+      width: 320px;
+      height: 320px;
     }
 
     .float-anim,
@@ -1651,7 +1655,8 @@ class Particle {
   }
 }
 
-for (let i = 0; i < 80; i++) particles.push(new Particle());
+const particleCount = window.innerWidth <= 640 ? 30 : 80;
+for (let i = 0; i < particleCount; i++) particles.push(new Particle());
 
 function drawConnections() {
   for (let i = 0; i < particles.length; i++) {
