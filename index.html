@@ -761,14 +761,9 @@
 
     <!-- CTAs -->
     <div class="flex flex-col sm:flex-row gap-4 justify-center items-center fade-up delay-3">
-      <button onclick="FS.open()" class="fs-hero-sim-btn">
-        <span class="fs-hsb-icon">
-          <span class="fs-hsb-ring"></span>
-        </span>
-        <span class="fs-hsb-text">
-          <span class="fs-hsb-label">Blumark24 Business X-Ray</span>
-          <span class="fs-hsb-main">اكشف فرصة النمو المخفية</span>
-        </span>
+      <button onclick="FS.open()" class="fs-hero-sim-btn btn-primary flex items-center gap-3 px-8 py-4 rounded-2xl text-white text-lg font-bold pulse-anim">
+        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        ابدأ المحاكاة الآن
       </button>
       <a href="#pricing"
          class="btn-secondary flex items-center gap-3 px-8 py-4 rounded-2xl text-white text-lg font-bold">
@@ -1544,30 +1539,12 @@
           </div>
         </div>
 
-        <!-- Future Simulator Card -->
-        <div class="fs-contact-card glass-card rounded-2xl p-6 relative overflow-hidden" onclick="FS.open()" role="button" tabindex="0" style="cursor:pointer;" onkeydown="if(event.key==='Enter')FS.open()">
-          <!-- animated grid bg -->
-          <div class="fs-cc-grid"></div>
-          <!-- top label -->
-          <div class="fs-cc-badge">
-            <span class="fs-cc-dot"></span>
-            Blumark24 Future Simulator
-          </div>
-          <!-- heading -->
-          <h3 class="fs-cc-title">شاهد مستقبل مشروعك<br>قبل أن تبدأ</h3>
-          <!-- desc -->
-          <p class="fs-cc-desc">محاكاة ذكية تكشف كيف يمكن أن يبدو مشروعك بعد 30 يوم من الأتمتة والذكاء الاصطناعي: ردود أسرع، حجوزات منظمة، تقارير أوضح، ونمو عملاء.</p>
-          <!-- HUD pills -->
-          <div class="fs-cc-hud">
-            <span class="fs-cc-pill">🤖 AI</span>
-            <span class="fs-cc-pill">⚡ أتمتة</span>
-            <span class="fs-cc-pill">📊 تقارير</span>
-            <span class="fs-cc-pill">💬 واتساب</span>
-          </div>
-          <!-- CTA button -->
-          <button class="fs-cc-btn">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-            شاهد مستقبل مشروعك مجاناً
+        <!-- Final CTA -->
+        <div class="glass-card rounded-2xl p-6 text-center" style="background: linear-gradient(135deg, rgba(0,168,255,0.1), rgba(30,58,138,0.1))">
+          <p class="text-gray-300 text-sm mb-4">ابدأ اليوم واحصل على <span class="neon-text font-bold">استشارة مجانية</span> مع خبرائنا</p>
+          <button onclick="openSubscriptionForm('استشارة مجانية')"
+             class="btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-bold text-sm cursor-pointer">
+            احجز استشارتك المجانية الآن
           </button>
         </div>
       </div>
