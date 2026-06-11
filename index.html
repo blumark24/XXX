@@ -33,11 +33,11 @@
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  html { scroll-behavior: smooth; overflow-x: hidden; }
+  html { scroll-behavior: smooth; overflow-x: hidden; background: #050A1C; }
 
   body {
     font-family: 'Cairo', 'Tajawal', sans-serif;
-    background: var(--navy);
+    background: transparent;
     color: #e2e8f0;
     overflow-x: hidden;
     direction: rtl;
@@ -49,7 +49,7 @@
     top: 0; left: 0;
     width: 100%; height: 100%;
     pointer-events: none;
-    z-index: 0;
+    z-index: 2;
     opacity: 0.5;
   }
 
@@ -60,9 +60,142 @@
     border-radius: 50%;
     background: radial-gradient(circle, rgba(0,168,255,0.12) 0%, transparent 70%);
     pointer-events: none;
-    z-index: 1;
+    z-index: 3;
     transform: translate(-50%, -50%);
     transition: left 0.3s ease, top 0.3s ease;
+  }
+
+  /* ═══════════════════════════════════════════
+     ANIMATED BACKGROUND — Blumark24 OS style
+     ═══════════════════════════════════════════ */
+  .animated-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse at 18% 18%, rgba(0,168,255,0.18) 0%, transparent 36%),
+      radial-gradient(ellipse at 82% 8%,  rgba(34,211,238,0.11) 0%, transparent 30%),
+      radial-gradient(ellipse at 55% 85%, rgba(30,58,138,0.28)  0%, transparent 45%),
+      radial-gradient(ellipse at 10% 75%, rgba(0,168,255,0.08)  0%, transparent 35%),
+      linear-gradient(180deg, #050A1C 0%, #07122b 50%, #060d22 100%);
+  }
+
+  /* Scrolling grid */
+  .bg-grid {
+    position: absolute;
+    inset: -5%;
+    background-image:
+      linear-gradient(rgba(0,168,255,0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,168,255,0.055) 1px, transparent 1px);
+    background-size: 44px 44px;
+    opacity: 0.28;
+    animation: bgDrift 28s linear infinite;
+  }
+
+  /* Central deep glow */
+  .bg-glow-one {
+    position: absolute;
+    width: 900px; height: 900px;
+    left: 50%; top: 22%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(0,168,255,0.14) 0%, transparent 60%);
+    filter: blur(55px);
+    animation: glowFloat 11s ease-in-out infinite alternate;
+  }
+
+  /* Top-right accent glow */
+  .bg-glow-two {
+    position: absolute;
+    width: 560px; height: 560px;
+    right: -80px; top: -80px;
+    background: radial-gradient(circle, rgba(34,211,238,0.1) 0%, transparent 65%);
+    filter: blur(65px);
+    animation: glowFloat2 15s ease-in-out infinite alternate;
+  }
+
+  /* Bottom-left accent glow */
+  .bg-glow-three {
+    position: absolute;
+    width: 480px; height: 480px;
+    left: -60px; bottom: 5%;
+    background: radial-gradient(circle, rgba(30,58,138,0.2) 0%, transparent 65%);
+    filter: blur(70px);
+    animation: glowFloat3 18s ease-in-out infinite alternate;
+  }
+
+  /* Neural diagonal lines */
+  .bg-neural-lines {
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      -48deg,
+      transparent,
+      transparent 78px,
+      rgba(0,168,255,0.018) 78px,
+      rgba(0,168,255,0.018) 79px
+    );
+    animation: neuralShift 22s linear infinite;
+  }
+
+  /* Subtle horizontal scan line */
+  .bg-scan {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(0,168,255,0.006) 3px,
+      rgba(0,168,255,0.006) 4px
+    );
+    opacity: 0.5;
+  }
+
+  /* ─── Keyframes ─── */
+  @keyframes bgDrift {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(-44px, -44px, 0); }
+  }
+  @keyframes glowFloat {
+    from { opacity: 0.55; transform: translate(-52%, -52%) scale(1); }
+    to   { opacity: 0.9;  transform: translate(-48%, -48%) scale(1.1); }
+  }
+  @keyframes glowFloat2 {
+    from { opacity: 0.45; transform: scale(1)    rotate(0deg); }
+    to   { opacity: 0.75; transform: scale(1.18) rotate(8deg); }
+  }
+  @keyframes glowFloat3 {
+    from { opacity: 0.4;  transform: scale(1)    rotate(0deg); }
+    to   { opacity: 0.7;  transform: scale(1.12) rotate(-5deg); }
+  }
+  @keyframes neuralShift {
+    from { background-position: 0 0; }
+    to   { background-position: 158px 158px; }
+  }
+
+  /* ─── Mobile: lighter weight ─── */
+  @media (max-width: 640px) {
+    .bg-glow-one   { width: 380px; height: 380px; filter: blur(40px); }
+    .bg-glow-two   { width: 260px; height: 260px; filter: blur(50px); }
+    .bg-glow-three { width: 220px; height: 220px; filter: blur(55px); }
+    .bg-grid { background-size: 32px 32px; opacity: 0.2; }
+  }
+
+  /* ─── Tablet ─── */
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .bg-glow-one { width: 600px; height: 600px; }
+    .bg-glow-two { width: 380px; height: 380px; }
+  }
+
+  /* ─── Respect reduced motion ─── */
+  @media (prefers-reduced-motion: reduce) {
+    .bg-grid,
+    .bg-glow-one,
+    .bg-glow-two,
+    .bg-glow-three,
+    .bg-neural-lines { animation: none !important; }
   }
 
   /* GLASSMORPHISM */
@@ -609,6 +742,16 @@
 </script>
 </head>
 <body class="arabic-pattern">
+
+<!-- ══════ ANIMATED BACKGROUND — AnimatedBackground ══════ -->
+<div class="animated-bg" aria-hidden="true">
+  <div class="bg-grid"></div>
+  <div class="bg-neural-lines"></div>
+  <div class="bg-glow-one"></div>
+  <div class="bg-glow-two"></div>
+  <div class="bg-glow-three"></div>
+  <div class="bg-scan"></div>
+</div>
 
 <!-- NEURAL NETWORK CANVAS -->
 <canvas id="neural-canvas"></canvas>
