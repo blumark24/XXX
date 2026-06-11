@@ -677,3 +677,23 @@
 @media (prefers-reduced-motion: reduce) {
   .fs-cc-grid, .fs-contact-card::after, .fs-cc-dot { animation: none !important; }
 }
+
+/* ============================================================
+   Hero CTA button  (.fs-hero-sim-btn)
+   Overrides only the glow — base styles come from .btn-primary
+   ============================================================ */
+.fs-hero-sim-btn {
+  position: relative;
+  overflow: hidden;
+}
+.fs-hero-sim-btn::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(34,211,238,.35), rgba(0,168,255,.2), transparent 60%);
+  opacity: 0;
+  transition: opacity .3s;
+  pointer-events: none;
+}
+.fs-hero-sim-btn:hover::after { opacity: 1; }
