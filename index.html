@@ -33,169 +33,47 @@
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  html { scroll-behavior: smooth; overflow-x: hidden; background: #050A1C; }
+  html { scroll-behavior: smooth; overflow-x: hidden; background: #0A0F2C !important; }
 
   body {
     font-family: 'Cairo', 'Tajawal', sans-serif;
-    background: transparent;
+    background: #0A0F2C !important;
     color: #e2e8f0;
     overflow-x: hidden;
     direction: rtl;
-  }
-
-  /* CANVAS */
-  #neural-canvas {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
-    z-index: 2;
-    opacity: 0.5;
-  }
-
-  /* LIGHT FOLLOW */
-  .light-orb {
-    position: fixed;
-    width: 600px; height: 600px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(0,168,255,0.12) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 3;
-    transform: translate(-50%, -50%);
-    transition: left 0.3s ease, top 0.3s ease;
+    position: relative;
   }
 
   /* ═══════════════════════════════════════════
-     ANIMATED BACKGROUND — Blumark24 OS style
+     CODEX ANIMATED BACKGROUND — from Blumark24 OS
      ═══════════════════════════════════════════ */
-  .animated-bg {
+  #codex-animated-bg {
     position: fixed;
     inset: 0;
-    z-index: -1;
+    z-index: 0;
     pointer-events: none;
     overflow: hidden;
     background:
-      radial-gradient(ellipse at 18% 18%, rgba(0,168,255,0.18) 0%, transparent 36%),
-      radial-gradient(ellipse at 82% 8%,  rgba(34,211,238,0.11) 0%, transparent 30%),
-      radial-gradient(ellipse at 55% 85%, rgba(30,58,138,0.28)  0%, transparent 45%),
-      radial-gradient(ellipse at 10% 75%, rgba(0,168,255,0.08)  0%, transparent 35%),
-      linear-gradient(180deg, #050A1C 0%, #07122b 50%, #060d22 100%);
+      radial-gradient(circle at 50% 0%, rgba(0,168,255,0.12), transparent 34rem),
+      radial-gradient(circle at 12% 12%, rgba(0,168,255,0.12), transparent 30rem),
+      radial-gradient(circle at 88% 30%, rgba(30,58,138,0.22), transparent 34rem),
+      linear-gradient(180deg, #0A0F2C 0%, #071024 48%, #0A0F2C 100%);
   }
-
-  /* Scrolling grid */
-  .bg-grid {
-    position: absolute;
-    inset: -5%;
-    background-image:
-      linear-gradient(rgba(0,168,255,0.055) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,168,255,0.055) 1px, transparent 1px);
-    background-size: 44px 44px;
-    opacity: 0.28;
-    animation: bgDrift 28s linear infinite;
-  }
-
-  /* Central deep glow */
-  .bg-glow-one {
-    position: absolute;
-    width: 900px; height: 900px;
-    left: 50%; top: 22%;
-    transform: translate(-50%, -50%);
-    background: radial-gradient(circle, rgba(0,168,255,0.14) 0%, transparent 60%);
-    filter: blur(55px);
-    animation: glowFloat 11s ease-in-out infinite alternate;
-  }
-
-  /* Top-right accent glow */
-  .bg-glow-two {
-    position: absolute;
-    width: 560px; height: 560px;
-    right: -80px; top: -80px;
-    background: radial-gradient(circle, rgba(34,211,238,0.1) 0%, transparent 65%);
-    filter: blur(65px);
-    animation: glowFloat2 15s ease-in-out infinite alternate;
-  }
-
-  /* Bottom-left accent glow */
-  .bg-glow-three {
-    position: absolute;
-    width: 480px; height: 480px;
-    left: -60px; bottom: 5%;
-    background: radial-gradient(circle, rgba(30,58,138,0.2) 0%, transparent 65%);
-    filter: blur(70px);
-    animation: glowFloat3 18s ease-in-out infinite alternate;
-  }
-
-  /* Neural diagonal lines */
-  .bg-neural-lines {
+  #codex-neural-canvas {
     position: absolute;
     inset: 0;
-    background-image: repeating-linear-gradient(
-      -48deg,
-      transparent,
-      transparent 78px,
-      rgba(0,168,255,0.018) 78px,
-      rgba(0,168,255,0.018) 79px
-    );
-    animation: neuralShift 22s linear infinite;
-  }
-
-  /* Subtle horizontal scan line */
-  .bg-scan {
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 3px,
-      rgba(0,168,255,0.006) 3px,
-      rgba(0,168,255,0.006) 4px
-    );
+    width: 100%;
+    height: 100%;
     opacity: 0.5;
   }
-
-  /* ─── Keyframes ─── */
-  @keyframes bgDrift {
-    from { transform: translate3d(0, 0, 0); }
-    to   { transform: translate3d(-44px, -44px, 0); }
-  }
-  @keyframes glowFloat {
-    from { opacity: 0.55; transform: translate(-52%, -52%) scale(1); }
-    to   { opacity: 0.9;  transform: translate(-48%, -48%) scale(1.1); }
-  }
-  @keyframes glowFloat2 {
-    from { opacity: 0.45; transform: scale(1)    rotate(0deg); }
-    to   { opacity: 0.75; transform: scale(1.18) rotate(8deg); }
-  }
-  @keyframes glowFloat3 {
-    from { opacity: 0.4;  transform: scale(1)    rotate(0deg); }
-    to   { opacity: 0.7;  transform: scale(1.12) rotate(-5deg); }
-  }
-  @keyframes neuralShift {
-    from { background-position: 0 0; }
-    to   { background-position: 158px 158px; }
-  }
-
-  /* ─── Mobile: lighter weight ─── */
-  @media (max-width: 640px) {
-    .bg-glow-one   { width: 380px; height: 380px; filter: blur(40px); }
-    .bg-glow-two   { width: 260px; height: 260px; filter: blur(50px); }
-    .bg-glow-three { width: 220px; height: 220px; filter: blur(55px); }
-    .bg-grid { background-size: 32px 32px; opacity: 0.2; }
-  }
-
-  /* ─── Tablet ─── */
-  @media (min-width: 641px) and (max-width: 1024px) {
-    .bg-glow-one { width: 600px; height: 600px; }
-    .bg-glow-two { width: 380px; height: 380px; }
-  }
-
-  /* ─── Respect reduced motion ─── */
-  @media (prefers-reduced-motion: reduce) {
-    .bg-grid,
-    .bg-glow-one,
-    .bg-glow-two,
-    .bg-glow-three,
-    .bg-neural-lines { animation: none !important; }
+  #codex-light-orb {
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,168,255,0.12) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    transition: left 0.3s ease, top 0.3s ease;
   }
 
   /* GLASSMORPHISM */
@@ -324,6 +202,12 @@
     border-color: rgba(0,168,255,0.8);
     box-shadow: 0 0 25px rgba(0,168,255,0.3);
     transform: translateY(-2px);
+  }
+
+  /* Ensure all page content sits above #codex-animated-bg (z-index:0) */
+  #navbar, section, footer, #chatbot-bubble, #chatbot-panel, #subscriptionModal {
+    position: relative;
+    z-index: 2;
   }
 
   /* NAVBAR */
@@ -576,16 +460,8 @@
       overflow-y: auto;
     }
 
-    #neural-canvas {
-      display: block;
-      opacity: 0.18;
-    }
-
-    .light-orb {
-      display: block;
-      opacity: 0.25;
-      width: 320px;
-      height: 320px;
+    #codex-light-orb {
+      display: none;
     }
 
     .float-anim,
@@ -743,21 +619,11 @@
 </head>
 <body class="arabic-pattern">
 
-<!-- ══════ ANIMATED BACKGROUND — AnimatedBackground ══════ -->
-<div class="animated-bg" aria-hidden="true">
-  <div class="bg-grid"></div>
-  <div class="bg-neural-lines"></div>
-  <div class="bg-glow-one"></div>
-  <div class="bg-glow-two"></div>
-  <div class="bg-glow-three"></div>
-  <div class="bg-scan"></div>
+<!-- ══════ CODEX ANIMATED BACKGROUND — Blumark24 OS (طبق الأصل) ══════ -->
+<div id="codex-animated-bg" aria-hidden="true">
+  <canvas id="codex-neural-canvas"></canvas>
+  <div id="codex-light-orb"></div>
 </div>
-
-<!-- NEURAL NETWORK CANVAS -->
-<canvas id="neural-canvas"></canvas>
-
-<!-- MOUSE LIGHT ORB -->
-<div class="light-orb" id="light-orb"></div>
 
 <!-- ══════════════════════════════════════ NAVBAR ══════════════════════════════════════ -->
 <nav id="navbar" class="py-3">
@@ -1762,77 +1628,83 @@ window.addEventListener('load', () => {
   }
 });
 
-// ══════ NEURAL NETWORK PARTICLES ══════
-const canvas = document.getElementById('neural-canvas');
-const ctx = canvas.getContext('2d');
-let particles = [];
-let animFrame;
+// ══════ CODEX ANIMATED BACKGROUND — Blumark24 OS (طبق الأصل) ══════
+(() => {
+  const canvas = document.getElementById('codex-neural-canvas');
+  const orb = document.getElementById('codex-light-orb');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const particles = [];
 
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-
-class Particle {
-  constructor() { this.reset(); }
-  reset() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-    this.vx = (Math.random() - 0.5) * 0.4;
-    this.vy = (Math.random() - 0.5) * 0.4;
-    this.radius = Math.random() * 2 + 0.5;
-    this.alpha = Math.random() * 0.5 + 0.1;
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
   }
-  update() {
-    this.x += this.vx;
-    this.y += this.vy;
-    if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
-  }
-  draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(0, 168, 255, ${this.alpha})`;
-    ctx.fill();
-  }
-}
 
-const particleCount = window.innerWidth <= 640 ? 30 : 80;
-for (let i = 0; i < particleCount; i++) particles.push(new Particle());
+  class Particle {
+    constructor() { this.reset(); }
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.vx = (Math.random() - 0.5) * 0.4;
+      this.vy = (Math.random() - 0.5) * 0.4;
+      this.radius = Math.random() * 2 + 0.5;
+      this.alpha = Math.random() * 0.5 + 0.1;
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(0, 168, 255, ${this.alpha})`;
+      ctx.fill();
+    }
+  }
 
-function drawConnections() {
-  for (let i = 0; i < particles.length; i++) {
-    for (let j = i + 1; j < particles.length; j++) {
-      const dx = particles[i].x - particles[j].x;
-      const dy = particles[i].y - particles[j].y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 120) {
-        ctx.beginPath();
-        ctx.moveTo(particles[i].x, particles[i].y);
-        ctx.lineTo(particles[j].x, particles[j].y);
-        ctx.strokeStyle = `rgba(0, 168, 255, ${0.12 * (1 - dist / 120)})`;
-        ctx.lineWidth = 0.5;
-        ctx.stroke();
+  function initParticles() {
+    particles.length = 0;
+    const count = window.innerWidth < 700 ? 55 : 80;
+    for (let i = 0; i < count; i++) particles.push(new Particle());
+  }
+
+  function drawConnections() {
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 120) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(0, 168, 255, ${0.12 * (1 - dist / 120)})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
       }
     }
   }
-}
 
-function animate() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  particles.forEach(p => { p.update(); p.draw(); });
-  drawConnections();
-  animFrame = requestAnimationFrame(animate);
-}
-animate();
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach((particle) => { particle.update(); particle.draw(); });
+    drawConnections();
+    requestAnimationFrame(animate);
+  }
 
-// ══════ MOUSE LIGHT ══════
-const orb = document.getElementById('light-orb');
-document.addEventListener('mousemove', (e) => {
-  orb.style.left = e.clientX + 'px';
-  orb.style.top = e.clientY + 'px';
-});
+  resizeCanvas();
+  initParticles();
+  window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
+  document.addEventListener('mousemove', (event) => {
+    if (!orb) return;
+    orb.style.left = event.clientX + 'px';
+    orb.style.top = event.clientY + 'px';
+  });
+  animate();
+})();
 
 // ══════ NAVBAR SCROLL ══════
 const navbar = document.getElementById('navbar');
