@@ -751,82 +751,77 @@
 
 /* ============================================================
    Hero CTA button  (.fs-hero-sim-btn)
-   Smart pill — Apple liquid-glass — Premium Saudi tech
+   Google-inspired clean glass pill — Premium & minimal
    ============================================================ */
 .fs-hero-sim-btn {
   position: relative;
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 18px 10px 14px;
+  padding: 9px 20px 9px 12px;
   border-radius: 50px;
-  background: rgba(255, 255, 255, 0.07);
-  backdrop-filter: blur(18px) saturate(1.7);
-  -webkit-backdrop-filter: blur(18px) saturate(1.7);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px) saturate(1.5);
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
+  border: 1px solid rgba(255, 255, 255, 0.13);
   box-shadow:
-    0 0 0 1px rgba(0,168,255,0.1) inset,
-    0 6px 24px rgba(0, 0, 0, 0.3),
-    0 1px 6px rgba(0, 168, 255, 0.1);
+    0 1px 0 rgba(255,255,255,0.08) inset,
+    0 4px 18px rgba(0, 0, 0, 0.28),
+    0 1px 4px rgba(0, 0, 0, 0.18);
   cursor: pointer;
   overflow: hidden;
-  transition: background .28s, border-color .28s, box-shadow .28s, transform .18s;
+  transition: background .25s, border-color .25s, box-shadow .25s, transform .18s;
   text-align: right;
   direction: rtl;
 }
-
-/* top glass highlight */
 .fs-hero-sim-btn::before {
   content: '';
   position: absolute;
-  top: 0; left: 15%; right: 15%;
+  top: 0; left: 20%; right: 20%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
-  pointer-events: none;
-}
-
-/* shimmer on hover */
-.fs-hero-sim-btn::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    118deg,
-    transparent 28%,
-    rgba(255,255,255,0.1) 46%,
-    rgba(34,211,238,0.08) 52%,
-    transparent 68%
-  );
-  opacity: 0;
-  transition: opacity .32s;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.38), transparent);
   pointer-events: none;
 }
 .fs-hero-sim-btn:hover {
-  background: rgba(255,255,255,0.11);
-  border-color: rgba(0,168,255,0.38);
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.22);
   box-shadow:
-    0 0 0 1px rgba(0,168,255,0.18) inset,
-    0 10px 32px rgba(0,0,0,0.36),
-    0 0 20px rgba(0,168,255,0.16);
+    0 1px 0 rgba(255,255,255,0.1) inset,
+    0 8px 28px rgba(0, 0, 0, 0.32),
+    0 2px 8px rgba(0, 0, 0, 0.2);
   transform: translateY(-2px);
 }
-.fs-hero-sim-btn:hover::after { opacity: 1; }
 
-/* icon circle */
+/* ── Google-ring icon ── */
 .fs-hsb-icon {
-  width: 34px; height: 34px;
+  width: 32px; height: 32px;
   border-radius: 50%;
-  background: rgba(0,168,255,0.14);
-  border: 1px solid rgba(0,168,255,0.28);
+  background: rgba(255,255,255,0.07);
+  border: 1.5px solid rgba(255,255,255,0.12);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  color: #38bdf8;
+  position: relative;
 }
 
-/* text stack */
+/* Four-color ring using conic-gradient — Google colours, very subtle */
+.fs-hsb-ring {
+  display: block;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: conic-gradient(
+    #4285F4 0deg 90deg,
+    #EA4335 90deg 180deg,
+    #FBBC05 180deg 270deg,
+    #34A853 270deg 360deg
+  );
+  opacity: 0.72;
+  mask: radial-gradient(transparent 4px, #000 5px);
+  -webkit-mask: radial-gradient(transparent 4px, #000 5px);
+}
+
+/* ── Text stack ── */
 .fs-hsb-text {
   display: flex;
   flex-direction: column;
@@ -834,47 +829,28 @@
   min-width: 0;
 }
 .fs-hsb-label {
-  font-size: .62rem;
+  font-size: .6rem;
   font-weight: 700;
-  letter-spacing: .05em;
-  color: #38bdf8;
+  letter-spacing: .06em;
+  color: rgba(200, 215, 235, 0.75);
   text-transform: uppercase;
   font-family: 'Cairo','Tajawal',sans-serif;
   white-space: nowrap;
 }
 .fs-hsb-main {
-  font-size: .9rem;
-  font-weight: 800;
-  color: #fff;
+  font-size: .88rem;
+  font-weight: 700;
+  color: #f1f5f9;
   font-family: 'Cairo','Tajawal',sans-serif;
   white-space: nowrap;
-  line-height: 1.2;
-}
-.fs-hsb-sub {
-  font-size: .68rem;
-  color: rgba(148,163,184,0.85);
-  font-family: 'Cairo','Tajawal',sans-serif;
-  white-space: nowrap;
+  line-height: 1.25;
 }
 
-/* arrow */
-.fs-hsb-arrow {
-  font-size: 1.2rem;
-  color: rgba(148,163,184,0.6);
-  flex-shrink: 0;
-  transition: transform .2s, color .2s;
-  line-height: 1;
-}
-.fs-hero-sim-btn:hover .fs-hsb-arrow {
-  transform: translateX(-3px);
-  color: #38bdf8;
-}
-
-/* ── Mobile: wrap gracefully ── */
+/* ── Mobile ── */
 @media (max-width: 480px) {
-  .fs-hero-sim-btn { padding: 9px 14px 9px 12px; gap: 8px; }
-  .fs-hsb-label    { font-size: .58rem; }
-  .fs-hsb-main     { font-size: .82rem; }
-  .fs-hsb-sub      { display: none; }
-  .fs-hsb-icon     { width: 30px; height: 30px; }
+  .fs-hero-sim-btn { padding: 8px 14px 8px 10px; gap: 8px; }
+  .fs-hsb-label    { font-size: .56rem; }
+  .fs-hsb-main     { font-size: .8rem; }
+  .fs-hsb-icon     { width: 28px; height: 28px; }
+  .fs-hsb-ring     { width: 14px; height: 14px; }
 }
