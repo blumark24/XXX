@@ -60,12 +60,44 @@
       radial-gradient(circle at 88% 30%, rgba(30,58,138,0.22), transparent 34rem),
       linear-gradient(180deg, #0A0F2C 0%, #071024 48%, #0A0F2C 100%);
   }
+  #codex-animated-bg::before {
+    content: "";
+    position: absolute;
+    inset: -20%;
+    background-image:
+      linear-gradient(rgba(34,211,238,0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(34,211,238,0.045) 1px, transparent 1px);
+    background-size: 56px 56px;
+    opacity: 0.28;
+    transform: translate3d(0,0,0);
+    animation: codexGridMove 26s linear infinite;
+  }
+  #codex-animated-bg::after {
+    content: "";
+    position: absolute;
+    inset: -30%;
+    background:
+      radial-gradient(circle at 50% 20%, rgba(34,211,238,0.18), transparent 28rem),
+      radial-gradient(circle at 20% 60%, rgba(30,111,217,0.16), transparent 24rem),
+      radial-gradient(circle at 80% 75%, rgba(0,168,255,0.12), transparent 26rem);
+    filter: blur(18px);
+    opacity: 0.9;
+    animation: codexVerticalFlow 18s ease-in-out infinite alternate;
+  }
+  @keyframes codexGridMove {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(0, 56px, 0); }
+  }
+  @keyframes codexVerticalFlow {
+    from { transform: translate3d(0, -4%, 0) scale(1); }
+    to   { transform: translate3d(0, 4%, 0) scale(1.05); }
+  }
   #codex-neural-canvas {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
-    opacity: 0.5;
+    opacity: 0.75;
   }
   #codex-light-orb {
     position: fixed;
@@ -206,9 +238,17 @@
   }
 
   /* Ensure all page content sits above #codex-animated-bg (z-index:0) */
-  #navbar, section, footer, #chatbot-bubble, #chatbot-panel, #subscriptionModal {
+  nav, section, footer, #chatbot-bubble, #chatbot-panel, #subscriptionModal {
     position: relative;
+  }
+  section, footer {
     z-index: 2;
+  }
+  #navbar {
+    z-index: 1000;
+  }
+  #chatbot-bubble, #chatbot-panel {
+    z-index: 999;
   }
 
   /* NAVBAR */
@@ -463,6 +503,18 @@
 
     #codex-light-orb {
       display: none;
+    }
+    #codex-neural-canvas {
+      opacity: 0.85;
+    }
+    #codex-animated-bg::before {
+      background-size: 42px 42px;
+      opacity: 0.22;
+      animation-duration: 22s;
+    }
+    #codex-animated-bg::after {
+      opacity: 0.72;
+      filter: blur(22px);
     }
 
     .float-anim,
