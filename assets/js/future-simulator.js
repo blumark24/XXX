@@ -339,8 +339,10 @@
   function openModal() {
     buildModal();
     reset();
-    $('fs-modal').classList.add('open');
+    const m = $('fs-modal');
+    m.classList.add('open', 'fs-opening');
     document.body.style.overflow = 'hidden';
+    setTimeout(() => m.classList.remove('fs-opening'), 500);
   }
   function closeModal() {
     const m = $('fs-modal');
