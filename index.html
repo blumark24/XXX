@@ -1552,6 +1552,22 @@
   </div>
 </section>
 
+<!-- ══════════════════════════════════════ FUTURE SIMULATOR CTA ══════════════════════════════════════ -->
+<section class="py-20 relative z-10 text-center">
+  <div class="max-w-3xl mx-auto px-4">
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6 text-xs font-bold text-[#00A8FF]" style="background:rgba(0,168,255,0.08);border:1px solid rgba(0,168,255,0.25)">
+      <span class="w-1.5 h-1.5 rounded-full bg-[#00A8FF] animate-pulse inline-block"></span>
+      مجاناً · بدون تسجيل · 60 ثانية فقط
+    </div>
+    <h2 class="text-3xl sm:text-4xl font-black text-white mb-4">شاهد <span class="neon-text">مستقبل مشروعك</span> الآن</h2>
+    <p class="text-gray-400 mb-8 text-base">أدخل بيانات مشروعك ونبني لك التوأم الرقمي الكامل خلال ثوانٍ</p>
+    <button onclick="openFutureSimulator()" class="btn-primary inline-flex items-center gap-3 px-10 py-5 rounded-2xl text-white text-lg font-black pulse-anim">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      شاهد مستقبل مشروعك مجاناً
+    </button>
+  </div>
+</section>
+
 <!-- ══════════════════════════════════════ FOOTER ══════════════════════════════════════ -->
 <footer class="relative z-10 py-12 border-t border-[rgba(0,168,255,0.1)]">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -2099,6 +2115,547 @@ document.getElementById('subscriptionModal').addEventListener('click', function(
 // Close on Escape
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeSubscriptionForm();
+});
+</script>
+
+<!-- ══════════════════════ FUTURE SIMULATOR MODAL ══════════════════════ -->
+<div id="futureSimulatorModal" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(5,10,28,0.92);backdrop-filter:blur(12px);overflow-y:auto;padding:16px 12px;">
+
+<style>
+/* ── Future Simulator ── */
+#fsPanel{max-width:860px;margin:0 auto;font-family:'Cairo','Tajawal',sans-serif;color:#e2e8f0}
+.fs-close-btn{position:fixed;top:16px;left:16px;z-index:10001;width:38px;height:38px;border-radius:12px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);cursor:pointer;color:#94a3b8;font-size:20px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.fs-close-btn:hover{background:rgba(255,100,100,0.15);border-color:rgba(255,100,100,0.4);color:#f87171}
+.fs-step{display:none}.fs-step.active{display:block}
+.fs-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.04em;background:rgba(0,168,255,0.1);border:1px solid rgba(0,168,255,0.28);color:#00A8FF;margin-bottom:18px}
+.fs-title{font-size:1.6rem;font-weight:900;color:#fff;margin-bottom:6px;line-height:1.25}
+.fs-sub{font-size:.88rem;color:#64748b;margin-bottom:22px}
+.fs-field label{font-size:.8rem;color:#94a3b8;display:block;margin-bottom:6px}
+.fs-field{margin-bottom:14px}
+.fs-input,.fs-select{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(0,168,255,0.2);border-radius:12px;padding:10px 14px;color:#e2e8f0;font-family:'Cairo','Tajawal',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s}
+.fs-input:focus,.fs-select:focus{border-color:rgba(0,168,255,0.6)}
+.fs-select option{background:#0a0f2c}
+.fs-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.fs-chip{padding:7px 14px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(0,168,255,0.2);color:#94a3b8;font-size:.82rem;cursor:pointer;transition:all .2s;font-family:'Cairo','Tajawal',sans-serif}
+.fs-chip.sel{background:rgba(0,168,255,0.18);border-color:rgba(0,168,255,0.7);color:#00A8FF;font-weight:700}
+.fs-toggle-row{display:flex;gap:8px}
+.fs-toggle-btn{flex:1;padding:9px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(0,168,255,0.2);color:#94a3b8;font-size:.82rem;cursor:pointer;transition:all .2s;font-family:'Cairo','Tajawal',sans-serif;text-align:center}
+.fs-toggle-btn.sel{background:rgba(0,168,255,0.15);border-color:rgba(0,168,255,0.6);color:#00A8FF;font-weight:700}
+.fs-btn-primary{background:linear-gradient(135deg,#00A8FF,#0077CC);border:none;border-radius:14px;padding:14px 24px;color:#fff;font-family:'Cairo','Tajawal',sans-serif;font-size:1rem;font-weight:800;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:10px;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 20px rgba(0,168,255,0.3);margin-top:8px}
+.fs-btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,168,255,0.45)}
+
+/* Processing */
+.fs-proc-stage{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(0,168,255,0.1);margin-bottom:10px;opacity:.35;transition:all .5s}
+.fs-proc-stage.done{opacity:1;border-color:rgba(0,168,255,0.4);background:rgba(0,168,255,0.06)}
+.fs-proc-stage.active{opacity:1;border-color:rgba(0,168,255,0.5);background:rgba(0,168,255,0.09)}
+.fs-proc-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;background:rgba(0,168,255,0.12);border:1px solid rgba(0,168,255,0.25)}
+.fs-proc-spinner{width:18px;height:18px;border:2px solid rgba(0,168,255,0.3);border-top-color:#00A8FF;border-radius:50%;animation:fsSpin .6s linear infinite;flex-shrink:0}
+.fs-proc-check{width:18px;height:18px;color:#10B981;flex-shrink:0;font-size:16px}
+@keyframes fsSpin{to{transform:rotate(360deg)}}
+
+/* Progress bar */
+.fs-progress-track{height:4px;border-radius:4px;background:rgba(255,255,255,0.06);overflow:hidden;margin-bottom:28px}
+.fs-progress-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#00A8FF,#22d3ee);transition:width .8s ease;width:0%}
+
+/* Digital Twin */
+.fs-twin-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px}
+.fs-ba-toggle{display:flex;background:rgba(255,255,255,0.04);border:1px solid rgba(0,168,255,0.2);border-radius:12px;padding:3px}
+.fs-ba-btn{padding:7px 16px;border-radius:9px;font-size:.82rem;font-weight:700;cursor:pointer;border:none;transition:all .2s;font-family:'Cairo','Tajawal',sans-serif;background:transparent;color:#64748b}
+.fs-ba-btn.active{background:rgba(0,168,255,0.2);color:#00A8FF}
+
+/* Twin canvas */
+.fs-twin-canvas{border-radius:20px;border:1px solid rgba(0,168,255,0.25);background:linear-gradient(135deg,rgba(5,10,28,0.9),rgba(7,18,43,0.95));overflow:hidden;position:relative;min-height:400px;padding:20px}
+.fs-twin-canvas.before-mode{border-color:rgba(100,116,139,0.3)}
+.fs-twin-canvas::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,168,255,0.04),transparent 50%);pointer-events:none}
+
+/* Module cards */
+.fs-modules{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.fs-module{border-radius:14px;padding:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(0,168,255,0.2);transition:all .4s;position:relative;overflow:hidden}
+.fs-module.active{background:rgba(0,168,255,0.08);border-color:rgba(0,168,255,0.45);box-shadow:0 0 20px rgba(0,168,255,0.1)}
+.fs-module.inactive{background:rgba(255,255,255,0.02);border-color:rgba(100,116,139,0.2);opacity:.55;filter:grayscale(.7)}
+.fs-module::after{content:"";position:absolute;inset:0;opacity:0;background:linear-gradient(135deg,rgba(0,168,255,0.12),transparent);transition:opacity .4s;pointer-events:none}
+.fs-module.active::after{opacity:1}
+.fs-mod-icon{font-size:20px;margin-bottom:8px}
+.fs-mod-title{font-size:.78rem;font-weight:700;color:#e2e8f0;margin-bottom:4px}
+.fs-mod-status{font-size:.7rem;color:#64748b}
+.fs-module.active .fs-mod-status{color:#10B981}
+.fs-module.inactive .fs-mod-status{color:#475569}
+
+/* Pulse glow on active modules */
+@keyframes fsModGlow{0%,100%{box-shadow:0 0 10px rgba(0,168,255,0.1)}50%{box-shadow:0 0 22px rgba(0,168,255,0.25)}}
+.fs-module.active{animation:fsModGlow 3s ease-in-out infinite}
+
+/* Metrics row */
+.fs-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+@media(max-width:600px){.fs-metrics{grid-template-columns:repeat(2,1fr)}.fs-modules{grid-template-columns:repeat(2,1fr)}.fs-title{font-size:1.25rem}}
+.fs-metric{border-radius:12px;padding:12px 10px;text-align:center;background:rgba(255,255,255,0.03);border:1px solid rgba(0,168,255,0.15)}
+.fs-metric.active{background:rgba(0,168,255,0.07);border-color:rgba(0,168,255,0.35)}
+.fs-metric-val{font-size:1.2rem;font-weight:900;color:#00A8FF;margin-bottom:2px}
+.fs-metric.inactive .fs-metric-val{color:#475569}
+.fs-metric-label{font-size:.68rem;color:#64748b}
+
+/* Scanner line */
+@keyframes fsScan{0%{top:-2px}100%{top:calc(100% + 2px)}}
+.fs-scanner{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(0,168,255,0.6),transparent);animation:fsScan 3s linear infinite;pointer-events:none;z-index:1}
+
+/* Floating particles */
+@keyframes fsFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-8px) scale(1.05)}}
+.fs-float{animation:fsFloat 4s ease-in-out infinite}
+
+/* Automation lines */
+.fs-flow-line{stroke-dasharray:6 4;stroke-dashoffset:0;animation:fsDash 2s linear infinite}
+@keyframes fsDash{to{stroke-dashoffset:-20}}
+
+/* CTA */
+.fs-wa-btn{background:linear-gradient(135deg,#25D366,#128C7E);border:none;border-radius:14px;padding:14px 24px;color:#fff;font-family:'Cairo','Tajawal',sans-serif;font-size:1rem;font-weight:800;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:10px;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 20px rgba(37,211,102,0.3);margin-top:14px}
+.fs-wa-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(37,211,102,0.45)}
+
+/* before mode overlay */
+.before-overlay{position:absolute;inset:0;background:rgba(15,20,40,0.45);border-radius:20px;pointer-events:none;z-index:2;display:none}
+.before-mode .before-overlay{display:block}
+</style>
+
+<button class="fs-close-btn" onclick="closeFutureSimulator()" aria-label="إغلاق">×</button>
+
+<div id="fsPanel">
+  <!-- ── STEP 1: FORM ── -->
+  <div id="fsStep1" class="fs-step active" style="padding-top:20px">
+    <div class="fs-badge"><span style="width:6px;height:6px;border-radius:50%;background:#00A8FF;display:inline-block"></span> Blumark24 Future Simulator™</div>
+    <div class="fs-title">محاكي مستقبل مشروعك</div>
+    <div class="fs-sub">6 أسئلة فقط · نبني لك التوأم الرقمي كاملاً</div>
+
+    <div class="fs-field">
+      <label>نوع النشاط التجاري <span style="color:#ef4444">*</span></label>
+      <div class="fs-chips" id="fsBusinessChips">
+        <button class="fs-chip" data-v="مطعم" onclick="fsSelectChip(this,'fsBusinessChips','fsBusiness')">🍽️ مطعم</button>
+        <button class="fs-chip" data-v="كافيه" onclick="fsSelectChip(this,'fsBusinessChips','fsBusiness')">☕ كافيه</button>
+        <button class="fs-chip" data-v="عيادة" onclick="fsSelectChip(this,'fsBusinessChips','fsBusiness')">🏥 عيادة</button>
+        <button class="fs-chip" data-v="متجر" onclick="fsSelectChip(this,'fsBusinessChips','fsBusiness')">🛍️ متجر</button>
+        <button class="fs-chip" data-v="فندق" onclick="fsSelectChip(this,'fsBusinessChips','fsBusiness')">🏨 فندق</button>
+        <button class="fs-chip" data-v="شركة" onclick="fsSelectChip(this,'fsBusinessChips','fsBusiness')">🏢 شركة</button>
+      </div>
+      <input type="hidden" id="fsBusiness">
+    </div>
+
+    <div class="fs-field">
+      <label>المدينة</label>
+      <input id="fsCity" class="fs-input" type="text" placeholder="مثال: الرياض، جدة، الدمام...">
+    </div>
+
+    <div class="fs-field">
+      <label>أكبر تحدٍّ تواجهه <span style="color:#ef4444">*</span></label>
+      <div class="fs-chips" id="fsChallengeChips">
+        <button class="fs-chip" data-v="المبيعات" onclick="fsSelectChip(this,'fsChallengeChips','fsChallenge')">📈 المبيعات</button>
+        <button class="fs-chip" data-v="الردود" onclick="fsSelectChip(this,'fsChallengeChips','fsChallenge')">💬 الردود</button>
+        <button class="fs-chip" data-v="الحجوزات" onclick="fsSelectChip(this,'fsChallengeChips','fsChallenge')">📅 الحجوزات</button>
+        <button class="fs-chip" data-v="الظهور" onclick="fsSelectChip(this,'fsChallengeChips','fsChallenge')">🌐 الظهور</button>
+        <button class="fs-chip" data-v="التنظيم" onclick="fsSelectChip(this,'fsChallengeChips','fsChallenge')">⚙️ التنظيم</button>
+      </div>
+      <input type="hidden" id="fsChallenge">
+    </div>
+
+    <div class="fs-field">
+      <label>هل لديك موقع إلكتروني؟</label>
+      <div class="fs-toggle-row" id="fsWebsiteBtns">
+        <button class="fs-toggle-btn" data-v="نعم" onclick="fsToggle(this,'fsWebsiteBtns','fsHasWeb')">نعم ✅</button>
+        <button class="fs-toggle-btn" data-v="لا" onclick="fsToggle(this,'fsWebsiteBtns','fsHasWeb')">لا ❌</button>
+      </div>
+      <input type="hidden" id="fsHasWeb">
+    </div>
+
+    <div class="fs-field">
+      <label>هل لديك واتساب أعمال؟</label>
+      <div class="fs-toggle-row" id="fsWaBtns">
+        <button class="fs-toggle-btn" data-v="نعم" onclick="fsToggle(this,'fsWaBtns','fsHasWa')">نعم ✅</button>
+        <button class="fs-toggle-btn" data-v="لا" onclick="fsToggle(this,'fsWaBtns','fsHasWa')">لا ❌</button>
+      </div>
+      <input type="hidden" id="fsHasWa">
+    </div>
+
+    <div class="fs-field">
+      <label>هل لديك Google Maps مفعّل؟</label>
+      <div class="fs-toggle-row" id="fsMapsBtns">
+        <button class="fs-toggle-btn" data-v="نعم" onclick="fsToggle(this,'fsMapsBtns','fsHasMaps')">نعم ✅</button>
+        <button class="fs-toggle-btn" data-v="لا" onclick="fsToggle(this,'fsMapsBtns','fsHasMaps')">لا ❌</button>
+      </div>
+      <input type="hidden" id="fsHasMaps">
+    </div>
+
+    <div id="fsFormError" style="display:none;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);border-radius:10px;padding:10px 14px;color:#fca5a5;font-size:.85rem;text-align:center;margin-top:8px">
+      فضلاً اختر نوع النشاط والتحدي الأكبر.
+    </div>
+
+    <button class="fs-btn-primary" onclick="fsStartProcessing()">
+      <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      ابنِ توأمي الرقمي الآن
+    </button>
+  </div>
+
+  <!-- ── STEP 2: PROCESSING ── -->
+  <div id="fsStep2" class="fs-step" style="padding-top:40px;max-width:480px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:32px">
+      <div style="width:64px;height:64px;border-radius:20px;background:linear-gradient(135deg,rgba(0,168,255,0.2),rgba(30,58,138,0.3));border:1px solid rgba(0,168,255,0.4);display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:28px">🧠</div>
+      <div class="fs-title" style="font-size:1.3rem">جارٍ بناء التوأم الرقمي لمشروعك...</div>
+      <div class="fs-sub">يرجى الانتظار · نحن نبني مستقبلك</div>
+    </div>
+    <div class="fs-progress-track"><div class="fs-progress-fill" id="fsProcProgress"></div></div>
+    <div id="fsProcStages">
+      <div class="fs-proc-stage" id="fsStg0">
+        <div class="fs-proc-icon">🔍</div>
+        <div style="flex:1"><div style="font-size:.88rem;font-weight:700;color:#e2e8f0">تحليل الظهور الرقمي</div><div style="font-size:.75rem;color:#64748b">فحص وجودك على الإنترنت</div></div>
+        <div class="fs-proc-spinner" id="fsSpinner0" style="display:none"></div>
+        <div class="fs-proc-check" id="fsCheck0" style="display:none">✓</div>
+      </div>
+      <div class="fs-proc-stage" id="fsStg1">
+        <div class="fs-proc-icon">🗺️</div>
+        <div style="flex:1"><div style="font-size:.88rem;font-weight:700;color:#e2e8f0">بناء رحلة العميل</div><div style="font-size:.75rem;color:#64748b">رسم نقاط تفاعل العميل معك</div></div>
+        <div class="fs-proc-spinner" id="fsSpinner1" style="display:none"></div>
+        <div class="fs-proc-check" id="fsCheck1" style="display:none">✓</div>
+      </div>
+      <div class="fs-proc-stage" id="fsStg2">
+        <div class="fs-proc-icon">⚡</div>
+        <div style="flex:1"><div style="font-size:.88rem;font-weight:700;color:#e2e8f0">اكتشاف فرص الأتمتة</div><div style="font-size:.75rem;color:#64748b">تحديد العمليات القابلة للأتمتة</div></div>
+        <div class="fs-proc-spinner" id="fsSpinner2" style="display:none"></div>
+        <div class="fs-proc-check" id="fsCheck2" style="display:none">✓</div>
+      </div>
+      <div class="fs-proc-stage" id="fsStg3">
+        <div class="fs-proc-icon">🚀</div>
+        <div style="flex:1"><div style="font-size:.88rem;font-weight:700;color:#e2e8f0">تجهيز النسخة المستقبلية</div><div style="font-size:.75rem;color:#64748b">بناء التوأم الرقمي لمشروعك</div></div>
+        <div class="fs-proc-spinner" id="fsSpinner3" style="display:none"></div>
+        <div class="fs-proc-check" id="fsCheck3" style="display:none">✓</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STEP 3: RESULT ── -->
+  <div id="fsStep3" class="fs-step" style="padding-top:20px">
+    <div class="fs-badge"><span style="width:6px;height:6px;border-radius:50%;background:#10B981;display:inline-block"></span> التوأم الرقمي جاهز ✓</div>
+    <div class="fs-twin-header">
+      <div>
+        <div class="fs-title" id="fsTwinTitle">التوأم الرقمي لمشروعك خلال 30 يوم</div>
+        <div class="fs-sub" id="fsTwinSub">هذا ما سيبدو عليه مشروعك بعد Blumark24</div>
+      </div>
+      <div class="fs-ba-toggle">
+        <button class="fs-ba-btn active" id="fsBtnAfter" onclick="fsShowAfter()">بعد Blumark24 ✨</button>
+        <button class="fs-ba-btn" id="fsBtnBefore" onclick="fsShowBefore()">مشروعي الآن</button>
+      </div>
+    </div>
+
+    <!-- Digital Twin Canvas -->
+    <div class="fs-twin-canvas" id="fsTwinCanvas">
+      <div class="before-overlay" id="fsBeforeOverlay"></div>
+      <div class="fs-scanner" id="fsTwinScanner"></div>
+
+      <!-- Top bar mockup -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding:10px 14px;background:rgba(255,255,255,0.04);border-radius:12px;border:1px solid rgba(0,168,255,0.15)">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="width:8px;height:8px;border-radius:50%;background:#10B981;animation:pulse 2s infinite"></div>
+          <span style="font-size:.78rem;color:#94a3b8;font-weight:700" id="fsDashTitle">لوحة تحكم ذكية</span>
+        </div>
+        <div style="display:flex;gap:6px">
+          <div style="width:8px;height:8px;border-radius:50%;background:rgba(0,168,255,0.4)"></div>
+          <div style="width:8px;height:8px;border-radius:50%;background:rgba(34,211,238,0.3)"></div>
+          <div style="width:8px;height:8px;border-radius:50%;background:rgba(16,185,129,0.3)"></div>
+        </div>
+      </div>
+
+      <!-- Modules grid -->
+      <div class="fs-modules" id="fsModules"></div>
+
+      <!-- Mini chart + metrics -->
+      <div style="margin-top:14px;padding:14px;background:rgba(255,255,255,0.02);border-radius:14px;border:1px solid rgba(0,168,255,0.12)">
+        <div style="font-size:.75rem;color:#64748b;margin-bottom:8px;font-weight:700" id="fsMetricTitle">مؤشرات الأداء المتوقعة</div>
+        <div class="fs-metrics" id="fsMetrics"></div>
+      </div>
+
+      <!-- SVG flow lines -->
+      <svg width="100%" height="40" style="margin-top:10px;overflow:visible" id="fsFlowSvg">
+        <line x1="10%" y1="20" x2="90%" y2="20" stroke="rgba(0,168,255,0.3)" stroke-width="1.5" class="fs-flow-line"/>
+        <circle cx="10%" cy="20" r="3" fill="#00A8FF"/>
+        <circle cx="30%" cy="20" r="3" fill="rgba(0,168,255,0.5)"/>
+        <circle cx="55%" cy="20" r="3" fill="rgba(34,211,238,0.5)"/>
+        <circle cx="90%" cy="20" r="3" fill="#10B981"/>
+      </svg>
+    </div>
+
+    <!-- Package suggestion -->
+    <div style="margin-top:16px;padding:16px;border-radius:16px;background:linear-gradient(135deg,rgba(0,168,255,0.08),rgba(30,58,138,0.1));border:1px solid rgba(0,168,255,0.25)">
+      <div style="font-size:.78rem;color:#64748b;margin-bottom:4px">الباقة المقترحة لك</div>
+      <div style="font-size:1.1rem;font-weight:900;color:#00A8FF" id="fsSuggestedPkg">GROWTH — 999 ريال شهرياً</div>
+      <div style="font-size:.8rem;color:#94a3b8;margin-top:4px" id="fsPkgReason">الأنسب لحجم نشاطك وتحدياتك الحالية</div>
+    </div>
+
+    <!-- WhatsApp CTA -->
+    <button class="fs-wa-btn" id="fsWaBtn" onclick="fsSendWhatsApp()">
+      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      أرسل لي خطة النمو المجانية
+    </button>
+
+    <div style="text-align:center;margin-top:12px">
+      <button onclick="fsReset()" style="background:none;border:none;color:#64748b;font-size:.8rem;cursor:pointer;font-family:'Cairo','Tajawal',sans-serif">↩ ابدأ من جديد</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+// ════════════════════════════════════════════
+// FUTURE SIMULATOR — Blumark24
+// ════════════════════════════════════════════
+
+// Business-type module definitions
+const FS_MODULES = {
+  'مطعم':  [
+    {icon:'🤖',title:'واتساب AI',desc:'يرد ويبيع'},
+    {icon:'📋',title:'Smart Menu',desc:'منيو رقمي ذكي'},
+    {icon:'🛒',title:'الطلبات',desc:'إدارة آنية'},
+    {icon:'⭐',title:'Google Reviews',desc:'تعزيز التقييم'},
+    {icon:'❤️',title:'Loyalty',desc:'برنامج ولاء'},
+    {icon:'📊',title:'تقارير',desc:'مبيعات يومية'},
+  ],
+  'كافيه': [
+    {icon:'🤖',title:'واتساب AI',desc:'يرد ويبيع'},
+    {icon:'📋',title:'Smart Menu',desc:'منيو رقمي'},
+    {icon:'🛒',title:'الطلبات',desc:'إدارة آنية'},
+    {icon:'⭐',title:'Google Reviews',desc:'تعزيز التقييم'},
+    {icon:'❤️',title:'Loyalty',desc:'برنامج ولاء'},
+    {icon:'📊',title:'تقارير',desc:'إيرادات يومية'},
+  ],
+  'عيادة': [
+    {icon:'🤖',title:'AI استقبال',desc:'يرد 24/7'},
+    {icon:'📅',title:'الحجوزات',desc:'جدولة ذكية'},
+    {icon:'💊',title:'تذكير المرضى',desc:'آلي ودقيق'},
+    {icon:'📊',title:'تقارير زيارات',desc:'إحصاءات شاملة'},
+    {icon:'🗂️',title:'ملفات المرضى',desc:'CRM طبي'},
+    {icon:'⭐',title:'تقييمات',desc:'بناء السمعة'},
+  ],
+  'متجر': [
+    {icon:'🤖',title:'دعم AI',desc:'يرد ويبيع'},
+    {icon:'🛒',title:'الطلبات',desc:'تتبع آني'},
+    {icon:'💡',title:'توصيات',desc:'Upsell ذكي'},
+    {icon:'📦',title:'المخزون',desc:'تنبيهات تلقائية'},
+    {icon:'👥',title:'CRM',desc:'بيانات العملاء'},
+    {icon:'📊',title:'تقارير',desc:'أداء المبيعات'},
+  ],
+  'فندق': [
+    {icon:'🤖',title:'AI مساعد',desc:'خدمة النزلاء'},
+    {icon:'📅',title:'الحجوزات',desc:'نظام ذكي'},
+    {icon:'🏠',title:'الإشغال',desc:'Dashboard آني'},
+    {icon:'⭐',title:'التقييمات',desc:'إدارة السمعة'},
+    {icon:'🔔',title:'تنبيهات',desc:'Check-in/out'},
+    {icon:'📊',title:'الإيرادات',desc:'تقارير يومية'},
+  ],
+  'شركة': [
+    {icon:'👥',title:'CRM',desc:'إدارة العملاء'},
+    {icon:'🎯',title:'Leads',desc:'متابعة المبيعات'},
+    {icon:'⚙️',title:'Workflow',desc:'أتمتة العمليات'},
+    {icon:'🤖',title:'AI مساعد',desc:'دعم الفريق'},
+    {icon:'📊',title:'التقارير',desc:'KPIs متكاملة'},
+    {icon:'📋',title:'المهام',desc:'تنظيم المشاريع'},
+  ],
+};
+
+// Before modules (generic dim version)
+const FS_BEFORE_MODULES = [
+  {icon:'⏳',title:'ردود متأخرة',desc:'يدوي وبطيء'},
+  {icon:'📄',title:'طلبات ورقية',desc:'غير منظمة'},
+  {icon:'❌',title:'لا تقارير',desc:'بدون بيانات'},
+  {icon:'🔇',title:'ظهور ضعيف',desc:'بدون Google'},
+  {icon:'❌',title:'لا CRM',desc:'بيانات مفقودة'},
+  {icon:'💤',title:'بدون أتمتة',desc:'كل شيء يدوي'},
+];
+
+const FS_METRICS_AFTER = {
+  'مطعم':  [{val:'↑68%',lbl:'مبيعات واتساب'},{val:'4.8★',lbl:'تقييم Google'},{val:'×3',lbl:'الطلبات الرقمية'},{val:'0 ث',lbl:'رد فوري'}],
+  'كافيه': [{val:'↑55%',lbl:'طلبات رقمية'},{val:'4.9★',lbl:'تقييم Google'},{val:'×2.5',lbl:'عمليات أسرع'},{val:'0 ث',lbl:'رد فوري'}],
+  'عيادة': [{val:'↑80%',lbl:'حجوزات ممتلئة'},{val:'95%',lbl:'تذكير فعّال'},{val:'0',lbl:'غياب بدون تنبيه'},{val:'24/7',lbl:'استقبال AI'}],
+  'متجر':  [{val:'↑72%',lbl:'إيرادات شهرية'},{val:'×4',lbl:'سرعة الرد'},{val:'↑40%',lbl:'Upsell ناجح'},{val:'0 فقدان',lbl:'عميل'}],
+  'فندق':  [{val:'↑60%',lbl:'إشغال الغرف'},{val:'4.9★',lbl:'التقييم'},{val:'×3',lbl:'رضا النزلاء'},{val:'24/7',lbl:'خدمة AI'}],
+  'شركة':  [{val:'↑85%',lbl:'متابعة Leads'},{val:'×5',lbl:'إنتاجية الفريق'},{val:'↓70%',lbl:'وقت يدوي'},{val:'100%',lbl:'مرئية البيانات'}],
+};
+const FS_METRICS_BEFORE = [
+  {val:'منخفض',lbl:'ظهور رقمي'},
+  {val:'بطيء',lbl:'وقت الرد'},
+  {val:'يدوي',lbl:'كل العمليات'},
+  {val:'مفقود',lbl:'تحليل البيانات'},
+];
+
+const FS_PKG = {
+  'مطعم':'GROWTH — 999 ريال شهرياً','كافيه':'GROWTH — 999 ريال شهرياً',
+  'عيادة':'PRO MAX — 1999 ريال شهرياً','متجر':'GROWTH — 999 ريال شهرياً',
+  'فندق':'PRO MAX — 1999 ريال شهرياً','شركة':'PRO MAX — 1999 ريال شهرياً',
+};
+
+let fsData = {};
+let fsAfterMode = true;
+
+function openFutureSimulator() {
+  document.getElementById('futureSimulatorModal').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+  fsReset();
+}
+function closeFutureSimulator() {
+  document.getElementById('futureSimulatorModal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+document.getElementById('futureSimulatorModal').addEventListener('click', function(e) {
+  if (e.target === this) closeFutureSimulator();
+});
+
+function fsReset() {
+  ['fsStep1','fsStep2','fsStep3'].forEach(id => document.getElementById(id).classList.remove('active'));
+  document.getElementById('fsStep1').classList.add('active');
+  document.getElementById('fsProcProgress').style.width = '0%';
+  document.getElementById('fsFormError').style.display = 'none';
+  document.querySelectorAll('.fs-chip').forEach(c => c.classList.remove('sel'));
+  document.querySelectorAll('.fs-toggle-btn').forEach(b => b.classList.remove('sel'));
+  ['fsBusiness','fsChallenge','fsHasWeb','fsHasWa','fsHasMaps'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  const city = document.getElementById('fsCity');
+  if (city) city.value = '';
+}
+
+function fsSelectChip(btn, groupId, hiddenId) {
+  document.querySelectorAll(`#${groupId} .fs-chip`).forEach(c => c.classList.remove('sel'));
+  btn.classList.add('sel');
+  document.getElementById(hiddenId).value = btn.dataset.v;
+}
+function fsToggle(btn, groupId, hiddenId) {
+  document.querySelectorAll(`#${groupId} .fs-toggle-btn`).forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  document.getElementById(hiddenId).value = btn.dataset.v;
+}
+
+function fsStartProcessing() {
+  const biz = document.getElementById('fsBusiness').value;
+  const challenge = document.getElementById('fsChallenge').value;
+  if (!biz || !challenge) {
+    document.getElementById('fsFormError').style.display = 'block';
+    return;
+  }
+  document.getElementById('fsFormError').style.display = 'none';
+  fsData = {
+    biz, challenge,
+    city: document.getElementById('fsCity').value || 'غير محددة',
+    hasWeb: document.getElementById('fsHasWeb').value || 'غير محدد',
+    hasWa: document.getElementById('fsHasWa').value || 'غير محدد',
+    hasMaps: document.getElementById('fsHasMaps').value || 'غير محدد',
+  };
+
+  document.getElementById('fsStep1').classList.remove('active');
+  document.getElementById('fsStep2').classList.add('active');
+  document.getElementById('futureSimulatorModal').scrollTop = 0;
+
+  fsRunProcessing();
+}
+
+function fsRunProcessing() {
+  const stages = [0,1,2,3];
+  const progSteps = [25,50,75,100];
+  let i = 0;
+  function next() {
+    if (i >= stages.length) {
+      setTimeout(() => {
+        document.getElementById('fsStep2').classList.remove('active');
+        fsBuildResult();
+        document.getElementById('fsStep3').classList.add('active');
+        document.getElementById('futureSimulatorModal').scrollTop = 0;
+      }, 400);
+      return;
+    }
+    const stg = document.getElementById('fsStg' + i);
+    const spin = document.getElementById('fsSpinner' + i);
+    const check = document.getElementById('fsCheck' + i);
+    stg.classList.add('active');
+    spin.style.display = 'block';
+    document.getElementById('fsProcProgress').style.width = (progSteps[i] - 15) + '%';
+    setTimeout(() => {
+      spin.style.display = 'none';
+      check.style.display = 'block';
+      stg.classList.remove('active');
+      stg.classList.add('done');
+      document.getElementById('fsProcProgress').style.width = progSteps[i] + '%';
+      i++;
+      setTimeout(next, 300);
+    }, 900);
+  }
+  next();
+}
+
+function fsBuildResult() {
+  const biz = fsData.biz;
+  fsAfterMode = true;
+  document.getElementById('fsTwinTitle').textContent = `التوأم الرقمي لـ "${biz}" خلال 30 يوماً`;
+  document.getElementById('fsTwinSub').textContent = 'اضغط "مشروعي الآن" لرؤية الفرق';
+  document.getElementById('fsDashTitle').textContent = `لوحة تحكم ${biz} الذكية`;
+  document.getElementById('fsSuggestedPkg').textContent = FS_PKG[biz] || 'GROWTH — 999 ريال شهرياً';
+  document.getElementById('fsPkgReason').textContent = 'الأنسب لحجم نشاطك وتحدياتك الحالية';
+  document.getElementById('fsBtnAfter').classList.add('active');
+  document.getElementById('fsBtnBefore').classList.remove('active');
+  document.getElementById('fsBeforeOverlay').style.display = 'none';
+  document.getElementById('fsTwinCanvas').classList.remove('before-mode');
+  fsRenderModules(FS_MODULES[biz] || FS_MODULES['شركة'], true);
+  fsRenderMetrics(FS_METRICS_AFTER[biz] || FS_METRICS_AFTER['شركة'], true);
+  document.getElementById('fsMetricTitle').textContent = 'مؤشرات الأداء المتوقعة بعد 30 يوم';
+}
+
+function fsShowAfter() {
+  fsAfterMode = true;
+  const biz = fsData.biz;
+  document.getElementById('fsBtnAfter').classList.add('active');
+  document.getElementById('fsBtnBefore').classList.remove('active');
+  document.getElementById('fsBeforeOverlay').style.display = 'none';
+  document.getElementById('fsTwinCanvas').classList.remove('before-mode');
+  fsRenderModules(FS_MODULES[biz] || FS_MODULES['شركة'], true);
+  fsRenderMetrics(FS_METRICS_AFTER[biz] || FS_METRICS_AFTER['شركة'], true);
+  document.getElementById('fsDashTitle').textContent = `لوحة تحكم ${biz} الذكية`;
+  document.getElementById('fsMetricTitle').textContent = 'مؤشرات الأداء المتوقعة بعد 30 يوم';
+}
+
+function fsShowBefore() {
+  fsAfterMode = false;
+  document.getElementById('fsBtnBefore').classList.add('active');
+  document.getElementById('fsBtnAfter').classList.remove('active');
+  document.getElementById('fsBeforeOverlay').style.display = 'block';
+  document.getElementById('fsTwinCanvas').classList.add('before-mode');
+  fsRenderModules(FS_BEFORE_MODULES, false);
+  fsRenderMetrics(FS_METRICS_BEFORE, false);
+  document.getElementById('fsDashTitle').textContent = 'الوضع الحالي';
+  document.getElementById('fsMetricTitle').textContent = 'مؤشرات الأداء الحالية';
+}
+
+function fsRenderModules(modules, active) {
+  const container = document.getElementById('fsModules');
+  container.innerHTML = modules.map(m => `
+    <div class="fs-module ${active ? 'active' : 'inactive'} fs-float" style="animation-delay:${Math.random()*2}s">
+      <div class="fs-mod-icon">${m.icon}</div>
+      <div class="fs-mod-title">${m.title}</div>
+      <div class="fs-mod-status">${active ? '● نشط' : '○ ' + m.desc}</div>
+    </div>
+  `).join('');
+}
+
+function fsRenderMetrics(metrics, active) {
+  const container = document.getElementById('fsMetrics');
+  container.innerHTML = metrics.map(m => `
+    <div class="fs-metric ${active ? 'active' : 'inactive'}">
+      <div class="fs-metric-val">${m.val}</div>
+      <div class="fs-metric-label">${m.lbl}</div>
+    </div>
+  `).join('');
+}
+
+function fsSendWhatsApp() {
+  const d = fsData;
+  const pkg = FS_PKG[d.biz] || 'GROWTH';
+  const msg = `مرحباً Blumark24 🌟\n\nأريد خطة النمو المجانية لمشروعي 🚀\n\n🏢 نوع النشاط: ${d.biz}\n📍 المدينة: ${d.city}\n🎯 أكبر تحدي: ${d.challenge}\n🌐 موقع: ${d.hasWeb}\n💬 واتساب أعمال: ${d.hasWa}\n📍 Google Maps: ${d.hasMaps}\n📦 الباقة المقترحة: ${pkg}\n\nأرجو إرسال خطة النمو التفصيلية لمشروعي.`;
+  window.open('https://wa.me/966507006849?text=' + encodeURIComponent(msg), '_blank');
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeFutureSimulator();
 });
 </script>
 </body>
