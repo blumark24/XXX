@@ -221,22 +221,63 @@
   function screenResult() {
     return `
 <div id="fs-scr-result" class="fs-screen">
-  <div class="fs-result-header">
-    <div class="fs-result-badge">
-      <span class="fs-result-dot"></span>
-      تم اكتشاف 3 فرص نمو
+
+  <!-- ── Header ── -->
+  <div class="fs-dt-header">
+    <div class="fs-dt-badge"><span class="fs-dt-dot"></span> تم اكتشاف 3 فرص نمو</div>
+    <div class="fs-dt-title" id="fs-res-title">نتائج فحص مشروعك</div>
+  </div>
+
+  <!-- ── Cinematic Digital Twin Dashboard ── -->
+  <div class="fs-dt-canvas" id="fs-dt-canvas">
+    <!-- grid background -->
+    <div class="fs-dt-grid" aria-hidden="true"></div>
+    <!-- scanner line -->
+    <div class="fs-dt-scanner" aria-hidden="true"></div>
+    <!-- AI dots -->
+    <div class="fs-dt-dots" aria-hidden="true">
+      <span class="fs-dot fs-dot-1"></span>
+      <span class="fs-dot fs-dot-2"></span>
+      <span class="fs-dot fs-dot-3"></span>
+      <span class="fs-dot fs-dot-4"></span>
     </div>
-    <h3 class="fs-result-title" id="fs-res-title">نتائج فحص مشروعك</h3>
+
+    <!-- top status bar -->
+    <div class="fs-dt-topbar">
+      <div class="fs-dt-topbar-left">
+        <span class="fs-dt-live-dot"></span>
+        <span class="fs-dt-topbar-label" id="fs-dt-label">Digital Twin · جارٍ التحليل</span>
+      </div>
+      <div class="fs-dt-topbar-dots">
+        <span style="background:rgba(0,168,255,.5)"></span>
+        <span style="background:rgba(34,211,238,.4)"></span>
+        <span style="background:rgba(16,185,129,.4)"></span>
+      </div>
+    </div>
+
+    <!-- opportunity modules -->
+    <div class="fs-dt-modules" id="fs-dt-modules"></div>
+
+    <!-- flow SVG -->
+    <svg class="fs-dt-flow" height="28" viewBox="0 0 400 28" preserveAspectRatio="none" aria-hidden="true">
+      <line x1="2%" y1="14" x2="98%" y2="14"
+            stroke="rgba(0,168,255,.22)" stroke-width="1.2"
+            stroke-dasharray="5 4" class="fs-dt-flow-line"/>
+      <circle cx="2%"  cy="14" r="3" fill="#00A8FF" opacity=".8"/>
+      <circle cx="35%" cy="14" r="2.5" fill="rgba(0,168,255,.55)"/>
+      <circle cx="68%" cy="14" r="2.5" fill="rgba(34,211,238,.55)"/>
+      <circle cx="98%" cy="14" r="3" fill="#10B981" opacity=".8"/>
+    </svg>
   </div>
 
-  <div class="fs-opps-list" id="fs-opps-list"></div>
-
-  <div class="fs-pkg-box">
-    <div class="fs-pkg-label">الحل الأنسب لك</div>
-    <div class="fs-pkg-name" id="fs-res-pkg"></div>
-    <div class="fs-pkg-reason">الأنسب لحجم نشاطك وتحدياتك الحالية</div>
+  <!-- ── Package ── -->
+  <div class="fs-dt-pkg" id="fs-dt-pkg-box">
+    <div class="fs-dt-pkg-label">الحل الأنسب لك</div>
+    <div class="fs-dt-pkg-name" id="fs-res-pkg"></div>
+    <div class="fs-dt-pkg-reason">الأنسب لحجم نشاطك وتحدياتك الحالية</div>
   </div>
 
+  <!-- ── CTAs ── -->
   <button class="fs-wa-btn" id="fs-wa-btn">
     <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
@@ -336,20 +377,29 @@
     tick();
   }
 
-  /* ── Build result ── */
+  /* ── Build cinematic result ── */
+  const MODULE_ICONS = ['🤖','⚡','📊'];
+
   function buildResult() {
-    const sec  = state.sector || 'شركة';
-    const pain = state.pain   || 'المبيعات';
-    const opps = (OPPS[sec] && OPPS[sec][pain]) || OPPS['شركة']['المبيعات'];
+    const sec  = state.sector || 'مطعم';
+    const pain = state.pain   || 'الردود';
+    const opps = (OPPS[sec] && OPPS[sec][pain]) || OPPS['مطعم']['الردود'];
 
-    $('fs-res-title').textContent = `نتائج فحص ${sec} · تحدي ${pain}`;
-    $('fs-res-pkg').textContent   = PKG[sec] || 'GROWTH — 999 ريال/شهر';
+    $('fs-res-title').textContent  = `نتائج فحص ${sec} · تحدي ${pain}`;
+    $('fs-res-pkg').textContent    = PKG[sec] || 'GROWTH — 999 ريال/شهر';
+    $('fs-dt-label').textContent   = `Digital Twin · ${sec}`;
 
-    $('fs-opps-list').innerHTML = opps.map((o, idx) => `
-      <div class="fs-opp-item fs-opp-delay-${idx}">
-        <span class="fs-opp-num">${idx + 1}</span>
-        <span class="fs-opp-text">${o}</span>
-        <span class="fs-opp-check">✓</span>
+    /* render modules with staggered entrance */
+    $('fs-dt-modules').innerHTML = opps.map((o, i) => `
+      <div class="fs-dt-module fs-dt-mod-${i}" style="animation-delay:${i * 0.18 + 0.1}s">
+        <div class="fs-dt-mod-top">
+          <span class="fs-dt-mod-icon">${MODULE_ICONS[i] || '✦'}</span>
+          <span class="fs-dt-mod-num">0${i + 1}</span>
+        </div>
+        <div class="fs-dt-mod-text">${o}</div>
+        <div class="fs-dt-mod-status">
+          <span class="fs-dt-mod-check">✓</span> نشط
+        </div>
       </div>`).join('');
   }
 
@@ -358,11 +408,9 @@
     const msg = [
       'مرحباً Blumark24 👋',
       'أجريت فحص Business X-Ray',
+      `نتائج فحص: ${state.sector || 'غير محدد'}`,
+      `التحدي الأكبر: ${state.pain || 'غير محدد'}`,
       'وأرغب بمعرفة الحل الأنسب لمشروعي.',
-      '',
-      `🏢 النشاط: ${state.sector || 'غير محدد'}`,
-      `🎯 أكبر ضغط: ${state.pain || 'غير محدد'}`,
-      `📦 الباقة المقترحة: ${PKG[state.sector] || 'GROWTH'}`,
     ].join('\n');
     window.open(`https://wa.me/${WAPHONE}?text=${encodeURIComponent(msg)}`, '_blank');
   }
