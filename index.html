@@ -1540,36 +1540,34 @@
           </div>
         </div>
 
-        <!-- Final CTA -->
-        <div class="glass-card rounded-2xl p-6 text-center" style="background: linear-gradient(135deg, rgba(0,168,255,0.1), rgba(30,58,138,0.1))">
-          <p class="text-gray-300 text-sm mb-4">ابدأ اليوم واحصل على <span class="neon-text font-bold">استشارة مجانية</span> مع خبرائنا</p>
-          <button onclick="openSubscriptionForm('استشارة مجانية')"
-             class="btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-bold text-sm cursor-pointer">
-            احجز استشارتك المجانية الآن
+        <!-- Future Simulator Card -->
+        <div class="fs-contact-card glass-card rounded-2xl p-6 relative overflow-hidden" onclick="FS.open()" role="button" tabindex="0" style="cursor:pointer;" onkeydown="if(event.key==='Enter')FS.open()">
+          <!-- animated grid bg -->
+          <div class="fs-cc-grid"></div>
+          <!-- top label -->
+          <div class="fs-cc-badge">
+            <span class="fs-cc-dot"></span>
+            Blumark24 Future Simulator
+          </div>
+          <!-- heading -->
+          <h3 class="fs-cc-title">شاهد مستقبل مشروعك<br>قبل أن تبدأ</h3>
+          <!-- desc -->
+          <p class="fs-cc-desc">محاكاة ذكية تكشف كيف يمكن أن يبدو مشروعك بعد 30 يوم من الأتمتة والذكاء الاصطناعي: ردود أسرع، حجوزات منظمة، تقارير أوضح، ونمو عملاء.</p>
+          <!-- HUD pills -->
+          <div class="fs-cc-hud">
+            <span class="fs-cc-pill">🤖 AI</span>
+            <span class="fs-cc-pill">⚡ أتمتة</span>
+            <span class="fs-cc-pill">📊 تقارير</span>
+            <span class="fs-cc-pill">💬 واتساب</span>
+          </div>
+          <!-- CTA button -->
+          <button class="fs-cc-btn">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            شاهد مستقبل مشروعك مجاناً
           </button>
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ══════════════════ FUTURE SIMULATOR TRIGGER ══════════════════ -->
-<section class="py-20 relative z-10 text-center">
-  <div class="max-w-2xl mx-auto px-4">
-    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-5 text-xs font-bold text-[#00A8FF]" style="background:rgba(0,168,255,0.08);border:1px solid rgba(0,168,255,0.25);">
-      <span class="w-1.5 h-1.5 rounded-full bg-[#00A8FF] animate-pulse inline-block"></span>
-      مجاناً · بدون تسجيل · 60 ثانية فقط
-    </div>
-    <h2 class="text-3xl sm:text-4xl font-black text-white mb-3">
-      شاهد <span class="neon-text">مستقبل مشروعك</span> الآن
-    </h2>
-    <p class="text-gray-400 mb-8 text-base">أدخل بيانات مشروعك ونبني لك التوأم الرقمي الكامل خلال ثوانٍ</p>
-    <button class="fs-trigger-btn" onclick="FS.open()">
-      <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-      </svg>
-      شاهد مستقبل مشروعك مجاناً
-    </button>
   </div>
 </section>
 
