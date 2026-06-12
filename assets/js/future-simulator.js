@@ -230,19 +230,14 @@
 
   <!-- ── Cinematic Digital Twin Dashboard ── -->
   <div class="fs-dt-canvas" id="fs-dt-canvas">
-    <!-- grid background -->
     <div class="fs-dt-grid" aria-hidden="true"></div>
-    <!-- scanner line -->
     <div class="fs-dt-scanner" aria-hidden="true"></div>
-    <!-- AI dots -->
     <div class="fs-dt-dots" aria-hidden="true">
       <span class="fs-dot fs-dot-1"></span>
       <span class="fs-dot fs-dot-2"></span>
       <span class="fs-dot fs-dot-3"></span>
       <span class="fs-dot fs-dot-4"></span>
     </div>
-
-    <!-- top status bar -->
     <div class="fs-dt-topbar">
       <div class="fs-dt-topbar-left">
         <span class="fs-dt-live-dot"></span>
@@ -254,11 +249,7 @@
         <span style="background:rgba(16,185,129,.4)"></span>
       </div>
     </div>
-
-    <!-- opportunity modules -->
     <div class="fs-dt-modules" id="fs-dt-modules"></div>
-
-    <!-- flow SVG -->
     <svg class="fs-dt-flow" height="28" viewBox="0 0 400 28" preserveAspectRatio="none" aria-hidden="true">
       <line x1="2%" y1="14" x2="98%" y2="14"
             stroke="rgba(0,168,255,.22)" stroke-width="1.2"
@@ -268,6 +259,47 @@
       <circle cx="68%" cy="14" r="2.5" fill="rgba(34,211,238,.55)"/>
       <circle cx="98%" cy="14" r="3" fill="#10B981" opacity=".8"/>
     </svg>
+  </div>
+
+  <!-- ── Digital Twin Intelligence Layer ── -->
+  <div class="fs-intel-layer">
+    <!-- scanner line inside layer -->
+    <div class="fs-intel-scan" aria-hidden="true"></div>
+
+    <!-- status row -->
+    <div class="fs-intel-status-row">
+      <div class="fs-intel-stable">
+        <span class="fs-intel-stable-dot"></span>
+        DIGITAL TWIN STABLE
+      </div>
+      <div class="fs-intel-dna">Project DNA Generated</div>
+    </div>
+
+    <!-- metrics grid -->
+    <div class="fs-intel-metrics">
+      <div class="fs-intel-metric fs-im-0">
+        <div class="fs-im-label">Growth Potential</div>
+        <div class="fs-im-val fs-im-green">+31%</div>
+      </div>
+      <div class="fs-intel-metric fs-im-1">
+        <div class="fs-im-label">AI Confidence</div>
+        <div class="fs-im-val fs-im-cyan">92%</div>
+      </div>
+      <div class="fs-intel-metric fs-im-2">
+        <div class="fs-im-label">Automation Readiness</div>
+        <div class="fs-im-val fs-im-blue">74/100</div>
+      </div>
+      <div class="fs-intel-metric fs-im-3">
+        <div class="fs-im-label">Revenue Leak Detection</div>
+        <div class="fs-im-val fs-im-amber">3 Areas Found</div>
+      </div>
+    </div>
+
+    <!-- action step -->
+    <div class="fs-intel-action">
+      <span class="fs-intel-action-label">الخطوة التنفيذية المقترحة</span>
+      <span class="fs-intel-action-text">تفعيل WhatsApp AI لاستعادة العملاء قبل خروجهم</span>
+    </div>
   </div>
 
   <!-- ── Package ── -->
