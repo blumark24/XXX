@@ -557,7 +557,7 @@
   function sendWhatsApp() {
     const msg = [
       'مرحباً Blumark24 👋',
-      'أجريت فحص Business X-Ray',
+      'أجريت فحص Blumark24 Brain',
       `نوع النشاط: ${state.sector || 'غير محدد'}`,
       `أكبر ضغط: ${state.pain || 'غير محدد'}`,
       `المدينة: ${state.city || 'غير محددة'}`,
