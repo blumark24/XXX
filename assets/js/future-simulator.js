@@ -69,10 +69,10 @@
   };
 
   const SCAN_STAGES = [
-    'AI Scanning...',
+    'قراءة نمط المشروع',
     'تحليل رحلة العميل',
-    'تحليل نقاط التسرب',
-    'تحليل فرص الأتمتة',
+    'كشف نقاط التسرب',
+    'تحديد الفرص المخفية',
   ];
 
   /* ── State ── */
@@ -209,7 +209,7 @@
         <path d="M20 20l-3-3" stroke="#00A8FF" stroke-width="2" stroke-linecap="round"/>
       </svg>
     </div>
-    <div class="fs-scan-label" id="fs-scan-label">AI Scanning...</div>
+    <div class="fs-scan-label" id="fs-scan-label">جاري تشغيل Blumark24 Brain...</div>
     <div class="fs-scan-track"><div class="fs-scan-fill" id="fs-scan-fill"></div></div>
     <div class="fs-scan-stages" id="fs-scan-stages">
       ${SCAN_STAGES.map((s,i) => `<div class="fs-scan-stage" id="fs-ss-${i}">${s}</div>`).join('')}
