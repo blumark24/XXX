@@ -558,6 +558,16 @@
   box-shadow: 0 0 10px rgba(0,168,255,.1) inset;
 }
 
+/* city other input */
+.fs-city-other-wrap {
+  margin-top: -4px; margin-bottom: 8px;
+}
+
+/* 2-col forced (for 5-item grids that look better as 2-col) */
+.fs-simple-grid-col2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
 /* ══════════════════════════════════════
    BEFORE / AFTER COMPARE CARD
 ══════════════════════════════════════ */

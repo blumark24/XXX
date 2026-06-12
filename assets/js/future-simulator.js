@@ -76,7 +76,7 @@
   ];
 
   /* ── State ── */
-  let state = { sector: '', pain: '', city: '', source: '', automation: '' };
+  let state = { sector: '', pain: '', city: '', volume: '', dropoff: '', dataclarity: '' };
 
   /* ── Helpers ── */
   const $  = id  => document.getElementById(id);
@@ -109,7 +109,7 @@
 
     const panel = el('div');
     panel.id = 'fs-panel';
-    panel.innerHTML = screenWelcome() + screenSector() + screenPain() + screenCity() + screenSource() + screenAutomation() + screenScan() + screenResult();
+    panel.innerHTML = screenWelcome() + screenSector() + screenPain() + screenCity() + screenVolume() + screenDropoff() + screenDataClarity() + screenScan() + screenResult();
     modal.appendChild(panel);
 
     document.body.appendChild(modal);
@@ -159,7 +159,7 @@
     return `
 <div id="fs-scr-sector" class="fs-screen">
   <div class="fs-step-header">
-    <div class="fs-step-num">01 / 05</div>
+    <div class="fs-step-num">01 / 06</div>
     <h3 class="fs-step-title">ما نوع نشاطك التجاري؟</h3>
     <p class="fs-step-sub">سيُخصِّص الفحص نتائجه بناءً على قطاعك</p>
   </div>
@@ -183,7 +183,7 @@
     return `
 <div id="fs-scr-pain" class="fs-screen">
   <div class="fs-step-header">
-    <div class="fs-step-num">02 / 05</div>
+    <div class="fs-step-num">02 / 06</div>
     <h3 class="fs-step-title">أين أكبر ضغط في مشروعك؟</h3>
     <p class="fs-step-sub">اختر المجال الذي يستهلك وقتك أو يُفقدك عملاء</p>
   </div>
@@ -199,60 +199,83 @@
   }
 
   function screenCity() {
-    const cities = ['مكة','جدة','الرياض','المدينة','الدمام / الخبر','مدينة أخرى'];
+    const cities = ['مكة','جدة','الرياض','المدينة','الدمام / الخبر','أخرى'];
     return `
 <div id="fs-scr-city" class="fs-screen">
   <div class="fs-step-header">
-    <div class="fs-step-num">03 / 05</div>
-    <h3 class="fs-step-title">أين يعمل مشروعك؟</h3>
-    <p class="fs-step-sub">سيساعدنا ذلك في تخصيص التوصيات بدقة</p>
+    <div class="fs-step-num">03 / 06</div>
+    <h3 class="fs-step-title">في أي مدينة يعمل مشروعك؟</h3>
+    <p class="fs-step-sub">نُخصّص التوصيات بناءً على السوق المحلي</p>
   </div>
   <div class="fs-simple-grid" id="fs-city-grid">
     ${cities.map(c => `<button class="fs-simple-card" data-v="${c}">${c}</button>`).join('')}
   </div>
+  <div class="fs-city-other-wrap" id="fs-city-other-wrap" style="display:none">
+    <input class="fs-input" id="fs-city-other-input" type="text" placeholder="اكتب اسم المدينة" maxlength="40">
+  </div>
   <div class="fs-error" id="fs-err-city">اختر المدينة للمتابعة</div>
   <div class="fs-nav-row">
     <button class="fs-back-btn" id="fs-btn-back-pain">← رجوع</button>
-    <button class="fs-xray-next-btn" id="fs-btn-to-source">التالي →</button>
+    <button class="fs-xray-next-btn" id="fs-btn-to-volume">التالي →</button>
   </div>
 </div>`;
   }
 
-  function screenSource() {
-    const sources = ['واتساب','إنستغرام','Google Maps','تيك توك','زيارات مباشرة','إعلانات'];
+  function screenVolume() {
+    const opts = ['أقل من 10','10 - 30','30 - 70','أكثر من 70','غير واضح'];
     return `
-<div id="fs-scr-source" class="fs-screen">
+<div id="fs-scr-volume" class="fs-screen">
   <div class="fs-step-header">
-    <div class="fs-step-num">04 / 05</div>
-    <h3 class="fs-step-title">من أين يأتيك أغلب العملاء؟</h3>
-    <p class="fs-step-sub">القناة الأقوى تحدد أين نضخ الذكاء الاصطناعي</p>
+    <div class="fs-step-num">04 / 06</div>
+    <h3 class="fs-step-title">كم استفسار أو طلب يصلك يومياً؟</h3>
+    <p class="fs-step-sub">يساعدنا في تحديد حجم الأتمتة المطلوبة</p>
   </div>
-  <div class="fs-simple-grid" id="fs-source-grid">
-    ${sources.map(s => `<button class="fs-simple-card" data-v="${s}">${s}</button>`).join('')}
+  <div class="fs-simple-grid fs-simple-grid-col2" id="fs-volume-grid">
+    ${opts.map(o => `<button class="fs-simple-card" data-v="${o}">${o}</button>`).join('')}
   </div>
-  <div class="fs-error" id="fs-err-source">اختر قناة العملاء للمتابعة</div>
+  <div class="fs-error" id="fs-err-volume">اختر حجم التواصل للمتابعة</div>
   <div class="fs-nav-row">
     <button class="fs-back-btn" id="fs-btn-back-city">← رجوع</button>
-    <button class="fs-xray-next-btn" id="fs-btn-to-automation">التالي →</button>
+    <button class="fs-xray-next-btn" id="fs-btn-to-dropoff">التالي →</button>
   </div>
 </div>`;
   }
 
-  function screenAutomation() {
-    const levels = ['كل شيء يدوي','ردود واتساب فقط','حجوزات منظمة','تقارير بسيطة','نظام متكامل','لا أعرف'];
+  function screenDropoff() {
+    const opts = ['يتأخر الرد عليه','يسأل ولا يكمل','لا توجد متابعة','الحجز غير منظم','لا يعرف الأسعار أو الخدمات','لا نعرف السبب'];
     return `
-<div id="fs-scr-automation" class="fs-screen">
+<div id="fs-scr-dropoff" class="fs-screen">
   <div class="fs-step-header">
-    <div class="fs-step-num">05 / 05</div>
-    <h3 class="fs-step-title">ما مستوى الأتمتة عندك الآن؟</h3>
-    <p class="fs-step-sub">نقيس المسافة بينك وبين النسخة المثلى</p>
+    <div class="fs-step-num">05 / 06</div>
+    <h3 class="fs-step-title">أين يضيع العميل قبل أن يُصبح عميلاً فعلياً؟</h3>
+    <p class="fs-step-sub">هذا هو المكان الذي تختفي منه الإيرادات</p>
   </div>
-  <div class="fs-simple-grid" id="fs-auto-grid">
-    ${levels.map(l => `<button class="fs-simple-card" data-v="${l}">${l}</button>`).join('')}
+  <div class="fs-simple-grid" id="fs-dropoff-grid">
+    ${opts.map(o => `<button class="fs-simple-card" data-v="${o}">${o}</button>`).join('')}
   </div>
-  <div class="fs-error" id="fs-err-auto">اختر مستوى الأتمتة للمتابعة</div>
+  <div class="fs-error" id="fs-err-dropoff">اختر نقطة الضياع للمتابعة</div>
   <div class="fs-nav-row">
-    <button class="fs-back-btn" id="fs-btn-back-source">← رجوع</button>
+    <button class="fs-back-btn" id="fs-btn-back-volume">← رجوع</button>
+    <button class="fs-xray-next-btn" id="fs-btn-to-dataclarity">التالي →</button>
+  </div>
+</div>`;
+  }
+
+  function screenDataClarity() {
+    const opts = ['نعم، عندي تقارير','تقريباً','لا، نعتمد على التوقع','لا توجد قراءة واضحة','أحتاج كشف أدق'];
+    return `
+<div id="fs-scr-dataclarity" class="fs-screen">
+  <div class="fs-step-header">
+    <div class="fs-step-num">06 / 06</div>
+    <h3 class="fs-step-title">هل تعرف بالأرقام لماذا تخسر بعض العملاء؟</h3>
+    <p class="fs-step-sub">مستوى الوضوح يحدد عمق الفحص</p>
+  </div>
+  <div class="fs-simple-grid fs-simple-grid-col2" id="fs-dataclarity-grid">
+    ${opts.map(o => `<button class="fs-simple-card" data-v="${o}">${o}</button>`).join('')}
+  </div>
+  <div class="fs-error" id="fs-err-dataclarity">اختر مستوى الوضوح للمتابعة</div>
+  <div class="fs-nav-row">
+    <button class="fs-back-btn" id="fs-btn-back-dropoff">← رجوع</button>
     <button class="fs-xray-next-btn" id="fs-btn-start-scan">ابدأ الفحص ⚡</button>
   </div>
 </div>`;
@@ -434,50 +457,72 @@
       goTo('fs-scr-city');
     });
 
-    /* City chips */
+    /* City chips + "أخرى" input */
     $$('#fs-city-grid .fs-simple-card').forEach(c =>
       c.addEventListener('click', () => {
         $$('#fs-city-grid .fs-simple-card').forEach(x => x.classList.remove('fs-sel'));
-        c.classList.add('fs-sel'); state.city = c.dataset.v;
+        c.classList.add('fs-sel');
+        state.city = c.dataset.v;
         $('fs-err-city').style.display = 'none';
+        const wrap = $('fs-city-other-wrap');
+        if (wrap) wrap.style.display = c.dataset.v === 'أخرى' ? 'block' : 'none';
       }));
-    $('fs-btn-to-source').addEventListener('click', () => {
+    $('fs-btn-to-volume').addEventListener('click', () => {
       if (!state.city) { $('fs-err-city').style.display = 'block'; return; }
-      goTo('fs-scr-source');
+      if (state.city === 'أخرى') {
+        const inp = $('fs-city-other-input');
+        const val = inp && inp.value.trim();
+        if (!val) { $('fs-err-city').style.display = 'block'; return; }
+        state.city = val;
+      }
+      goTo('fs-scr-volume');
     });
 
-    /* Source chips */
-    $$('#fs-source-grid .fs-simple-card').forEach(c =>
+    /* Volume chips */
+    $$('#fs-volume-grid .fs-simple-card').forEach(c =>
       c.addEventListener('click', () => {
-        $$('#fs-source-grid .fs-simple-card').forEach(x => x.classList.remove('fs-sel'));
-        c.classList.add('fs-sel'); state.source = c.dataset.v;
-        $('fs-err-source').style.display = 'none';
+        $$('#fs-volume-grid .fs-simple-card').forEach(x => x.classList.remove('fs-sel'));
+        c.classList.add('fs-sel'); state.volume = c.dataset.v;
+        $('fs-err-volume').style.display = 'none';
       }));
-    $('fs-btn-to-automation').addEventListener('click', () => {
-      if (!state.source) { $('fs-err-source').style.display = 'block'; return; }
-      goTo('fs-scr-automation');
+    $('fs-btn-to-dropoff').addEventListener('click', () => {
+      if (!state.volume) { $('fs-err-volume').style.display = 'block'; return; }
+      goTo('fs-scr-dropoff');
     });
 
-    /* Automation chips */
-    $$('#fs-auto-grid .fs-simple-card').forEach(c =>
+    /* Dropoff chips */
+    $$('#fs-dropoff-grid .fs-simple-card').forEach(c =>
       c.addEventListener('click', () => {
-        $$('#fs-auto-grid .fs-simple-card').forEach(x => x.classList.remove('fs-sel'));
-        c.classList.add('fs-sel'); state.automation = c.dataset.v;
-        $('fs-err-auto').style.display = 'none';
+        $$('#fs-dropoff-grid .fs-simple-card').forEach(x => x.classList.remove('fs-sel'));
+        c.classList.add('fs-sel'); state.dropoff = c.dataset.v;
+        $('fs-err-dropoff').style.display = 'none';
+      }));
+    $('fs-btn-to-dataclarity').addEventListener('click', () => {
+      if (!state.dropoff) { $('fs-err-dropoff').style.display = 'block'; return; }
+      goTo('fs-scr-dataclarity');
+    });
+
+    /* DataClarity chips */
+    $$('#fs-dataclarity-grid .fs-simple-card').forEach(c =>
+      c.addEventListener('click', () => {
+        $$('#fs-dataclarity-grid .fs-simple-card').forEach(x => x.classList.remove('fs-sel'));
+        c.classList.add('fs-sel'); state.dataclarity = c.dataset.v;
+        $('fs-err-dataclarity').style.display = 'none';
       }));
 
-    /* Automation → Scan */
+    /* DataClarity → Scan */
     $('fs-btn-start-scan').addEventListener('click', () => {
-      if (!state.automation) { $('fs-err-auto').style.display = 'block'; return; }
+      if (!state.dataclarity) { $('fs-err-dataclarity').style.display = 'block'; return; }
       goTo('fs-scr-scan');
       runScan();
     });
 
     /* Back buttons */
-    $('fs-btn-back-sector').addEventListener('click', () => goTo('fs-scr-sector'));
-    $('fs-btn-back-pain').addEventListener('click', () => goTo('fs-scr-pain'));
-    $('fs-btn-back-city').addEventListener('click', () => goTo('fs-scr-city'));
-    $('fs-btn-back-source').addEventListener('click', () => goTo('fs-scr-source'));
+    $('fs-btn-back-sector').addEventListener('click',   () => goTo('fs-scr-sector'));
+    $('fs-btn-back-pain').addEventListener('click',     () => goTo('fs-scr-pain'));
+    $('fs-btn-back-city').addEventListener('click',     () => goTo('fs-scr-city'));
+    $('fs-btn-back-volume').addEventListener('click',   () => goTo('fs-scr-volume'));
+    $('fs-btn-back-dropoff').addEventListener('click',  () => goTo('fs-scr-dropoff'));
 
     /* WhatsApp */
     $('fs-wa-btn').addEventListener('click', sendWhatsApp);
@@ -561,8 +606,9 @@
       `نوع النشاط: ${state.sector || 'غير محدد'}`,
       `أكبر ضغط: ${state.pain || 'غير محدد'}`,
       `المدينة: ${state.city || 'غير محددة'}`,
-      `قناة العملاء: ${state.source || 'غير محددة'}`,
-      `مستوى الأتمتة: ${state.automation || 'غير محدد'}`,
+      `حجم التواصل اليومي: ${state.volume || 'غير محدد'}`,
+      `نقطة ضياع العميل: ${state.dropoff || 'غير محددة'}`,
+      `وضوح الأرقام: ${state.dataclarity || 'غير محدد'}`,
       'وأرغب بمعرفة الحل الأنسب لمشروعي.',
     ].join('\n');
     window.open(`https://wa.me/${WAPHONE}?text=${encodeURIComponent(msg)}`, '_blank');
@@ -583,11 +629,15 @@
     document.body.style.overflow = '';
   }
   function resetXRay() {
-    state = { sector: '', pain: '', city: '', source: '', automation: '' };
+    state = { sector: '', pain: '', city: '', volume: '', dropoff: '', dataclarity: '' };
     $$('.fs-sector-card, .fs-pain-card, .fs-simple-card').forEach(c => c.classList.remove('fs-sel'));
-    ['fs-err-sector','fs-err-pain','fs-err-city','fs-err-source','fs-err-auto'].forEach(id => {
+    ['fs-err-sector','fs-err-pain','fs-err-city','fs-err-volume','fs-err-dropoff','fs-err-dataclarity'].forEach(id => {
       const e = $(id); if (e) e.style.display = 'none';
     });
+    const wrap = $('fs-city-other-wrap');
+    if (wrap) wrap.style.display = 'none';
+    const inp = $('fs-city-other-input');
+    if (inp) inp.value = '';
     const fill = $('fs-scan-fill');
     if (fill) fill.style.width = '0%';
     goTo('fs-scr-welcome');
