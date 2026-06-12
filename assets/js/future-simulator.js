@@ -270,28 +270,28 @@
     <div class="fs-intel-status-row">
       <div class="fs-intel-stable">
         <span class="fs-intel-stable-dot"></span>
-        DIGITAL TWIN STABLE
+        التوأم الرقمي جاهز
       </div>
-      <div class="fs-intel-dna">Project DNA Generated</div>
+      <div class="fs-intel-dna">تم إنشاء بصمة المشروع</div>
     </div>
 
     <!-- metrics grid -->
     <div class="fs-intel-metrics">
       <div class="fs-intel-metric fs-im-0">
-        <div class="fs-im-label">Growth Potential</div>
+        <div class="fs-im-label">قابلية النمو</div>
         <div class="fs-im-val fs-im-green">+31%</div>
       </div>
       <div class="fs-intel-metric fs-im-1">
-        <div class="fs-im-label">AI Confidence</div>
+        <div class="fs-im-label">دقة القراءة</div>
         <div class="fs-im-val fs-im-cyan">92%</div>
       </div>
       <div class="fs-intel-metric fs-im-2">
-        <div class="fs-im-label">Automation Readiness</div>
+        <div class="fs-im-label">جاهزية الأتمتة</div>
         <div class="fs-im-val fs-im-blue">74/100</div>
       </div>
       <div class="fs-intel-metric fs-im-3">
-        <div class="fs-im-label">Revenue Leak Detection</div>
-        <div class="fs-im-val fs-im-amber">3 Areas Found</div>
+        <div class="fs-im-label">مناطق نمو مخفية</div>
+        <div class="fs-im-val fs-im-amber">3 مناطق</div>
       </div>
     </div>
 
