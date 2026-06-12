@@ -76,7 +76,7 @@
   ];
 
   /* ── State ── */
-  let state = { sector: '', pain: '' };
+  let state = { sector: '', pain: '', city: '', source: '', automation: '' };
 
   /* ── Helpers ── */
   const $  = id  => document.getElementById(id);
@@ -109,7 +109,7 @@
 
     const panel = el('div');
     panel.id = 'fs-panel';
-    panel.innerHTML = screenWelcome() + screenSector() + screenPain() + screenScan() + screenResult();
+    panel.innerHTML = screenWelcome() + screenSector() + screenPain() + screenCity() + screenSource() + screenAutomation() + screenScan() + screenResult();
     modal.appendChild(panel);
 
     document.body.appendChild(modal);
@@ -159,7 +159,7 @@
     return `
 <div id="fs-scr-sector" class="fs-screen">
   <div class="fs-step-header">
-    <div class="fs-step-num">01 / 02</div>
+    <div class="fs-step-num">01 / 05</div>
     <h3 class="fs-step-title">ما نوع نشاطك التجاري؟</h3>
     <p class="fs-step-sub">سيُخصِّص الفحص نتائجه بناءً على قطاعك</p>
   </div>
@@ -183,7 +183,7 @@
     return `
 <div id="fs-scr-pain" class="fs-screen">
   <div class="fs-step-header">
-    <div class="fs-step-num">02 / 02</div>
+    <div class="fs-step-num">02 / 05</div>
     <h3 class="fs-step-title">أين أكبر ضغط في مشروعك؟</h3>
     <p class="fs-step-sub">اختر المجال الذي يستهلك وقتك أو يُفقدك عملاء</p>
   </div>
@@ -193,6 +193,66 @@
   <div class="fs-error" id="fs-err-pain">اختر مجال الضغط للمتابعة</div>
   <div class="fs-nav-row">
     <button class="fs-back-btn" id="fs-btn-back-sector">← رجوع</button>
+    <button class="fs-xray-next-btn" id="fs-btn-to-city">التالي →</button>
+  </div>
+</div>`;
+  }
+
+  function screenCity() {
+    const cities = ['مكة','جدة','الرياض','المدينة','الدمام / الخبر','مدينة أخرى'];
+    return `
+<div id="fs-scr-city" class="fs-screen">
+  <div class="fs-step-header">
+    <div class="fs-step-num">03 / 05</div>
+    <h3 class="fs-step-title">أين يعمل مشروعك؟</h3>
+    <p class="fs-step-sub">سيساعدنا ذلك في تخصيص التوصيات بدقة</p>
+  </div>
+  <div class="fs-simple-grid" id="fs-city-grid">
+    ${cities.map(c => `<button class="fs-simple-card" data-v="${c}">${c}</button>`).join('')}
+  </div>
+  <div class="fs-error" id="fs-err-city">اختر المدينة للمتابعة</div>
+  <div class="fs-nav-row">
+    <button class="fs-back-btn" id="fs-btn-back-pain">← رجوع</button>
+    <button class="fs-xray-next-btn" id="fs-btn-to-source">التالي →</button>
+  </div>
+</div>`;
+  }
+
+  function screenSource() {
+    const sources = ['واتساب','إنستغرام','Google Maps','تيك توك','زيارات مباشرة','إعلانات'];
+    return `
+<div id="fs-scr-source" class="fs-screen">
+  <div class="fs-step-header">
+    <div class="fs-step-num">04 / 05</div>
+    <h3 class="fs-step-title">من أين يأتيك أغلب العملاء؟</h3>
+    <p class="fs-step-sub">القناة الأقوى تحدد أين نضخ الذكاء الاصطناعي</p>
+  </div>
+  <div class="fs-simple-grid" id="fs-source-grid">
+    ${sources.map(s => `<button class="fs-simple-card" data-v="${s}">${s}</button>`).join('')}
+  </div>
+  <div class="fs-error" id="fs-err-source">اختر قناة العملاء للمتابعة</div>
+  <div class="fs-nav-row">
+    <button class="fs-back-btn" id="fs-btn-back-city">← رجوع</button>
+    <button class="fs-xray-next-btn" id="fs-btn-to-automation">التالي →</button>
+  </div>
+</div>`;
+  }
+
+  function screenAutomation() {
+    const levels = ['كل شيء يدوي','ردود واتساب فقط','حجوزات منظمة','تقارير بسيطة','نظام متكامل','لا أعرف'];
+    return `
+<div id="fs-scr-automation" class="fs-screen">
+  <div class="fs-step-header">
+    <div class="fs-step-num">05 / 05</div>
+    <h3 class="fs-step-title">ما مستوى الأتمتة عندك الآن؟</h3>
+    <p class="fs-step-sub">نقيس المسافة بينك وبين النسخة المثلى</p>
+  </div>
+  <div class="fs-simple-grid" id="fs-auto-grid">
+    ${levels.map(l => `<button class="fs-simple-card" data-v="${l}">${l}</button>`).join('')}
+  </div>
+  <div class="fs-error" id="fs-err-auto">اختر مستوى الأتمتة للمتابعة</div>
+  <div class="fs-nav-row">
+    <button class="fs-back-btn" id="fs-btn-back-source">← رجوع</button>
     <button class="fs-xray-next-btn" id="fs-btn-start-scan">ابدأ الفحص ⚡</button>
   </div>
 </div>`;
@@ -259,6 +319,23 @@
       <circle cx="68%" cy="14" r="2.5" fill="rgba(34,211,238,.55)"/>
       <circle cx="98%" cy="14" r="3" fill="#10B981" opacity=".8"/>
     </svg>
+  </div>
+
+  <!-- ── Before / After ── -->
+  <div class="fs-ba-compare">
+    <div class="fs-ba-before">
+      <div class="fs-ba-section-label fs-ba-label-before">قبل Blumark24</div>
+      <ul class="fs-ba-list">
+        <li>ردود متأخرة</li>
+        <li>فرص غير واضحة</li>
+        <li>متابعة يدوية</li>
+        <li>قرارات بدون قراءة دقيقة</li>
+      </ul>
+    </div>
+    <div class="fs-ba-divider" aria-hidden="true">→</div>
+    <div class="fs-ba-after">
+      <div class="fs-ba-section-label fs-ba-label-after">بعد Blumark24 Brain</div>
+    </div>
   </div>
 
   <!-- ── Digital Twin Intelligence Layer ── -->
@@ -351,15 +428,56 @@
         $('fs-err-pain').style.display = 'none';
       }));
 
-    /* Pain → Scan */
-    $('fs-btn-start-scan').addEventListener('click', () => {
+    /* Pain → City */
+    $('fs-btn-to-city').addEventListener('click', () => {
       if (!state.pain) { $('fs-err-pain').style.display = 'block'; return; }
+      goTo('fs-scr-city');
+    });
+
+    /* City chips */
+    $$('#fs-city-grid .fs-simple-card').forEach(c =>
+      c.addEventListener('click', () => {
+        $$('#fs-city-grid .fs-simple-card').forEach(x => x.classList.remove('fs-sel'));
+        c.classList.add('fs-sel'); state.city = c.dataset.v;
+        $('fs-err-city').style.display = 'none';
+      }));
+    $('fs-btn-to-source').addEventListener('click', () => {
+      if (!state.city) { $('fs-err-city').style.display = 'block'; return; }
+      goTo('fs-scr-source');
+    });
+
+    /* Source chips */
+    $$('#fs-source-grid .fs-simple-card').forEach(c =>
+      c.addEventListener('click', () => {
+        $$('#fs-source-grid .fs-simple-card').forEach(x => x.classList.remove('fs-sel'));
+        c.classList.add('fs-sel'); state.source = c.dataset.v;
+        $('fs-err-source').style.display = 'none';
+      }));
+    $('fs-btn-to-automation').addEventListener('click', () => {
+      if (!state.source) { $('fs-err-source').style.display = 'block'; return; }
+      goTo('fs-scr-automation');
+    });
+
+    /* Automation chips */
+    $$('#fs-auto-grid .fs-simple-card').forEach(c =>
+      c.addEventListener('click', () => {
+        $$('#fs-auto-grid .fs-simple-card').forEach(x => x.classList.remove('fs-sel'));
+        c.classList.add('fs-sel'); state.automation = c.dataset.v;
+        $('fs-err-auto').style.display = 'none';
+      }));
+
+    /* Automation → Scan */
+    $('fs-btn-start-scan').addEventListener('click', () => {
+      if (!state.automation) { $('fs-err-auto').style.display = 'block'; return; }
       goTo('fs-scr-scan');
       runScan();
     });
 
-    /* Back */
+    /* Back buttons */
     $('fs-btn-back-sector').addEventListener('click', () => goTo('fs-scr-sector'));
+    $('fs-btn-back-pain').addEventListener('click', () => goTo('fs-scr-pain'));
+    $('fs-btn-back-city').addEventListener('click', () => goTo('fs-scr-city'));
+    $('fs-btn-back-source').addEventListener('click', () => goTo('fs-scr-source'));
 
     /* WhatsApp */
     $('fs-wa-btn').addEventListener('click', sendWhatsApp);
@@ -440,8 +558,11 @@
     const msg = [
       'مرحباً Blumark24 👋',
       'أجريت فحص Business X-Ray',
-      `نتائج فحص: ${state.sector || 'غير محدد'}`,
-      `التحدي الأكبر: ${state.pain || 'غير محدد'}`,
+      `نوع النشاط: ${state.sector || 'غير محدد'}`,
+      `أكبر ضغط: ${state.pain || 'غير محدد'}`,
+      `المدينة: ${state.city || 'غير محددة'}`,
+      `قناة العملاء: ${state.source || 'غير محددة'}`,
+      `مستوى الأتمتة: ${state.automation || 'غير محدد'}`,
       'وأرغب بمعرفة الحل الأنسب لمشروعي.',
     ].join('\n');
     window.open(`https://wa.me/${WAPHONE}?text=${encodeURIComponent(msg)}`, '_blank');
@@ -462,9 +583,9 @@
     document.body.style.overflow = '';
   }
   function resetXRay() {
-    state = { sector: '', pain: '' };
-    $$('.fs-sector-card, .fs-pain-card').forEach(c => c.classList.remove('fs-sel'));
-    [['fs-err-sector'],['fs-err-pain']].forEach(([id]) => {
+    state = { sector: '', pain: '', city: '', source: '', automation: '' };
+    $$('.fs-sector-card, .fs-pain-card, .fs-simple-card').forEach(c => c.classList.remove('fs-sel'));
+    ['fs-err-sector','fs-err-pain','fs-err-city','fs-err-source','fs-err-auto'].forEach(id => {
       const e = $(id); if (e) e.style.display = 'none';
     });
     const fill = $('fs-scan-fill');

@@ -530,6 +530,80 @@
 .fs-reset-link:hover { color: #94a3b8; }
 
 /* ══════════════════════════════════════
+   SIMPLE GRID (screens 3-4-5)
+══════════════════════════════════════ */
+.fs-simple-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px; margin-bottom: 12px;
+}
+.fs-simple-card {
+  padding: 11px 12px; border-radius: 13px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.09);
+  color: #cbd5e1; font-size: .83rem; font-weight: 600;
+  cursor: pointer; text-align: center;
+  font-family: 'Cairo','Tajawal',sans-serif;
+  transition: background .2s, border-color .2s, color .2s;
+  line-height: 1.3;
+}
+.fs-simple-card:hover {
+  background: rgba(255,255,255,.07);
+  border-color: rgba(0,168,255,.3);
+}
+.fs-simple-card.fs-sel {
+  background: rgba(0,168,255,.13);
+  border-color: rgba(0,168,255,.55);
+  color: #38bdf8; font-weight: 700;
+  box-shadow: 0 0 10px rgba(0,168,255,.1) inset;
+}
+
+/* ══════════════════════════════════════
+   BEFORE / AFTER COMPARE CARD
+══════════════════════════════════════ */
+.fs-ba-compare {
+  display: flex; align-items: stretch; gap: 0;
+  border-radius: 14px; overflow: hidden;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.02);
+  margin-bottom: 10px;
+}
+.fs-ba-before, .fs-ba-after {
+  flex: 1; padding: 12px 14px;
+}
+.fs-ba-before {
+  border-left: 1px solid rgba(255,255,255,.06);
+  background: rgba(239,68,68,.04);
+}
+.fs-ba-after {
+  background: rgba(0,168,255,.05);
+}
+.fs-ba-divider {
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 6px; color: rgba(0,168,255,.45);
+  font-size: 1rem; flex-shrink: 0;
+}
+.fs-ba-section-label {
+  font-size: .62rem; font-weight: 800; letter-spacing: .06em;
+  text-transform: uppercase; margin-bottom: 8px;
+}
+.fs-ba-label-before { color: rgba(248,113,113,.8); }
+.fs-ba-label-after  { color: rgba(0,168,255,.8); }
+.fs-ba-list {
+  list-style: none; padding: 0; margin: 0;
+  display: flex; flex-direction: column; gap: 5px;
+}
+.fs-ba-list li {
+  font-size: .75rem; color: #94a3b8;
+  padding-right: 12px; position: relative; line-height: 1.3;
+}
+.fs-ba-list li::before {
+  content: '✗';
+  position: absolute; right: 0;
+  color: rgba(248,113,113,.6); font-size: .65rem;
+}
+
+/* ══════════════════════════════════════
    DIGITAL TWIN INTELLIGENCE LAYER
 ══════════════════════════════════════ */
 .fs-intel-layer {
@@ -663,10 +737,14 @@
 @media (max-width: 430px) {
   #fs-panel  { width: 94vw; border-radius: 20px; padding: 16px 12px 20px; }
   .fs-sector-grid  { grid-template-columns: repeat(2, 1fr); }
+  .fs-simple-grid  { grid-template-columns: repeat(2, 1fr); gap: 7px; }
   .fs-dt-modules   { grid-template-columns: repeat(3, 1fr); gap: 6px; }
   .fs-dt-mod-text  { font-size: .68rem; }
   .fs-intel-metrics { grid-template-columns: repeat(2, 1fr); gap: 6px; }
   .fs-im-val       { font-size: .86rem; }
+  .fs-ba-compare   { flex-direction: column; }
+  .fs-ba-before    { border-left: none; border-bottom: 1px solid rgba(255,255,255,.06); }
+  .fs-ba-divider   { display: none; }
 }
 @media (max-width: 390px) {
   #fs-panel  { width: 96vw; border-radius: 18px; padding: 14px 11px 18px; }
@@ -675,6 +753,7 @@
   .fs-nav-row { flex-direction: column-reverse; }
   .fs-xray-next-btn { width: 100%; }
   .fs-back-btn { width: 100%; text-align: center; }
+  .fs-simple-card  { font-size: .78rem; padding: 10px 8px; }
   .fs-dt-modules   { grid-template-columns: repeat(1, 1fr); }
   .fs-dt-module    { display: flex; align-items: center; gap: 10px; padding: 9px 12px; }
   .fs-dt-mod-top   { flex-direction: row; margin-bottom: 0; flex-shrink: 0; gap: 6px; }
@@ -689,6 +768,9 @@
   .fs-im-val           { font-size: .82rem; }
   .fs-im-label         { font-size: .6rem; }
   .fs-intel-action-text{ font-size: .74rem; }
+  .fs-simple-grid      { gap: 6px; }
+  .fs-simple-card      { font-size: .74rem; padding: 9px 6px; }
+  .fs-ba-list li       { font-size: .7rem; }
 }
 
 /* ══════════════════════════════════════
