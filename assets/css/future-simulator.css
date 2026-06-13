@@ -932,7 +932,138 @@
 }
 .fs-diag-text strong { color: #7DEBFF; font-weight: 700; }
 
+/* ── Twin Engine Intro ── */
+.fs-intro-wrap {
+  padding: 32px 8px 24px;
+  text-align: center;
+  min-height: 240px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+}
+.fs-intro-badge {
+  font-size: .68rem; font-weight: 800; letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(0,168,255,0.9);
+  background: rgba(0,168,255,.08);
+  border: 1px solid rgba(0,168,255,.2);
+  padding: 4px 14px; border-radius: 20px;
+}
+.fs-intro-desc {
+  font-size: .8rem; color: rgba(226,232,240,0.55);
+  margin: 0; letter-spacing: .02em;
+}
+.fs-intro-layers {
+  display: flex; flex-direction: column; gap: 8px;
+  width: 100%; max-width: 240px;
+}
+.fs-intro-layer {
+  display: flex; align-items: center; gap: 10px;
+  font-size: .78rem; font-weight: 600; letter-spacing: .04em;
+  color: rgba(226,232,240,0.25);
+  transition: color .3s ease, transform .3s ease;
+  transform: translateX(6px);
+}
+.fs-intro-layer.fs-il-active {
+  color: rgba(226,232,240,0.9);
+  transform: translateX(0);
+}
+.fs-il-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(0,168,255,0.2);
+  flex-shrink: 0;
+  transition: background .3s ease, box-shadow .3s ease;
+}
+.fs-il-active .fs-il-dot {
+  background: #00A8FF;
+  box-shadow: 0 0 8px rgba(0,168,255,.6);
+}
+.fs-intro-ready {
+  font-size: .75rem; font-weight: 800; letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(16,185,129,0);
+  transition: color .4s ease;
+}
+.fs-intro-ready.fs-ir-visible { color: rgba(16,185,129,0.9); }
+
+/* ── Live Twin Status bar ── */
+#fs-twin-status {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0; margin-bottom: 18px;
+  padding: 8px 6px 6px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+#fs-twin-status::-webkit-scrollbar { display: none; }
+.fs-ts-step {
+  font-size: .6rem; font-weight: 700; letter-spacing: .05em;
+  color: rgba(226,232,240,0.22);
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 3px 8px;
+  border-radius: 20px;
+  transition: color .25s, background .25s;
+  position: relative;
+}
+.fs-ts-step + .fs-ts-step::before {
+  content: '·';
+  position: absolute; right: 100%; top: 50%; transform: translateY(-50%);
+  color: rgba(255,255,255,0.1);
+  font-size: .7rem; padding: 0 2px;
+}
+.fs-ts-step.fs-ts-done {
+  color: rgba(16,185,129,0.65);
+}
+.fs-ts-step.fs-ts-done::after {
+  content: ' ✓';
+  font-size: .55rem;
+}
+.fs-ts-step.fs-ts-active {
+  color: #38bdf8;
+  background: rgba(0,168,255,.08);
+}
+
+/* ── Executive View ── */
+.fs-exec-view {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 16px;
+  padding: 16px 18px 14px;
+  margin-bottom: 14px;
+}
+.fs-exec-title {
+  font-size: .62rem; font-weight: 800; letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(226,232,240,0.35);
+  margin-bottom: 14px;
+}
+.fs-exec-rows { display: flex; flex-direction: column; gap: 10px; }
+.fs-exec-row {
+  display: flex; align-items: center; gap: 10px;
+}
+.fs-exec-label {
+  font-size: .7rem; font-weight: 600; color: rgba(226,232,240,0.6);
+  width: 88px; flex-shrink: 0; text-align: right;
+}
+.fs-exec-bar-wrap {
+  flex: 1; height: 4px; border-radius: 4px;
+  background: rgba(255,255,255,0.06);
+  overflow: hidden;
+}
+.fs-exec-bar {
+  height: 100%; border-radius: 4px; width: 0%;
+  transition: width .9s cubic-bezier(.22,.68,0,1.1);
+}
+.fs-eb-blue  { background: linear-gradient(90deg, #0077CC, #00A8FF); }
+.fs-eb-green { background: linear-gradient(90deg, #059669, #10B981); }
+.fs-eb-cyan  { background: linear-gradient(90deg, #0891B2, #22D3EE); }
+.fs-exec-val {
+  font-size: .68rem; font-weight: 700; color: rgba(226,232,240,0.7);
+  width: 36px; text-align: left; flex-shrink: 0;
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .fs-xray-ring-outer, .fs-scan-pulse-ring, .fs-result-dot { animation: none !important; }
+  .fs-exec-bar { transition: none !important; }
+  .fs-intro-layer { transition: none !important; }
 }
