@@ -69,14 +69,14 @@
   };
 
   const SCAN_STAGES = [
-    'AI Scanning...',
+    'قراءة نمط المشروع',
     'تحليل رحلة العميل',
-    'تحليل نقاط التسرب',
-    'تحليل فرص الأتمتة',
+    'كشف نقاط التسرب',
+    'تحديد الفرص المخفية',
   ];
 
   /* ── State ── */
-  let state = { sector: '', pain: '' };
+  let state = { sector: '', pain: '', city: '', volume: '', dropoff: '', dataclarity: '' };
 
   /* ── Helpers ── */
   const $  = id  => document.getElementById(id);
@@ -109,7 +109,7 @@
 
     const panel = el('div');
     panel.id = 'fs-panel';
-    panel.innerHTML = screenWelcome() + screenSector() + screenPain() + screenScan() + screenResult();
+    panel.innerHTML = screenWelcome() + screenSector() + screenPain() + screenCity() + screenVolume() + screenDropoff() + screenDataClarity() + screenScan() + screenResult();
     modal.appendChild(panel);
 
     document.body.appendChild(modal);
@@ -159,7 +159,7 @@
     return `
 <div id="fs-scr-sector" class="fs-screen">
   <div class="fs-step-header">
-    <div class="fs-step-num">01 / 02</div>
+    <div class="fs-step-num">01 / 06</div>
     <h3 class="fs-step-title">ما نوع نشاطك التجاري؟</h3>
     <p class="fs-step-sub">سيُخصِّص الفحص نتائجه بناءً على قطاعك</p>
   </div>
@@ -183,7 +183,7 @@
     return `
 <div id="fs-scr-pain" class="fs-screen">
   <div class="fs-step-header">
-    <div class="fs-step-num">02 / 02</div>
+    <div class="fs-step-num">02 / 06</div>
     <h3 class="fs-step-title">أين أكبر ضغط في مشروعك؟</h3>
     <p class="fs-step-sub">اختر المجال الذي يستهلك وقتك أو يُفقدك عملاء</p>
   </div>
@@ -193,6 +193,89 @@
   <div class="fs-error" id="fs-err-pain">اختر مجال الضغط للمتابعة</div>
   <div class="fs-nav-row">
     <button class="fs-back-btn" id="fs-btn-back-sector">← رجوع</button>
+    <button class="fs-xray-next-btn" id="fs-btn-to-city">التالي →</button>
+  </div>
+</div>`;
+  }
+
+  function screenCity() {
+    const cities = ['مكة','جدة','الرياض','المدينة','الدمام / الخبر','أخرى'];
+    return `
+<div id="fs-scr-city" class="fs-screen">
+  <div class="fs-step-header">
+    <div class="fs-step-num">03 / 06</div>
+    <h3 class="fs-step-title">في أي مدينة يعمل مشروعك؟</h3>
+    <p class="fs-step-sub">نُخصّص التوصيات بناءً على السوق المحلي</p>
+  </div>
+  <div class="fs-simple-grid" id="fs-city-grid">
+    ${cities.map(c => `<button class="fs-simple-card" data-v="${c}">${c}</button>`).join('')}
+  </div>
+  <div class="fs-city-other-wrap" id="fs-city-other-wrap" style="display:none">
+    <input class="fs-input" id="fs-city-other-input" type="text" placeholder="اكتب اسم المدينة" maxlength="40">
+  </div>
+  <div class="fs-error" id="fs-err-city">اختر المدينة للمتابعة</div>
+  <div class="fs-nav-row">
+    <button class="fs-back-btn" id="fs-btn-back-pain">← رجوع</button>
+    <button class="fs-xray-next-btn" id="fs-btn-to-volume">التالي →</button>
+  </div>
+</div>`;
+  }
+
+  function screenVolume() {
+    const opts = ['أقل من 10','10 - 30','30 - 70','أكثر من 70','غير واضح'];
+    return `
+<div id="fs-scr-volume" class="fs-screen">
+  <div class="fs-step-header">
+    <div class="fs-step-num">04 / 06</div>
+    <h3 class="fs-step-title">كم استفسار أو طلب يصلك يومياً؟</h3>
+    <p class="fs-step-sub">يساعدنا في تحديد حجم الأتمتة المطلوبة</p>
+  </div>
+  <div class="fs-simple-grid fs-simple-grid-col2" id="fs-volume-grid">
+    ${opts.map(o => `<button class="fs-simple-card" data-v="${o}">${o}</button>`).join('')}
+  </div>
+  <div class="fs-error" id="fs-err-volume">اختر حجم التواصل للمتابعة</div>
+  <div class="fs-nav-row">
+    <button class="fs-back-btn" id="fs-btn-back-city">← رجوع</button>
+    <button class="fs-xray-next-btn" id="fs-btn-to-dropoff">التالي →</button>
+  </div>
+</div>`;
+  }
+
+  function screenDropoff() {
+    const opts = ['يتأخر الرد عليه','يسأل ولا يكمل','لا توجد متابعة','الحجز غير منظم','لا يعرف الأسعار أو الخدمات','لا نعرف السبب'];
+    return `
+<div id="fs-scr-dropoff" class="fs-screen">
+  <div class="fs-step-header">
+    <div class="fs-step-num">05 / 06</div>
+    <h3 class="fs-step-title">أين يضيع العميل قبل أن يُصبح عميلاً فعلياً؟</h3>
+    <p class="fs-step-sub">هذا هو المكان الذي تختفي منه الإيرادات</p>
+  </div>
+  <div class="fs-simple-grid" id="fs-dropoff-grid">
+    ${opts.map(o => `<button class="fs-simple-card" data-v="${o}">${o}</button>`).join('')}
+  </div>
+  <div class="fs-error" id="fs-err-dropoff">اختر نقطة الضياع للمتابعة</div>
+  <div class="fs-nav-row">
+    <button class="fs-back-btn" id="fs-btn-back-volume">← رجوع</button>
+    <button class="fs-xray-next-btn" id="fs-btn-to-dataclarity">التالي →</button>
+  </div>
+</div>`;
+  }
+
+  function screenDataClarity() {
+    const opts = ['نعم، عندي تقارير','تقريباً','لا، نعتمد على التوقع','لا توجد قراءة واضحة','أحتاج كشف أدق'];
+    return `
+<div id="fs-scr-dataclarity" class="fs-screen">
+  <div class="fs-step-header">
+    <div class="fs-step-num">06 / 06</div>
+    <h3 class="fs-step-title">هل تعرف بالأرقام لماذا تخسر بعض العملاء؟</h3>
+    <p class="fs-step-sub">مستوى الوضوح يحدد عمق الفحص</p>
+  </div>
+  <div class="fs-simple-grid fs-simple-grid-col2" id="fs-dataclarity-grid">
+    ${opts.map(o => `<button class="fs-simple-card" data-v="${o}">${o}</button>`).join('')}
+  </div>
+  <div class="fs-error" id="fs-err-dataclarity">اختر مستوى الوضوح للمتابعة</div>
+  <div class="fs-nav-row">
+    <button class="fs-back-btn" id="fs-btn-back-dropoff">← رجوع</button>
     <button class="fs-xray-next-btn" id="fs-btn-start-scan">ابدأ الفحص ⚡</button>
   </div>
 </div>`;
@@ -209,7 +292,7 @@
         <path d="M20 20l-3-3" stroke="#00A8FF" stroke-width="2" stroke-linecap="round"/>
       </svg>
     </div>
-    <div class="fs-scan-label" id="fs-scan-label">AI Scanning...</div>
+    <div class="fs-scan-label" id="fs-scan-label">جاري تشغيل Blumark24 Brain...</div>
     <div class="fs-scan-track"><div class="fs-scan-fill" id="fs-scan-fill"></div></div>
     <div class="fs-scan-stages" id="fs-scan-stages">
       ${SCAN_STAGES.map((s,i) => `<div class="fs-scan-stage" id="fs-ss-${i}">${s}</div>`).join('')}
@@ -230,19 +313,14 @@
 
   <!-- ── Cinematic Digital Twin Dashboard ── -->
   <div class="fs-dt-canvas" id="fs-dt-canvas">
-    <!-- grid background -->
     <div class="fs-dt-grid" aria-hidden="true"></div>
-    <!-- scanner line -->
     <div class="fs-dt-scanner" aria-hidden="true"></div>
-    <!-- AI dots -->
     <div class="fs-dt-dots" aria-hidden="true">
       <span class="fs-dot fs-dot-1"></span>
       <span class="fs-dot fs-dot-2"></span>
       <span class="fs-dot fs-dot-3"></span>
       <span class="fs-dot fs-dot-4"></span>
     </div>
-
-    <!-- top status bar -->
     <div class="fs-dt-topbar">
       <div class="fs-dt-topbar-left">
         <span class="fs-dt-live-dot"></span>
@@ -254,11 +332,7 @@
         <span style="background:rgba(16,185,129,.4)"></span>
       </div>
     </div>
-
-    <!-- opportunity modules -->
     <div class="fs-dt-modules" id="fs-dt-modules"></div>
-
-    <!-- flow SVG -->
     <svg class="fs-dt-flow" height="28" viewBox="0 0 400 28" preserveAspectRatio="none" aria-hidden="true">
       <line x1="2%" y1="14" x2="98%" y2="14"
             stroke="rgba(0,168,255,.22)" stroke-width="1.2"
@@ -268,6 +342,64 @@
       <circle cx="68%" cy="14" r="2.5" fill="rgba(34,211,238,.55)"/>
       <circle cx="98%" cy="14" r="3" fill="#10B981" opacity=".8"/>
     </svg>
+  </div>
+
+  <!-- ── Before / After ── -->
+  <div class="fs-ba-compare">
+    <div class="fs-ba-before">
+      <div class="fs-ba-section-label fs-ba-label-before">قبل Blumark24</div>
+      <ul class="fs-ba-list">
+        <li>ردود متأخرة</li>
+        <li>فرص غير واضحة</li>
+        <li>متابعة يدوية</li>
+        <li>قرارات بدون قراءة دقيقة</li>
+      </ul>
+    </div>
+    <div class="fs-ba-divider" aria-hidden="true">→</div>
+    <div class="fs-ba-after">
+      <div class="fs-ba-section-label fs-ba-label-after">بعد Blumark24 Brain</div>
+    </div>
+  </div>
+
+  <!-- ── Digital Twin Intelligence Layer ── -->
+  <div class="fs-intel-layer">
+    <!-- scanner line inside layer -->
+    <div class="fs-intel-scan" aria-hidden="true"></div>
+
+    <!-- status row -->
+    <div class="fs-intel-status-row">
+      <div class="fs-intel-stable">
+        <span class="fs-intel-stable-dot"></span>
+        التوأم الرقمي جاهز
+      </div>
+      <div class="fs-intel-dna">تم إنشاء بصمة المشروع</div>
+    </div>
+
+    <!-- metrics grid -->
+    <div class="fs-intel-metrics">
+      <div class="fs-intel-metric fs-im-0">
+        <div class="fs-im-label">قابلية النمو</div>
+        <div class="fs-im-val fs-im-green">+31%</div>
+      </div>
+      <div class="fs-intel-metric fs-im-1">
+        <div class="fs-im-label">دقة القراءة</div>
+        <div class="fs-im-val fs-im-cyan">92%</div>
+      </div>
+      <div class="fs-intel-metric fs-im-2">
+        <div class="fs-im-label">جاهزية الأتمتة</div>
+        <div class="fs-im-val fs-im-blue">74/100</div>
+      </div>
+      <div class="fs-intel-metric fs-im-3">
+        <div class="fs-im-label">مناطق نمو مخفية</div>
+        <div class="fs-im-val fs-im-amber">3 مناطق</div>
+      </div>
+    </div>
+
+    <!-- action step -->
+    <div class="fs-intel-action">
+      <span class="fs-intel-action-label">الخطوة التنفيذية المقترحة</span>
+      <span class="fs-intel-action-text">تفعيل WhatsApp AI لاستعادة العملاء قبل خروجهم</span>
+    </div>
   </div>
 
   <!-- ── Package ── -->
@@ -319,15 +451,78 @@
         $('fs-err-pain').style.display = 'none';
       }));
 
-    /* Pain → Scan */
-    $('fs-btn-start-scan').addEventListener('click', () => {
+    /* Pain → City */
+    $('fs-btn-to-city').addEventListener('click', () => {
       if (!state.pain) { $('fs-err-pain').style.display = 'block'; return; }
+      goTo('fs-scr-city');
+    });
+
+    /* City chips + "أخرى" input */
+    $$('#fs-city-grid .fs-simple-card').forEach(c =>
+      c.addEventListener('click', () => {
+        $$('#fs-city-grid .fs-simple-card').forEach(x => x.classList.remove('fs-sel'));
+        c.classList.add('fs-sel');
+        state.city = c.dataset.v;
+        $('fs-err-city').style.display = 'none';
+        const wrap = $('fs-city-other-wrap');
+        if (wrap) wrap.style.display = c.dataset.v === 'أخرى' ? 'block' : 'none';
+      }));
+    $('fs-btn-to-volume').addEventListener('click', () => {
+      if (!state.city) { $('fs-err-city').style.display = 'block'; return; }
+      if (state.city === 'أخرى') {
+        const inp = $('fs-city-other-input');
+        const val = inp && inp.value.trim();
+        if (!val) { $('fs-err-city').style.display = 'block'; return; }
+        state.city = val;
+      }
+      goTo('fs-scr-volume');
+    });
+
+    /* Volume chips */
+    $$('#fs-volume-grid .fs-simple-card').forEach(c =>
+      c.addEventListener('click', () => {
+        $$('#fs-volume-grid .fs-simple-card').forEach(x => x.classList.remove('fs-sel'));
+        c.classList.add('fs-sel'); state.volume = c.dataset.v;
+        $('fs-err-volume').style.display = 'none';
+      }));
+    $('fs-btn-to-dropoff').addEventListener('click', () => {
+      if (!state.volume) { $('fs-err-volume').style.display = 'block'; return; }
+      goTo('fs-scr-dropoff');
+    });
+
+    /* Dropoff chips */
+    $$('#fs-dropoff-grid .fs-simple-card').forEach(c =>
+      c.addEventListener('click', () => {
+        $$('#fs-dropoff-grid .fs-simple-card').forEach(x => x.classList.remove('fs-sel'));
+        c.classList.add('fs-sel'); state.dropoff = c.dataset.v;
+        $('fs-err-dropoff').style.display = 'none';
+      }));
+    $('fs-btn-to-dataclarity').addEventListener('click', () => {
+      if (!state.dropoff) { $('fs-err-dropoff').style.display = 'block'; return; }
+      goTo('fs-scr-dataclarity');
+    });
+
+    /* DataClarity chips */
+    $$('#fs-dataclarity-grid .fs-simple-card').forEach(c =>
+      c.addEventListener('click', () => {
+        $$('#fs-dataclarity-grid .fs-simple-card').forEach(x => x.classList.remove('fs-sel'));
+        c.classList.add('fs-sel'); state.dataclarity = c.dataset.v;
+        $('fs-err-dataclarity').style.display = 'none';
+      }));
+
+    /* DataClarity → Scan */
+    $('fs-btn-start-scan').addEventListener('click', () => {
+      if (!state.dataclarity) { $('fs-err-dataclarity').style.display = 'block'; return; }
       goTo('fs-scr-scan');
       runScan();
     });
 
-    /* Back */
-    $('fs-btn-back-sector').addEventListener('click', () => goTo('fs-scr-sector'));
+    /* Back buttons */
+    $('fs-btn-back-sector').addEventListener('click',   () => goTo('fs-scr-sector'));
+    $('fs-btn-back-pain').addEventListener('click',     () => goTo('fs-scr-pain'));
+    $('fs-btn-back-city').addEventListener('click',     () => goTo('fs-scr-city'));
+    $('fs-btn-back-volume').addEventListener('click',   () => goTo('fs-scr-volume'));
+    $('fs-btn-back-dropoff').addEventListener('click',  () => goTo('fs-scr-dropoff'));
 
     /* WhatsApp */
     $('fs-wa-btn').addEventListener('click', sendWhatsApp);
@@ -407,9 +602,13 @@
   function sendWhatsApp() {
     const msg = [
       'مرحباً Blumark24 👋',
-      'أجريت فحص Business X-Ray',
-      `نتائج فحص: ${state.sector || 'غير محدد'}`,
-      `التحدي الأكبر: ${state.pain || 'غير محدد'}`,
+      'أجريت فحص Blumark24 Brain',
+      `نوع النشاط: ${state.sector || 'غير محدد'}`,
+      `أكبر ضغط: ${state.pain || 'غير محدد'}`,
+      `المدينة: ${state.city || 'غير محددة'}`,
+      `حجم التواصل اليومي: ${state.volume || 'غير محدد'}`,
+      `نقطة ضياع العميل: ${state.dropoff || 'غير محددة'}`,
+      `وضوح الأرقام: ${state.dataclarity || 'غير محدد'}`,
       'وأرغب بمعرفة الحل الأنسب لمشروعي.',
     ].join('\n');
     window.open(`https://wa.me/${WAPHONE}?text=${encodeURIComponent(msg)}`, '_blank');
@@ -430,11 +629,15 @@
     document.body.style.overflow = '';
   }
   function resetXRay() {
-    state = { sector: '', pain: '' };
-    $$('.fs-sector-card, .fs-pain-card').forEach(c => c.classList.remove('fs-sel'));
-    [['fs-err-sector'],['fs-err-pain']].forEach(([id]) => {
+    state = { sector: '', pain: '', city: '', volume: '', dropoff: '', dataclarity: '' };
+    $$('.fs-sector-card, .fs-pain-card, .fs-simple-card').forEach(c => c.classList.remove('fs-sel'));
+    ['fs-err-sector','fs-err-pain','fs-err-city','fs-err-volume','fs-err-dropoff','fs-err-dataclarity'].forEach(id => {
       const e = $(id); if (e) e.style.display = 'none';
     });
+    const wrap = $('fs-city-other-wrap');
+    if (wrap) wrap.style.display = 'none';
+    const inp = $('fs-city-other-input');
+    if (inp) inp.value = '';
     const fill = $('fs-scan-fill');
     if (fill) fill.style.width = '0%';
     goTo('fs-scr-welcome');
