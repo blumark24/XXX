@@ -69,10 +69,10 @@
   };
 
   const SCAN_STAGES = [
-    'قراءة نمط المشروع',
-    'تحليل رحلة العميل',
-    'كشف نقاط التسرب',
-    'تحديد الفرص المخفية',
+    'بناء نموذج المشروع',
+    'محاكاة رحلة العميل',
+    'قياس نقطة التسرب',
+    'توليد خريطة النمو',
   ];
 
   /* ── State ── */
@@ -136,12 +136,12 @@
         <path d="M8 11h6M11 8v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
       </svg>
     </div>
-    <div class="fs-xray-badge">Blumark24 Business X-Ray™</div>
-    <h2 class="fs-xray-title">اكتشف أين يخسر مشروعك<br>فرص النمو</h2>
-    <p class="fs-xray-desc">فحص ذكي يكشف الفرص المخفية في مشروعك<br>خلال دقيقة واحدة فقط</p>
+    <div class="fs-xray-badge">Blumark24 Digital Twin™</div>
+    <h2 class="fs-xray-title">مختبر التوأم الرقمي</h2>
+    <p class="fs-xray-desc">سننشئ نسخة أولية من مشروعك، ونقرأ رحلة العميل داخل<br>السوق السعودي خلال دقيقة.</p>
     <button class="fs-xray-start-btn" id="fs-btn-start">
       <svg width="17" height="17" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M5 3l14 9-14 9V3z"/></svg>
-      ابدأ الفحص الذكي
+      ابدأ بناء التوأم الرقمي
     </button>
   </div>
 </div>`;
@@ -159,13 +159,14 @@
     return `
 <div id="fs-scr-sector" class="fs-screen">
   <div class="fs-step-header">
-    <div class="fs-step-num">01 / 06</div>
+    <div class="fs-dt-layer-label">Digital Twin Layer <span>01 / 06</span> — بناء نموذج النشاط</div>
     <h3 class="fs-step-title">ما نوع نشاطك التجاري؟</h3>
     <p class="fs-step-sub">سيُخصِّص الفحص نتائجه بناءً على قطاعك</p>
   </div>
   <div class="fs-sector-grid" id="fs-sector-grid">
     ${sectors.map(s => `<button class="fs-sector-card" data-v="${s.v}"><span class="fs-sector-emoji">${s.icon}</span><span class="fs-sector-name">${s.v}</span></button>`).join('')}
   </div>
+  <div class="fs-layer-added" id="fs-la-sector">✦ تمت إضافة الطبقة إلى التوأم الرقمي</div>
   <div class="fs-error" id="fs-err-sector">اختر نوع النشاط للمتابعة</div>
   <button class="fs-xray-next-btn" id="fs-btn-to-pain">التالي →</button>
 </div>`;
@@ -183,13 +184,14 @@
     return `
 <div id="fs-scr-pain" class="fs-screen">
   <div class="fs-step-header">
-    <div class="fs-step-num">02 / 06</div>
+    <div class="fs-dt-layer-label">Digital Twin Layer <span>02 / 06</span> — قراءة الضغط التشغيلي</div>
     <h3 class="fs-step-title">أين أكبر ضغط في مشروعك؟</h3>
     <p class="fs-step-sub">اختر المجال الذي يستهلك وقتك أو يُفقدك عملاء</p>
   </div>
   <div class="fs-pain-grid" id="fs-pain-grid">
     ${pains.map(p => `<button class="fs-pain-card" data-v="${p.v}"><span class="fs-pain-icon">${p.icon}</span><span class="fs-pain-name">${p.v}</span></button>`).join('')}
   </div>
+  <div class="fs-layer-added" id="fs-la-pain">✦ تمت إضافة الطبقة إلى التوأم الرقمي</div>
   <div class="fs-error" id="fs-err-pain">اختر مجال الضغط للمتابعة</div>
   <div class="fs-nav-row">
     <button class="fs-back-btn" id="fs-btn-back-sector">← رجوع</button>
@@ -203,7 +205,7 @@
     return `
 <div id="fs-scr-city" class="fs-screen">
   <div class="fs-step-header">
-    <div class="fs-step-num">03 / 06</div>
+    <div class="fs-dt-layer-label">Digital Twin Layer <span>03 / 06</span> — تحديد السوق المحلي</div>
     <h3 class="fs-step-title">في أي مدينة يعمل مشروعك؟</h3>
     <p class="fs-step-sub">نُخصّص التوصيات بناءً على السوق المحلي</p>
   </div>
@@ -213,6 +215,7 @@
   <div class="fs-city-other-wrap" id="fs-city-other-wrap" style="display:none">
     <input class="fs-input" id="fs-city-other-input" type="text" placeholder="اكتب اسم المدينة" maxlength="40">
   </div>
+  <div class="fs-layer-added" id="fs-la-city">✦ تمت إضافة الطبقة إلى التوأم الرقمي</div>
   <div class="fs-error" id="fs-err-city">اختر المدينة للمتابعة</div>
   <div class="fs-nav-row">
     <button class="fs-back-btn" id="fs-btn-back-pain">← رجوع</button>
@@ -226,13 +229,14 @@
     return `
 <div id="fs-scr-volume" class="fs-screen">
   <div class="fs-step-header">
-    <div class="fs-step-num">04 / 06</div>
+    <div class="fs-dt-layer-label">Digital Twin Layer <span>04 / 06</span> — قياس إشارات العملاء</div>
     <h3 class="fs-step-title">كم استفسار أو طلب يصلك يومياً؟</h3>
     <p class="fs-step-sub">يساعدنا في تحديد حجم الأتمتة المطلوبة</p>
   </div>
   <div class="fs-simple-grid fs-simple-grid-col2" id="fs-volume-grid">
     ${opts.map(o => `<button class="fs-simple-card" data-v="${o}">${o}</button>`).join('')}
   </div>
+  <div class="fs-layer-added" id="fs-la-volume">✦ تمت إضافة الطبقة إلى التوأم الرقمي</div>
   <div class="fs-error" id="fs-err-volume">اختر حجم التواصل للمتابعة</div>
   <div class="fs-nav-row">
     <button class="fs-back-btn" id="fs-btn-back-city">← رجوع</button>
@@ -246,13 +250,14 @@
     return `
 <div id="fs-scr-dropoff" class="fs-screen">
   <div class="fs-step-header">
-    <div class="fs-step-num">05 / 06</div>
+    <div class="fs-dt-layer-label">Digital Twin Layer <span>05 / 06</span> — كشف نقطة التسرب</div>
     <h3 class="fs-step-title">أين يضيع العميل قبل أن يُصبح عميلاً فعلياً؟</h3>
     <p class="fs-step-sub">هذا هو المكان الذي تختفي منه الإيرادات</p>
   </div>
   <div class="fs-simple-grid" id="fs-dropoff-grid">
     ${opts.map(o => `<button class="fs-simple-card" data-v="${o}">${o}</button>`).join('')}
   </div>
+  <div class="fs-layer-added" id="fs-la-dropoff">✦ تمت إضافة الطبقة إلى التوأم الرقمي</div>
   <div class="fs-error" id="fs-err-dropoff">اختر نقطة الضياع للمتابعة</div>
   <div class="fs-nav-row">
     <button class="fs-back-btn" id="fs-btn-back-volume">← رجوع</button>
@@ -266,17 +271,18 @@
     return `
 <div id="fs-scr-dataclarity" class="fs-screen">
   <div class="fs-step-header">
-    <div class="fs-step-num">06 / 06</div>
+    <div class="fs-dt-layer-label">Digital Twin Layer <span>06 / 06</span> — قياس دقة القرار</div>
     <h3 class="fs-step-title">هل تعرف بالأرقام لماذا تخسر بعض العملاء؟</h3>
     <p class="fs-step-sub">مستوى الوضوح يحدد عمق الفحص</p>
   </div>
   <div class="fs-simple-grid fs-simple-grid-col2" id="fs-dataclarity-grid">
     ${opts.map(o => `<button class="fs-simple-card" data-v="${o}">${o}</button>`).join('')}
   </div>
+  <div class="fs-layer-added" id="fs-la-dataclarity">✦ تمت إضافة الطبقة إلى التوأم الرقمي</div>
   <div class="fs-error" id="fs-err-dataclarity">اختر مستوى الوضوح للمتابعة</div>
   <div class="fs-nav-row">
     <button class="fs-back-btn" id="fs-btn-back-dropoff">← رجوع</button>
-    <button class="fs-xray-next-btn" id="fs-btn-start-scan">ابدأ الفحص ⚡</button>
+    <button class="fs-xray-next-btn" id="fs-btn-start-scan">ابدأ المحاكاة ⚡</button>
   </div>
 </div>`;
   }
@@ -292,7 +298,7 @@
         <path d="M20 20l-3-3" stroke="#00A8FF" stroke-width="2" stroke-linecap="round"/>
       </svg>
     </div>
-    <div class="fs-scan-label" id="fs-scan-label">جاري تشغيل Blumark24 Brain...</div>
+    <div class="fs-scan-label" id="fs-scan-label">جاري تشغيل محاكاة التوأم الرقمي...</div>
     <div class="fs-scan-track"><div class="fs-scan-fill" id="fs-scan-fill"></div></div>
     <div class="fs-scan-stages" id="fs-scan-stages">
       ${SCAN_STAGES.map((s,i) => `<div class="fs-scan-stage" id="fs-ss-${i}">${s}</div>`).join('')}
@@ -307,8 +313,9 @@
 
   <!-- ── Header ── -->
   <div class="fs-dt-header">
-    <div class="fs-dt-badge"><span class="fs-dt-dot"></span> تم بناء التوأم الرقمي</div>
-    <div class="fs-dt-title">تم بناء التوأم الرقمي الأولي لمشروعك</div>
+    <div class="fs-dt-badge"><span class="fs-dt-dot"></span> Digital Twin Snapshot جاهز</div>
+    <div class="fs-dt-title">Digital Twin Snapshot جاهز</div>
+    <p class="fs-dt-subtitle">تم إنشاء نسخة أولية من مشروعك، وقراءة نقطة التسرب داخل رحلة العميل في السوق السعودي.</p>
   </div>
 
   <!-- ── Main diagnosis (dynamic) ── -->
@@ -425,7 +432,7 @@
     <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
     </svg>
-    أرسل نتيجتي إلى واتساب
+    استلم خريطة النمو على واتساب
   </button>
   <button class="fs-reset-link" id="fs-btn-reset">↩ فحص جديد</button>
 </div>`;
@@ -434,6 +441,13 @@
   /* ══════════════════════════════════════════════
      WIRE EVENTS
   ══════════════════════════════════════════════ */
+  function flashLayer(id) {
+    const el = $(id);
+    if (!el) return;
+    el.classList.add('fs-la-visible');
+    setTimeout(() => el.classList.remove('fs-la-visible'), 1800);
+  }
+
   function wireAll() {
     /* Welcome → Sector */
     $('fs-btn-start').addEventListener('click', () => goTo('fs-scr-sector'));
@@ -445,6 +459,7 @@
         c.classList.add('fs-sel');
         state.sector = c.dataset.v;
         $('fs-err-sector').style.display = 'none';
+        flashLayer('fs-la-sector');
       }));
 
     /* Sector → Pain */
@@ -460,6 +475,7 @@
         c.classList.add('fs-sel');
         state.pain = c.dataset.v;
         $('fs-err-pain').style.display = 'none';
+        flashLayer('fs-la-pain');
       }));
 
     /* Pain → City */
@@ -477,6 +493,7 @@
         $('fs-err-city').style.display = 'none';
         const wrap = $('fs-city-other-wrap');
         if (wrap) wrap.style.display = c.dataset.v === 'أخرى' ? 'block' : 'none';
+        flashLayer('fs-la-city');
       }));
     $('fs-btn-to-volume').addEventListener('click', () => {
       if (!state.city) { $('fs-err-city').style.display = 'block'; return; }
@@ -495,6 +512,7 @@
         $$('#fs-volume-grid .fs-simple-card').forEach(x => x.classList.remove('fs-sel'));
         c.classList.add('fs-sel'); state.volume = c.dataset.v;
         $('fs-err-volume').style.display = 'none';
+        flashLayer('fs-la-volume');
       }));
     $('fs-btn-to-dropoff').addEventListener('click', () => {
       if (!state.volume) { $('fs-err-volume').style.display = 'block'; return; }
@@ -507,6 +525,7 @@
         $$('#fs-dropoff-grid .fs-simple-card').forEach(x => x.classList.remove('fs-sel'));
         c.classList.add('fs-sel'); state.dropoff = c.dataset.v;
         $('fs-err-dropoff').style.display = 'none';
+        flashLayer('fs-la-dropoff');
       }));
     $('fs-btn-to-dataclarity').addEventListener('click', () => {
       if (!state.dropoff) { $('fs-err-dropoff').style.display = 'block'; return; }
@@ -519,6 +538,7 @@
         $$('#fs-dataclarity-grid .fs-simple-card').forEach(x => x.classList.remove('fs-sel'));
         c.classList.add('fs-sel'); state.dataclarity = c.dataset.v;
         $('fs-err-dataclarity').style.display = 'none';
+        flashLayer('fs-la-dataclarity');
       }));
 
     /* DataClarity → Scan */
