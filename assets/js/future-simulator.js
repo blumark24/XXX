@@ -307,8 +307,32 @@
 
   <!-- ── Header ── -->
   <div class="fs-dt-header">
-    <div class="fs-dt-badge"><span class="fs-dt-dot"></span> تم اكتشاف 3 فرص نمو</div>
-    <div class="fs-dt-title" id="fs-res-title">نتائج فحص مشروعك</div>
+    <div class="fs-dt-badge"><span class="fs-dt-dot"></span> تم بناء التوأم الرقمي</div>
+    <div class="fs-dt-title">تم بناء التوأم الرقمي الأولي لمشروعك</div>
+  </div>
+
+  <!-- ── Main diagnosis (dynamic) ── -->
+  <div class="fs-diag-block" id="fs-diag-main"></div>
+
+  <!-- ── Saudi market diagnosis ── -->
+  <div class="fs-diag-block fs-diag-market">
+    <div class="fs-diag-label">تشخيص السوق السعودي</div>
+    <p class="fs-diag-text">في السوق السعودي، العميل يتخذ قراره بسرعة عبر واتساب، Google Maps، والمنصات الاجتماعية. أي تأخر في الرد، ضعف متابعة، أو غياب وضوح الأسعار والخدمات قد يحوّل الاستفسار إلى فرصة ضائعة خلال دقائق.</p>
+  </div>
+
+  <!-- ── City diagnosis (dynamic) ── -->
+  <div class="fs-diag-block" id="fs-diag-city"></div>
+
+  <!-- ── Executive decision ── -->
+  <div class="fs-diag-block fs-diag-exec">
+    <div class="fs-diag-label">القرار التنفيذي</div>
+    <p class="fs-diag-text">الأولوية ليست زيادة الإعلانات الآن، بل إغلاق نقطة التسرب الحالية قبل ضخ عملاء جدد.</p>
+  </div>
+
+  <!-- ── Recommendation ── -->
+  <div class="fs-diag-block fs-diag-rec">
+    <div class="fs-diag-label">التوصية</div>
+    <p class="fs-diag-text">نوصي بتفعيل WhatsApp AI وربطه برحلة العميل، مع تنظيم الردود، المتابعة، والحجوزات داخل نظام واحد.</p>
   </div>
 
   <!-- ── Cinematic Digital Twin Dashboard ── -->
@@ -348,7 +372,7 @@
   <div class="fs-ba-compare">
     <div class="fs-ba-before">
       <div class="fs-ba-section-label fs-ba-label-before">قبل Blumark24</div>
-      <ul class="fs-ba-list">
+      <ul class="fs-ba-list" id="fs-ba-before-list">
         <li>ردود متأخرة</li>
         <li>فرص غير واضحة</li>
         <li>متابعة يدوية</li>
@@ -363,10 +387,7 @@
 
   <!-- ── Digital Twin Intelligence Layer ── -->
   <div class="fs-intel-layer">
-    <!-- scanner line inside layer -->
     <div class="fs-intel-scan" aria-hidden="true"></div>
-
-    <!-- status row -->
     <div class="fs-intel-status-row">
       <div class="fs-intel-stable">
         <span class="fs-intel-stable-dot"></span>
@@ -374,12 +395,10 @@
       </div>
       <div class="fs-intel-dna">تم إنشاء بصمة المشروع</div>
     </div>
-
-    <!-- metrics grid -->
     <div class="fs-intel-metrics">
       <div class="fs-intel-metric fs-im-0">
         <div class="fs-im-label">قابلية النمو</div>
-        <div class="fs-im-val fs-im-green">+31%</div>
+        <div class="fs-im-val fs-im-green" id="fs-im-growth">+31%</div>
       </div>
       <div class="fs-intel-metric fs-im-1">
         <div class="fs-im-label">دقة القراءة</div>
@@ -387,18 +406,16 @@
       </div>
       <div class="fs-intel-metric fs-im-2">
         <div class="fs-im-label">جاهزية الأتمتة</div>
-        <div class="fs-im-val fs-im-blue">74/100</div>
+        <div class="fs-im-val fs-im-blue" id="fs-im-auto">74/100</div>
       </div>
       <div class="fs-intel-metric fs-im-3">
         <div class="fs-im-label">مناطق نمو مخفية</div>
         <div class="fs-im-val fs-im-amber">3 مناطق</div>
       </div>
     </div>
-
-    <!-- action step -->
     <div class="fs-intel-action">
       <span class="fs-intel-action-label">الخطوة التنفيذية المقترحة</span>
-      <span class="fs-intel-action-text">تفعيل WhatsApp AI لاستعادة العملاء قبل خروجهم</span>
+      <span class="fs-intel-action-text" id="fs-intel-action-text">تفعيل WhatsApp AI لاستعادة العملاء قبل خروجهم</span>
     </div>
   </div>
 
@@ -572,19 +589,86 @@
     tick();
   }
 
+  /* ── City-specific context ── */
+  const CITY_CONTEXT = {
+    'مكة':             'مكة المكرمة سوق موسمي عالي الكثافة. وقت الذروة خلال المواسم الدينية يضاعف الطلب بشكل مفاجئ، ما يجعل الاستجابة السريعة والأتمتة ضرورة وليست خياراً.',
+    'جدة':             'جدة سوق تنافسي متنوع. العميل يقارن بين خيارات متعددة قبل القرار، وأي تأخر في الرد أو غياب وضوح الأسعار يدفعه للمنافس مباشرة.',
+    'الرياض':          'الرياض أكبر سوق استهلاكي في المملكة. حجم الطلب مرتفع والمنافسة شديدة، والمشاريع التي تعتمد الأتمتة تنمو أسرع بكثير من تلك التي تعتمد على الجهد اليدوي.',
+    'المدينة':         'المدينة المنورة سوق ذو طابع خاص بالزوار والمقيمين. الثقة والسرعة في الاستجابة عاملان محوريان في بناء قاعدة عملاء مستدامة.',
+    'الدمام / الخبر':  'المنطقة الشرقية سوق متنامٍ بقطاعات خدمية واسعة. العملاء يتوقعون ردوداً سريعة وتجربة منظمة تعكس احترافية المشروع.',
+  };
+
+  /* ── Automation score by volume ── */
+  const VOLUME_AUTO = {
+    'أقل من 10': '42/100',
+    '10 - 30':   '61/100',
+    '30 - 70':   '78/100',
+    'أكثر من 70':'94/100',
+    'غير واضح':  '55/100',
+  };
+
+  /* ── Growth potential by dropoff ── */
+  const DROPOFF_GROWTH = {
+    'يتأخر الرد عليه':                '+38%',
+    'يسأل ولا يكمل':                  '+29%',
+    'لا توجد متابعة':                  '+34%',
+    'الحجز غير منظم':                  '+27%',
+    'لا يعرف الأسعار أو الخدمات':     '+41%',
+    'لا نعرف السبب':                   '+22%',
+  };
+
   /* ── Build cinematic result ── */
   const MODULE_ICONS = ['🤖','⚡','📊'];
 
   function buildResult() {
-    const sec  = state.sector || 'مطعم';
-    const pain = state.pain   || 'الردود';
-    const opps = (OPPS[sec] && OPPS[sec][pain]) || OPPS['مطعم']['الردود'];
+    const sec      = state.sector     || 'مطعم';
+    const pain     = state.pain       || 'الردود';
+    const city     = state.city       || '';
+    const volume   = state.volume     || '';
+    const dropoff  = state.dropoff    || '';
+    const opps     = (OPPS[sec] && OPPS[sec][pain]) || OPPS['مطعم']['الردود'];
 
-    $('fs-res-title').textContent  = `نتائج فحص ${sec} · تحدي ${pain}`;
-    $('fs-res-pkg').textContent    = PKG[sec] || 'GROWTH — 999 ريال/شهر';
-    $('fs-dt-label').textContent   = `Digital Twin · ${sec}`;
+    $('fs-res-pkg').textContent  = PKG[sec] || 'GROWTH — 999 ريال/شهر';
+    $('fs-dt-label').textContent = `Digital Twin · ${sec}`;
 
-    /* render modules with staggered entrance */
+    /* dynamic growth & automation metrics */
+    const growthVal = DROPOFF_GROWTH[dropoff] || '+31%';
+    const autoVal   = VOLUME_AUTO[volume]     || '74/100';
+    if ($('fs-im-growth')) $('fs-im-growth').textContent = growthVal;
+    if ($('fs-im-auto'))   $('fs-im-auto').textContent   = autoVal;
+
+    /* dynamic intel action step */
+    const actionMap = {
+      'يتأخر الرد عليه':             'تفعيل رد آلي فوري عبر WhatsApp AI لاستيعاب الطلبات قبل انسحابها',
+      'يسأل ولا يكمل':               'بناء مسار إجابة ذكي يجيب عن الأسئلة الشائعة ويُغلق قرار الشراء',
+      'لا توجد متابعة':              'تفعيل نظام متابعة آلي يُعيد تفعيل العميل بعد 24 و72 ساعة',
+      'الحجز غير منظم':              'ربط نظام حجز ذكي بواتساب يمنع التعارض ويُرسل تأكيدات آلية',
+      'لا يعرف الأسعار أو الخدمات': 'تفعيل قائمة رقمية تفاعلية تُجيب عن الأسئلة تلقائياً',
+      'لا نعرف السبب':               'تفعيل تتبع رحلة العميل لاكتشاف نقطة التسرب الفعلية',
+    };
+    const actionText = actionMap[dropoff] || 'تفعيل WhatsApp AI لاستعادة العملاء قبل خروجهم';
+    if ($('fs-intel-action-text')) $('fs-intel-action-text').textContent = actionText;
+
+    /* main diagnosis block */
+    const cityLabel  = city   ? `المدينة (${city})`    : 'موقع المشروع';
+    const volLabel   = volume ? `حجم التواصل (${volume} يومياً)` : 'حجم التواصل';
+    const dropLabel  = dropoff ? `نقطة ضياع العميل عند: ${dropoff}` : 'نقطة ضياع العميل';
+    $('fs-diag-main').innerHTML = `
+      <div class="fs-diag-label">التشخيص الرئيسي</div>
+      <p class="fs-diag-text">بناءً على نمط نشاط <strong>${sec}</strong>، ${cityLabel}، ${volLabel}، و${dropLabel}، يظهر أن المشروع لا يعاني فقط من ضعف نمو، بل من تسرب تشغيلي داخل رحلة العميل.</p>`;
+
+    /* city diagnosis block */
+    const cityDiag = CITY_CONTEXT[city];
+    if (cityDiag) {
+      $('fs-diag-city').innerHTML = `
+        <div class="fs-diag-label">تشخيص المدينة · ${city}</div>
+        <p class="fs-diag-text">${cityDiag}</p>`;
+      $('fs-diag-city').style.display = '';
+    } else {
+      $('fs-diag-city').style.display = 'none';
+    }
+
+    /* render opportunity modules */
     $('fs-dt-modules').innerHTML = opps.map((o, i) => `
       <div class="fs-dt-module fs-dt-mod-${i}" style="animation-delay:${i * 0.18 + 0.1}s">
         <div class="fs-dt-mod-top">
@@ -602,14 +686,19 @@
   function sendWhatsApp() {
     const msg = [
       'مرحباً Blumark24 👋',
-      'أجريت فحص Blumark24 Brain',
-      `نوع النشاط: ${state.sector || 'غير محدد'}`,
-      `أكبر ضغط: ${state.pain || 'غير محدد'}`,
-      `المدينة: ${state.city || 'غير محددة'}`,
-      `حجم التواصل اليومي: ${state.volume || 'غير محدد'}`,
-      `نقطة ضياع العميل: ${state.dropoff || 'غير محددة'}`,
-      `وضوح الأرقام: ${state.dataclarity || 'غير محدد'}`,
-      'وأرغب بمعرفة الحل الأنسب لمشروعي.',
+      'أجريت فحص Blumark24 Brain وهذه نتيجتي:',
+      '',
+      `📌 نوع النشاط: ${state.sector || 'غير محدد'}`,
+      `⚡ أكبر ضغط: ${state.pain || 'غير محدد'}`,
+      `📍 المدينة: ${state.city || 'غير محددة'}`,
+      `📊 حجم التواصل اليومي: ${state.volume || 'غير محدد'}`,
+      `🔻 نقطة ضياع العميل: ${state.dropoff || 'غير محددة'}`,
+      `📈 وضوح الأرقام: ${state.dataclarity || 'غير محدد'}`,
+      '',
+      '🔍 التشخيص: المشروع يعاني من تسرب تشغيلي داخل رحلة العميل، وليس فقط من ضعف نمو.',
+      '✅ التوصية: تفعيل WhatsApp AI وربطه برحلة العميل لإغلاق نقطة التسرب.',
+      '',
+      'أرغب بمعرفة الحل الأنسب لمشروعي.',
     ].join('\n');
     window.open(`https://wa.me/${WAPHONE}?text=${encodeURIComponent(msg)}`, '_blank');
   }
