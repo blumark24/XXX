@@ -88,6 +88,26 @@
     return e;
   }
 
+  /* ── Twin Status steps ── */
+  const STATUS_STEPS = ['نموذج النشاط', 'السوق', 'الطلب', 'رحلة العميل', 'القرار'];
+  const SCREEN_STATUS = {
+    'fs-scr-sector':      0,
+    'fs-scr-pain':        0,
+    'fs-scr-city':        1,
+    'fs-scr-volume':      2,
+    'fs-scr-dropoff':     3,
+    'fs-scr-dataclarity': 4,
+  };
+
+  /* ── Dataclarity → clarity score ── */
+  const DATACLARITY_SCORE = {
+    'نعم، عندي تقارير':        90,
+    'تقريباً':                 65,
+    'لا، نعتمد على التوقع':    35,
+    'لا توجد قراءة واضحة':     20,
+    'أحتاج كشف أدق':           50,
+  };
+
   /* ══════════════════════════════════════════════
      BUILD MODAL
   ══════════════════════════════════════════════ */
@@ -109,7 +129,7 @@
 
     const panel = el('div');
     panel.id = 'fs-panel';
-    panel.innerHTML = screenWelcome() + screenSector() + screenPain() + screenCity() + screenVolume() + screenDropoff() + screenDataClarity() + screenScan() + screenResult();
+    panel.innerHTML = twinStatusBar() + screenIntro() + screenWelcome() + screenSector() + screenPain() + screenCity() + screenVolume() + screenDropoff() + screenDataClarity() + screenScan() + screenResult();
     modal.appendChild(panel);
 
     document.body.appendChild(modal);
@@ -119,6 +139,28 @@
 
     wireAll();
   }
+
+  /* ── Twin status bar HTML ── */
+  function twinStatusBar() {
+    return `<div id="fs-twin-status" style="display:none">${STATUS_STEPS.map((s,i) => `<div class="fs-ts-step" id="fs-ts-${i}">${s}</div>`).join('')}</div>`;
+  }
+
+  /* ── Intro screen ── */
+  function screenIntro() {
+    return `
+<div id="fs-scr-intro" class="fs-screen">
+  <div class="fs-intro-wrap">
+    <div class="fs-intro-badge">Blumark24 Twin Engine</div>
+    <p class="fs-intro-desc">جاري إنشاء النسخة الرقمية الأولية لمشروعك...</p>
+    <div class="fs-intro-layers">
+      <div class="fs-intro-layer" id="fs-il-0"><span class="fs-il-dot"></span>Project Model</div>
+      <div class="fs-intro-layer" id="fs-il-1"><span class="fs-il-dot"></span>Market Layer</div>
+      <div class="fs-intro-layer" id="fs-il-2"><span class="fs-il-dot"></span>Customer Layer</div>
+      <div class="fs-intro-layer" id="fs-il-3"><span class="fs-il-dot"></span>Growth Layer</div>
+    </div>
+    <div class="fs-intro-ready" id="fs-intro-ready">Digital Twin Ready</div>
+  </div>
+</div>`;
 
   /* ══════════════════════════════════════════════
      SCREENS HTML
@@ -309,6 +351,28 @@
   <div class="fs-dt-header">
     <div class="fs-dt-badge"><span class="fs-dt-dot"></span> تم بناء التوأم الرقمي</div>
     <div class="fs-dt-title">تم بناء التوأم الرقمي الأولي لمشروعك</div>
+  </div>
+
+  <!-- ── Executive View ── -->
+  <div class="fs-exec-view">
+    <div class="fs-exec-title">Executive View</div>
+    <div class="fs-exec-rows">
+      <div class="fs-exec-row">
+        <span class="fs-exec-label">جاهزية الأتمتة</span>
+        <div class="fs-exec-bar-wrap"><div class="fs-exec-bar fs-eb-blue" id="fs-ev-auto-bar"></div></div>
+        <span class="fs-exec-val" id="fs-ev-auto-val">—</span>
+      </div>
+      <div class="fs-exec-row">
+        <span class="fs-exec-label">قابلية النمو</span>
+        <div class="fs-exec-bar-wrap"><div class="fs-exec-bar fs-eb-green" id="fs-ev-growth-bar"></div></div>
+        <span class="fs-exec-val" id="fs-ev-growth-val">—</span>
+      </div>
+      <div class="fs-exec-row">
+        <span class="fs-exec-label">وضوح القرار</span>
+        <div class="fs-exec-bar-wrap"><div class="fs-exec-bar fs-eb-cyan" id="fs-ev-clarity-bar"></div></div>
+        <span class="fs-exec-val" id="fs-ev-clarity-val">—</span>
+      </div>
+    </div>
   </div>
 
   <!-- ── Main diagnosis (dynamic) ── -->
@@ -551,6 +615,20 @@
       const panel = $('fs-panel');
       if (panel) panel.scrollTop = 0;
     }
+    /* update twin status bar */
+    const sb = $('fs-twin-status');
+    if (!sb) return;
+    const stepIdx = SCREEN_STATUS[id];
+    sb.style.display = (stepIdx !== undefined) ? 'flex' : 'none';
+    if (stepIdx !== undefined) {
+      for (let k = 0; k < STATUS_STEPS.length; k++) {
+        const s = $('fs-ts-' + k);
+        if (!s) continue;
+        s.classList.remove('fs-ts-active', 'fs-ts-done');
+        if (k < stepIdx)      s.classList.add('fs-ts-done');
+        else if (k === stepIdx) s.classList.add('fs-ts-active');
+      }
+    }
   }
 
   /* ── Scan animation ── */
@@ -631,6 +709,19 @@
     if ($('fs-im-growth')) $('fs-im-growth').textContent = growthVal;
     if ($('fs-im-auto'))   $('fs-im-auto').textContent   = autoVal;
 
+    /* ── Executive View bars ── */
+    const autoNum    = parseInt(autoVal) || 74;
+    const growthNum  = parseInt(growthVal.replace('+','')) || 31;
+    const clarityNum = DATACLARITY_SCORE[state.dataclarity] || 55;
+    function setBar(barId, valId, pct, label) {
+      const bar = $(barId); const val = $(valId);
+      if (bar) setTimeout(() => { bar.style.width = pct + '%'; }, 120);
+      if (val) val.textContent = label;
+    }
+    setBar('fs-ev-auto-bar',    'fs-ev-auto-val',    autoNum,    autoVal);
+    setBar('fs-ev-growth-bar',  'fs-ev-growth-val',  Math.min(growthNum * 2.2, 100), growthVal);
+    setBar('fs-ev-clarity-bar', 'fs-ev-clarity-val', clarityNum, clarityNum + '%');
+
     /* dynamic intel action step */
     const actionMap = {
       'يتأخر الرد عليه':             'تفعيل رد آلي فوري عبر WhatsApp AI لاستيعاب الطلبات قبل انسحابها',
@@ -696,14 +787,47 @@
     window.open(`https://wa.me/${WAPHONE}?text=${encodeURIComponent(msg)}`, '_blank');
   }
 
+  /* ── Intro animation ── */
+  function runIntro() {
+    const layers = [0,1,2,3].map(i => $('fs-il-' + i));
+    const ready  = $('fs-intro-ready');
+    let i = 0;
+    function activate() {
+      if (i < layers.length) {
+        if (layers[i]) layers[i].classList.add('fs-il-active');
+        i++;
+        setTimeout(activate, 420);
+      } else {
+        if (ready) ready.classList.add('fs-ir-visible');
+        setTimeout(() => goTo('fs-scr-sector'), 600);
+      }
+    }
+    setTimeout(activate, 150);
+  }
+
   /* ── Open / Close / Reset ── */
   function openModal() {
     buildModal();
-    resetXRay();
+    /* reset state without calling goTo(welcome) */
+    state = { sector: '', pain: '', city: '', volume: '', dropoff: '', dataclarity: '' };
+    $$('.fs-sector-card, .fs-pain-card, .fs-simple-card').forEach(c => c.classList.remove('fs-sel'));
+    ['fs-err-sector','fs-err-pain','fs-err-city','fs-err-volume','fs-err-dropoff','fs-err-dataclarity']
+      .forEach(id => { const e = $(id); if (e) e.style.display = 'none'; });
+    const wrap = $('fs-city-other-wrap');
+    if (wrap) wrap.style.display = 'none';
+    const inp  = $('fs-city-other-input');
+    if (inp)  inp.value = '';
+    const fill = $('fs-scan-fill');
+    if (fill) fill.style.width = '0%';
+
     const m = $('fs-modal');
     m.classList.add('open', 'fs-opening');
     document.body.style.overflow = 'hidden';
     setTimeout(() => m.classList.remove('fs-opening'), 500);
+
+    /* show intro then transition to first question */
+    goTo('fs-scr-intro');
+    runIntro();
   }
   function closeModal() {
     const m = $('fs-modal');
