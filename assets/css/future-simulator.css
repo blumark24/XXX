@@ -1091,7 +1091,7 @@
     animation: none !important;
     opacity: 0.12;
   }
-  .fs-dt-scan-line {
+  .fs-dt-scanner {
     animation: none !important;
     opacity: 0;
   }
@@ -1099,11 +1099,11 @@
     animation: none !important;
     opacity: 0.25;
   }
-  .fs-dt-mod {
+  .fs-dt-module {
     animation: fsDtModIn .5s cubic-bezier(.22,.68,0,1.15) both !important;
     /* إلغاء fsDtModGlow المستمرة */
   }
-  .fs-dt-arc {
+  .fs-dt-flow-line {
     animation: none !important;
     stroke-dashoffset: 0;
   }
