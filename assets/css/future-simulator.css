@@ -1068,11 +1068,12 @@
   .fs-intro-layer { transition: none !important; }
 }
 
-/* ── Mobile Performance Mode (max-width: 768px) ──────────────────────────
-   يخفف الأنيميشنات الثقيلة على الجوال فقط — التصميم والألوان والمقاسات ثابتة
+/* ── Real Motion Performance Mode (max-width: 768px) ─────────────────────
+   الحركة تبقى حقيقية وهادفة — أخف على الجوال وليست جامدة
    ───────────────────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  /* تخفيف blur (ليس إلغاءه) */
+
+  /* تخفيف blur الخلفية — ليس إلغاءه */
   #fs-modal {
     backdrop-filter: blur(10px) saturate(1.2);
     -webkit-backdrop-filter: blur(10px) saturate(1.2);
@@ -1082,40 +1083,58 @@
     -webkit-backdrop-filter: blur(18px) saturate(1.3);
   }
 
-  /* إيقاف الأنيميشنات الثقيلة المستمرة — تُستبدل بحالة ثابتة */
-  .fs-scan-pulse-ring {
-    animation: none !important;
-    opacity: 0.35;
-  }
-  .fs-dt-grid {
-    animation: none !important;
-    opacity: 0.12;
-  }
-  .fs-dt-scanner {
-    animation: none !important;
-    opacity: 0;
-  }
-  .fs-dot-1, .fs-dot-2, .fs-dot-3, .fs-dot-4 {
-    animation: none !important;
-    opacity: 0.25;
-  }
-  .fs-dt-module {
-    animation: fsDtModIn .5s cubic-bezier(.22,.68,0,1.15) both !important;
-    /* إلغاء fsDtModGlow المستمرة */
-  }
-  .fs-dt-flow-line {
-    animation: none !important;
-    stroke-dashoffset: 0;
+  /* دخول المودال — أسرع قليلاً على الجوال */
+  #fs-modal.fs-opening #fs-panel {
+    animation: fsModalIn .3s cubic-bezier(.22,.68,0,1.15) both;
   }
 
-  /* إيقاف مؤثرات الخلفية خلف المودال أثناء فتحه */
+  /* إيقاف حلقات خلفية الصفحة خلف المودال — لا داعي لها */
   body.fs-modal-open .fs-xray-ring-outer,
   body.fs-modal-open .fs-xray-ring-inner {
     animation: none !important;
   }
 
-  /* إبقاء أنيميشن الدخول للمودال — خفيف وقصير */
-  #fs-modal.fs-opening #fs-panel {
-    animation: fsModalIn .3s cubic-bezier(.22,.68,0,1.15) both;
+  /* شاشة التحليل — pulse ring أخف: أبطأ + scale أصغر + opacity أقل */
+  .fs-scan-pulse-ring {
+    animation: fsPulseRingMobile 2.8s ease-out infinite !important;
+    opacity: 0.5;
   }
+
+  /* شاشة النتيجة — grid يتحرك لكن ببطء شديد */
+  .fs-dt-grid {
+    animation: fsDtGrid 45s linear infinite !important;
+    opacity: 0.10;
+  }
+
+  /* scanner line — أبطأ وأخف */
+  .fs-dt-scanner {
+    animation: fsDtScan 6s linear infinite !important;
+    opacity: 0.6;
+  }
+
+  /* dots — حركة بسيطة بدون scale كبير */
+  .fs-dot-1 { animation: fsDotFloatMobile 8s ease-in-out infinite !important; }
+  .fs-dot-2 { animation: fsDotFloatMobile 10s ease-in-out infinite .8s !important; }
+  .fs-dot-3 { animation: fsDotFloatMobile 9s ease-in-out infinite 1.4s !important; }
+  .fs-dot-4 { animation: fsDotFloatMobile 7s ease-in-out infinite 2s !important; }
+
+  /* modules — يبقى fsDtModIn، يُلغى فقط الـ glow المستمر */
+  .fs-dt-module {
+    animation: fsDtModIn .5s cubic-bezier(.22,.68,0,1.15) both !important;
+  }
+
+  /* flow lines — أبطأ */
+  .fs-dt-flow-line {
+    animation: fsDtDash 4.5s linear infinite !important;
+  }
+}
+
+/* keyframes مخصصة للجوال — transform/opacity فقط، بدون filter أو blur */
+@keyframes fsPulseRingMobile {
+  0%   { transform: translateX(-50%) translateY(-105px) scale(1);   opacity: .5; }
+  100% { transform: translateX(-50%) translateY(-105px) scale(1.7); opacity: 0;  }
+}
+@keyframes fsDotFloatMobile {
+  0%,100% { transform: translateY(0)    opacity: .45; }
+  50%     { transform: translateY(-5px); opacity: .7; }
 }
