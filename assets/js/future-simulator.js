@@ -161,6 +161,7 @@
     <div class="fs-intro-ready" id="fs-intro-ready">Digital Twin Ready</div>
   </div>
 </div>`;
+  }
 
   /* ══════════════════════════════════════════════
      SCREENS HTML
