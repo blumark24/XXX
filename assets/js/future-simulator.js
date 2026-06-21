@@ -823,6 +823,7 @@
 
     const m = $('fs-modal');
     m.classList.add('open', 'fs-opening');
+    document.body.classList.add('fs-modal-open');
     document.body.style.overflow = 'hidden';
     setTimeout(() => m.classList.remove('fs-opening'), 500);
 
@@ -833,6 +834,7 @@
   function closeModal() {
     const m = $('fs-modal');
     if (m) m.classList.remove('open');
+    document.body.classList.remove('fs-modal-open');
     document.body.style.overflow = '';
   }
   function resetXRay() {
