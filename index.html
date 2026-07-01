@@ -183,6 +183,10 @@
     90% { opacity: 1; }
     100% { transform: translateY(-10vh) scale(1); opacity: 0; }
   }
+  @keyframes sandboxPulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.12); opacity: 0.9; }
+  }
 
   .float-anim { animation: float 6s ease-in-out infinite; }
   .pulse-anim { animation: neonPulse 3s ease-in-out infinite; }
@@ -253,16 +257,15 @@
 
   .hero-cta-cluster {
     display: flex;
-    align-items: stretch;
+    align-items: center;
     justify-content: center;
-    gap: 14px;
+    gap: 16px;
     flex-wrap: wrap;
-    max-width: 860px;
+    max-width: 980px;
     margin: 0 auto;
   }
 
-  .hero-scan-btn,
-  .hero-sim-btn {
+  .hero-scan-btn {
     position: relative;
     isolation: isolate;
     overflow: hidden;
@@ -291,23 +294,7 @@
       0 0 38px rgba(0, 168, 255, 0.38);
   }
 
-  .hero-sim-btn {
-    min-width: 248px;
-    min-height: 76px;
-    padding: 14px 20px;
-    border-radius: 20px;
-    background:
-      linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.02)),
-      linear-gradient(145deg, rgba(4, 17, 39, 0.92), rgba(8, 36, 74, 0.74));
-    border: 1px solid rgba(100, 205, 255, 0.34);
-    box-shadow:
-      0 0 0 1px rgba(255,255,255,0.05) inset,
-      0 14px 34px rgba(0, 10, 28, 0.46),
-      0 0 24px rgba(0, 168, 255, 0.18);
-  }
-
-  .hero-scan-btn::before,
-  .hero-sim-btn::before {
+  .hero-scan-btn::before {
     content: '';
     position: absolute;
     inset: 1px;
@@ -321,8 +308,7 @@
     transition: transform 0.28s ease, opacity 0.28s ease;
   }
 
-  .hero-scan-btn::after,
-  .hero-sim-btn::after {
+  .hero-scan-btn::after {
     content: '';
     position: absolute;
     inset: 0;
@@ -334,24 +320,20 @@
     transition: opacity 0.28s ease;
   }
 
-  .hero-scan-btn:hover,
-  .hero-sim-btn:hover {
+  .hero-scan-btn:hover {
     transform: translateY(-3px);
   }
 
-  .hero-scan-btn:hover::before,
-  .hero-sim-btn:hover::before {
+  .hero-scan-btn:hover::before {
     opacity: 0.9;
     transform: translateX(8px);
   }
 
-  .hero-scan-btn:hover::after,
-  .hero-sim-btn:hover::after {
+  .hero-scan-btn:hover::after {
     opacity: 1;
   }
 
-  .hero-scan-inner,
-  .hero-sim-inner {
+  .hero-scan-inner {
     position: relative;
     z-index: 1;
     display: flex;
@@ -425,62 +407,272 @@
     direction: ltr;
   }
 
-  .sim-path {
+  .sandbox-card {
     position: relative;
-    display: grid;
-    grid-template-columns: repeat(5, 11px);
-    gap: 9px;
-    align-items: center;
-    flex: 0 0 auto;
-    padding: 14px 2px;
-  }
-
-  .sim-path::before {
-    content: '';
-    position: absolute;
-    left: 6px;
-    right: 6px;
-    top: 50%;
-    height: 1px;
-    background: linear-gradient(90deg, rgba(0,168,255,0.1), rgba(124,226,255,0.74), rgba(0,168,255,0.1));
-    opacity: 0.78;
-    transform: translateY(-50%);
-  }
-
-  .sim-node {
-    position: relative;
-    z-index: 1;
-    width: 11px;
-    height: 11px;
-    border-radius: 50%;
-    background: #0bd6ff;
-    box-shadow: 0 0 12px rgba(0, 213, 255, 0.68);
-    opacity: 0.78;
+    isolation: isolate;
+    width: 344px;
+    min-height: 206px;
+    padding: 16px;
+    overflow: hidden;
+    border-radius: 24px;
+    text-align: right;
+    color: #fff;
+    background:
+      linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0.03) 35%, rgba(0,168,255,0.07)),
+      linear-gradient(145deg, rgba(4, 15, 35, 0.96), rgba(7, 32, 65, 0.88) 58%, rgba(2, 10, 25, 0.96));
+    border: 1px solid rgba(122, 219, 255, 0.34);
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.06) inset,
+      0 1px 0 rgba(255,255,255,0.20) inset,
+      0 18px 48px rgba(0, 10, 28, 0.48),
+      0 0 30px rgba(0, 168, 255, 0.16);
+    transform: translateY(0);
     transition: transform 0.28s ease, opacity 0.28s ease;
   }
 
-  .sim-node:nth-child(2),
-  .sim-node:nth-child(4) {
-    transform: translateY(-5px);
+  .sandbox-card::before {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    border-radius: inherit;
+    background:
+      linear-gradient(110deg, transparent 0 46%, rgba(136, 228, 255, 0.18) 51%, transparent 57%),
+      radial-gradient(circle at 28% 18%, rgba(0, 168, 255, 0.20), transparent 25%);
+    opacity: 0.66;
+    z-index: -1;
+    transform: translateX(-8px);
+    transition: transform 0.28s ease, opacity 0.28s ease;
   }
 
-  .sim-node:nth-child(3),
-  .sim-node:nth-child(5) {
-    transform: translateY(5px);
+  .sandbox-card:hover {
+    transform: translateY(-4px);
   }
 
-  .hero-sim-btn:hover .sim-node {
+  .sandbox-card:hover::before {
+    opacity: 0.92;
+    transform: translateX(8px);
+  }
+
+  .sandbox-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .sandbox-kicker {
+    display: block;
+    direction: ltr;
+    font-size: 0.64rem;
+    font-weight: 800;
+    color: rgba(174, 232, 255, 0.76);
+    letter-spacing: 0.04em;
+  }
+
+  .sandbox-title {
+    display: block;
+    margin-top: 4px;
+    font-size: 1.08rem;
+    font-weight: 900;
+    line-height: 1.1;
+  }
+
+  .sandbox-subtitle {
+    margin-top: 5px;
+    color: rgba(222, 241, 248, 0.72);
+    font-size: 0.72rem;
+    line-height: 1.45;
+  }
+
+  .sandbox-growth {
+    flex: 0 0 auto;
+    padding: 7px 9px;
+    border-radius: 14px;
+    direction: ltr;
+    font-size: 0.9rem;
+    font-weight: 900;
+    color: #90f4ff;
+    background: rgba(0, 168, 255, 0.10);
+    border: 1px solid rgba(128, 224, 255, 0.26);
+    box-shadow: 0 0 18px rgba(0, 213, 255, 0.14);
+  }
+
+  .sandbox-scene {
+    position: relative;
+    height: 92px;
+    margin-top: 8px;
+  }
+
+  .sandbox-plane {
+    position: absolute;
+    inset: 10px 28px 6px 32px;
+    border-radius: 16px;
+    background:
+      linear-gradient(135deg, rgba(133, 221, 255, 0.18), rgba(7, 28, 60, 0.62)),
+      repeating-linear-gradient(90deg, rgba(130, 220, 255, 0.10) 0 1px, transparent 1px 22px),
+      repeating-linear-gradient(0deg, rgba(130, 220, 255, 0.08) 0 1px, transparent 1px 18px);
+    border: 1px solid rgba(117, 219, 255, 0.24);
+    box-shadow: 0 16px 28px rgba(0, 6, 18, 0.34);
+    transform: skewX(-18deg) rotate(-2deg);
+  }
+
+  .sandbox-desk {
+    position: absolute;
+    right: 118px;
+    top: 34px;
+    width: 78px;
+    height: 34px;
+    border-radius: 10px 10px 14px 14px;
+    background:
+      linear-gradient(135deg, rgba(210, 244, 255, 0.22), rgba(0, 168, 255, 0.08)),
+      linear-gradient(145deg, rgba(13, 54, 98, 0.92), rgba(5, 18, 42, 0.94));
+    border: 1px solid rgba(170, 235, 255, 0.28);
+    box-shadow: 0 12px 22px rgba(0, 8, 22, 0.36);
+    transform: skewX(-18deg);
+  }
+
+  .sandbox-core {
+    position: absolute;
+    right: 147px;
+    top: 34px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #d9fbff 0 15%, #43d9ff 16% 38%, rgba(0,168,255,0.18) 39% 100%);
+    box-shadow: 0 0 20px rgba(0, 213, 255, 0.72);
+    z-index: 2;
+  }
+
+  .sandbox-core::before {
+    content: '';
+    position: absolute;
+    inset: -10px;
+    border-radius: 50%;
+    border: 1px solid rgba(136, 228, 255, 0.38);
+    opacity: 0.72;
+    transform: scale(1);
+    transition: transform 0.28s ease, opacity 0.28s ease;
+    animation: sandboxPulse 3.4s ease-in-out infinite;
+  }
+
+  .sandbox-card:hover .sandbox-core::before {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+
+  .sandbox-route {
+    position: absolute;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(0,168,255,0.04), rgba(128, 224, 255, 0.78), rgba(0,168,255,0.04));
+    opacity: 0.72;
+    transform-origin: center;
+    transition: opacity 0.28s ease, transform 0.28s ease;
+  }
+
+  .route-client {
+    right: 200px;
+    top: 52px;
+    width: 62px;
+    transform: rotate(14deg);
+  }
+
+  .route-whatsapp {
+    right: 83px;
+    top: 52px;
+    width: 64px;
+    transform: rotate(-12deg);
+  }
+
+  .route-orders {
+    right: 130px;
+    top: 72px;
+    width: 58px;
+    transform: rotate(22deg);
+  }
+
+  .route-report {
+    right: 142px;
+    top: 24px;
+    width: 66px;
+    transform: rotate(-23deg);
+  }
+
+  .sandbox-node {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #0bd6ff;
+    box-shadow: 0 0 14px rgba(0, 213, 255, 0.72);
+    opacity: 0.82;
+    transition: transform 0.28s ease, opacity 0.28s ease;
+  }
+
+  .node-client { right: 258px; top: 42px; }
+  .node-wa { right: 72px; top: 42px; background: #49e6c8; }
+  .node-orders { right: 102px; top: 74px; }
+  .node-report { right: 208px; top: 14px; background: #9ee8ff; }
+
+  .sandbox-label {
+    position: absolute;
+    min-width: 46px;
+    padding: 3px 6px;
+    border-radius: 999px;
+    color: rgba(228, 246, 255, 0.76);
+    background: rgba(0, 12, 32, 0.42);
+    border: 1px solid rgba(128, 224, 255, 0.16);
+    font-size: 0.55rem;
+    font-weight: 800;
+    line-height: 1;
+    opacity: 0.82;
+    transition: transform 0.28s ease, opacity 0.28s ease;
+  }
+
+  .label-client { right: 238px; top: 57px; }
+  .label-wa { right: 50px; top: 57px; }
+  .label-orders { right: 80px; top: 88px; }
+  .label-report { right: 192px; top: 0; }
+
+  .sandbox-card:hover .sandbox-node,
+  .sandbox-card:hover .sandbox-label,
+  .sandbox-card:hover .sandbox-route {
     opacity: 1;
   }
 
-  .hero-sim-btn:hover .sim-node:nth-child(2),
-  .hero-sim-btn:hover .sim-node:nth-child(4) {
-    transform: translateY(-7px);
+  .sandbox-card:hover .node-client,
+  .sandbox-card:hover .node-wa,
+  .sandbox-card:hover .node-orders,
+  .sandbox-card:hover .node-report {
+    transform: translateY(-2px);
   }
 
-  .hero-sim-btn:hover .sim-node:nth-child(3),
-  .hero-sim-btn:hover .sim-node:nth-child(5) {
-    transform: translateY(7px);
+  .sandbox-card:hover .sandbox-label {
+    transform: translateY(-1px);
+  }
+
+  .sandbox-cta {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    margin-top: 10px;
+    padding: 8px 13px;
+    border-radius: 999px;
+    color: #eafbff;
+    font-size: 0.78rem;
+    font-weight: 900;
+    background: rgba(0, 168, 255, 0.16);
+    border: 1px solid rgba(134, 228, 255, 0.36);
+    box-shadow: 0 0 18px rgba(0, 168, 255, 0.14);
+    transform: translateY(0);
+    transition: transform 0.28s ease, opacity 0.28s ease;
+  }
+
+  .sandbox-cta:hover {
+    transform: translateY(-2px);
   }
 
   .hero-packages-link {
@@ -494,30 +686,30 @@
       position: relative;
       right: auto;
       left: auto;
-      margin-inline: auto;
+      width: 100vw;
+      max-width: none;
+      margin-inline: calc(50% - 50vw);
+      padding-inline: 16px;
+      translate: -12vw 0;
       flex-direction: column;
-      align-items: stretch;
-      width: min(100%, calc(100vw - 32px));
-      max-width: 360px;
+      align-items: center;
       gap: 12px;
     }
 
     .hero-scan-btn,
-    .hero-sim-btn,
+    .sandbox-card,
     .hero-packages-link {
-      width: 100%;
+      width: min(100%, 360px);
       max-width: 100%;
       min-width: 0;
       justify-content: center;
     }
 
-    .hero-scan-inner,
-    .hero-sim-inner {
+    .hero-scan-inner {
       justify-content: center;
     }
 
-    .hero-scan-btn,
-    .hero-sim-btn {
+    .hero-scan-btn {
       padding-inline: 14px;
     }
 
@@ -534,22 +726,71 @@
       height: 38px;
     }
 
-    .sim-path {
-      grid-template-columns: repeat(5, 10px);
-      gap: 7px;
+    .sandbox-card {
+      min-height: 216px;
+      padding: 15px;
+    }
+
+    .sandbox-scene {
+      height: 96px;
+    }
+
+    .sandbox-plane {
+      inset-inline: 22px;
+    }
+
+    .sandbox-desk {
+      right: 118px;
+    }
+
+    .sandbox-core {
+      right: 147px;
+    }
+
+    .route-client { right: 198px; width: 55px; }
+    .route-whatsapp { right: 82px; width: 58px; }
+    .route-orders { right: 126px; width: 52px; }
+    .route-report { right: 138px; width: 58px; }
+
+    .node-client { right: 250px; }
+    .node-wa { right: 74px; }
+    .node-orders { right: 96px; }
+    .node-report { right: 198px; }
+
+    .label-client { right: 222px; }
+    .label-wa { right: 50px; }
+    .label-orders { right: 70px; }
+    .label-report { right: 172px; }
+  }
+
+  @media (max-width: 380px) {
+    .sandbox-label {
+      font-size: 0.5rem;
+      min-width: 40px;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .hero-scan-btn,
-    .hero-sim-btn,
     .hero-scan-btn::before,
-    .hero-sim-btn::before,
     .hero-scan-btn::after,
-    .hero-sim-btn::after,
+    .sandbox-card,
+    .sandbox-card::before,
+    .sandbox-core::before,
+    .sandbox-route,
+    .sandbox-node,
+    .sandbox-label,
+    .sandbox-cta,
     .scan-core::before,
-    .sim-node {
+    .sandbox-card:hover,
+    .sandbox-card:hover::before,
+    .sandbox-card:hover .sandbox-core::before,
+    .sandbox-card:hover .sandbox-node,
+    .sandbox-card:hover .sandbox-label,
+    .sandbox-card:hover .sandbox-route,
+    .sandbox-cta:hover {
       transition: none;
+      animation: none;
     }
   }
 
@@ -1072,21 +1313,34 @@
           </span>
         </span>
       </button>
-      <button type="button" onclick="FS.open()" class="hero-sim-btn" aria-label="شغل المحاكي - Project Growth Simulator">
-        <span class="hero-sim-inner">
-          <span class="sim-path" aria-hidden="true">
-            <span class="sim-node"></span>
-            <span class="sim-node"></span>
-            <span class="sim-node"></span>
-            <span class="sim-node"></span>
-            <span class="sim-node"></span>
-          </span>
-          <span class="hero-cta-copy">
-            <span class="hero-cta-ar">شغّل المحاكي</span>
-            <span class="hero-cta-en">Project Growth Simulator</span>
-          </span>
-        </span>
-      </button>
+      <article class="sandbox-card" aria-label="Blumark24 Digital Twin Sandbox">
+        <div class="sandbox-head">
+          <div>
+            <span class="sandbox-kicker">Blumark24 Digital Twin Sandbox</span>
+            <span class="sandbox-title">محاكي النمو الذكي</span>
+            <p class="sandbox-subtitle">شاهد مشروعك يتحول إلى نسخة رقمية خلال 30 ثانية</p>
+          </div>
+          <span class="sandbox-growth">+32%</span>
+        </div>
+        <div class="sandbox-scene" aria-hidden="true">
+          <div class="sandbox-plane"></div>
+          <div class="sandbox-route route-client"></div>
+          <div class="sandbox-route route-whatsapp"></div>
+          <div class="sandbox-route route-orders"></div>
+          <div class="sandbox-route route-report"></div>
+          <div class="sandbox-desk"></div>
+          <div class="sandbox-core"></div>
+          <span class="sandbox-node node-client"></span>
+          <span class="sandbox-node node-wa"></span>
+          <span class="sandbox-node node-orders"></span>
+          <span class="sandbox-node node-report"></span>
+          <span class="sandbox-label label-client">عميل</span>
+          <span class="sandbox-label label-wa">واتساب</span>
+          <span class="sandbox-label label-orders">طلبات</span>
+          <span class="sandbox-label label-report">تقرير</span>
+        </div>
+        <button type="button" onclick="FS.open()" class="sandbox-cta">ابدأ المحاكاة</button>
+      </article>
       <a href="#pricing"
          class="btn-secondary hero-packages-link flex items-center gap-3 px-7 py-3 rounded-2xl text-white text-base font-bold">
         <svg class="w-5 h-5 text-[#00A8FF]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
