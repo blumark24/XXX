@@ -183,6 +183,16 @@
     90% { opacity: 1; }
     100% { transform: translateY(-10vh) scale(1); opacity: 0; }
   }
+  @keyframes tvPulse {
+    0%, 100% { transform: scale(1); opacity: 0.55; }
+    50% { transform: scale(1.14); opacity: 1; }
+  }
+  @keyframes tvFlow {
+    0% { transform: translateX(-100%); opacity: 0; }
+    12% { opacity: 1; }
+    88% { opacity: 1; }
+    100% { transform: translateX(100%); opacity: 0; }
+  }
 
   .float-anim { animation: float 6s ease-in-out infinite; }
   .pulse-anim { animation: neonPulse 3s ease-in-out infinite; }
@@ -249,6 +259,708 @@
   }
   #chatbot-bubble, #chatbot-panel {
     z-index: 999;
+  }
+
+  .hero-cta-cluster {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    max-width: 980px;
+    margin: 0 auto;
+  }
+
+  .hero-scan-btn {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    appearance: none;
+    border: 0;
+    color: #fff;
+    cursor: pointer;
+    text-decoration: none;
+    transform: translateY(0);
+    transition: transform 0.28s ease, opacity 0.28s ease;
+  }
+
+  .hero-scan-btn {
+    min-width: 302px;
+    min-height: 76px;
+    padding: 15px 24px;
+    border-radius: 22px;
+    background:
+      linear-gradient(135deg, rgba(255,255,255,0.20), rgba(255,255,255,0.02) 34%, rgba(0,168,255,0.08)),
+      linear-gradient(145deg, #071634 0%, #0b2552 48%, #031022 100%);
+    border: 1px solid rgba(159, 220, 255, 0.52);
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.08) inset,
+      0 1px 0 rgba(255,255,255,0.35) inset,
+      0 18px 48px rgba(0, 10, 28, 0.58),
+      0 0 38px rgba(0, 168, 255, 0.38);
+  }
+
+  .hero-scan-btn::before {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    border-radius: inherit;
+    background:
+      linear-gradient(110deg, transparent 0 42%, rgba(139, 224, 255, 0.20) 49%, transparent 56%),
+      radial-gradient(circle at 72% 20%, rgba(0, 168, 255, 0.22), transparent 28%);
+    opacity: 0.58;
+    z-index: -1;
+    transform: translateX(-8px);
+    transition: transform 0.28s ease, opacity 0.28s ease;
+  }
+
+  .hero-scan-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    border: 1px solid rgba(255,255,255,0.16);
+    box-shadow: inset 0 -1px 0 rgba(0,168,255,0.26);
+    pointer-events: none;
+    opacity: 0.9;
+    transition: opacity 0.28s ease;
+  }
+
+  .hero-scan-btn:hover {
+    transform: translateY(-3px);
+  }
+
+  .hero-scan-btn:hover::before {
+    opacity: 0.9;
+    transform: translateX(8px);
+  }
+
+  .hero-scan-btn:hover::after {
+    opacity: 1;
+  }
+
+  .hero-scan-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .scan-core {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle, #d9fbff 0 9%, #51d8ff 10% 22%, rgba(0,168,255,0.24) 23% 44%, rgba(6,22,50,0.72) 45% 100%);
+    box-shadow:
+      0 0 22px rgba(0, 213, 255, 0.72),
+      0 0 0 1px rgba(175, 235, 255, 0.54) inset;
+  }
+
+  .scan-core::before {
+    content: '';
+    position: absolute;
+    inset: -7px;
+    border-radius: 50%;
+    border: 1px solid rgba(117, 219, 255, 0.58);
+    background: conic-gradient(from 40deg, transparent 0 55%, rgba(132, 229, 255, 0.86) 66%, transparent 78% 100%);
+    opacity: 0.82;
+    transition: transform 0.28s ease, opacity 0.28s ease;
+  }
+
+  .scan-core::after {
+    content: '';
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    top: 50%;
+    height: 1px;
+    background: rgba(218, 250, 255, 0.88);
+    box-shadow: 0 0 10px rgba(0, 213, 255, 0.8);
+    opacity: 0.7;
+    transform: translateY(-50%);
+  }
+
+  .hero-scan-btn:hover .scan-core::before {
+    opacity: 1;
+    transform: scale(1.06) rotate(14deg);
+  }
+
+  .hero-cta-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.1;
+    text-align: right;
+    min-width: 0;
+  }
+
+  .hero-cta-ar {
+    font-size: 1.13rem;
+    font-weight: 900;
+    letter-spacing: 0;
+  }
+
+  .hero-cta-en {
+    margin-top: 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: rgba(205, 240, 255, 0.78);
+    letter-spacing: 0.02em;
+    direction: ltr;
+  }
+
+  .hero-packages-link {
+    min-height: 56px;
+    align-self: center;
+    opacity: 0.86;
+  }
+
+  /* ═══════════════════════════════════════════
+     BLUMARK24 TWINVERSE 360 — Digital Twin World
+     ═══════════════════════════════════════════ */
+  .tv-world {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border-radius: 32px;
+    padding: 36px 26px 32px;
+    background:
+      radial-gradient(circle at 50% 10%, rgba(0,168,255,0.10), transparent 28rem),
+      linear-gradient(150deg, rgba(6,18,42,0.92), rgba(4,11,28,0.96));
+    border: 1px solid rgba(0,168,255,0.22);
+    box-shadow: 0 30px 80px rgba(0,6,20,0.55), inset 0 1px 0 rgba(255,255,255,0.08);
+    transition: border-color 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  .tv-world::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      repeating-linear-gradient(90deg, rgba(0,168,255,0.05) 0 1px, transparent 1px 48px),
+      repeating-linear-gradient(0deg, rgba(0,168,255,0.04) 0 1px, transparent 1px 40px);
+    opacity: 0.35;
+  }
+
+  .tv-layout {
+    display: grid;
+    grid-template-columns: minmax(170px, 1fr) minmax(0, 560px) minmax(170px, 1fr);
+    gap: 22px;
+    align-items: center;
+  }
+
+  .tv-side {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .tv-card {
+    padding: 15px 17px;
+    border-radius: 18px;
+    text-align: right;
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(0,168,255,0.18);
+    box-shadow: 0 12px 30px rgba(0,6,18,0.35), inset 0 1px 0 rgba(255,255,255,0.06);
+    transform: translateY(0);
+    transition: transform 0.28s ease, opacity 0.28s ease, border-color 0.28s ease;
+  }
+
+  .tv-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(0,168,255,0.45);
+  }
+
+  .tv-card strong {
+    display: block;
+    color: #fff;
+    font-size: 0.92rem;
+    font-weight: 900;
+  }
+
+  .tv-card p {
+    margin-top: 5px;
+    color: rgba(203,225,240,0.68);
+    font-size: 0.72rem;
+    line-height: 1.55;
+  }
+
+  .tv-card-growth {
+    grid-column: 2;
+    justify-self: center;
+    width: min(100%, 430px);
+    text-align: center;
+  }
+
+  .tv-stage {
+    position: relative;
+    grid-column: 2;
+    grid-row: 1;
+    height: 470px;
+    transform: scale(1);
+    transition: transform 0.5s ease;
+  }
+
+  .tv-portal {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: min(100%, 450px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1px solid rgba(0,168,255,0.20);
+    box-shadow: inset 0 0 70px rgba(0,168,255,0.12), 0 0 46px rgba(0,168,255,0.10);
+    transition: box-shadow 0.5s ease;
+  }
+
+  .tv-portal::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    border-top-color: rgba(148,226,255,0.85);
+    border-right-color: rgba(0,168,255,0.28);
+    animation: rotate 14s linear infinite;
+  }
+
+  .tv-portal::after {
+    content: '';
+    position: absolute;
+    inset: 16px;
+    border-radius: 50%;
+    border: 1px dashed rgba(0,168,255,0.25);
+    animation: rotate 30s linear infinite reverse;
+  }
+
+  .tv-plane {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: min(66%, 350px);
+    height: 200px;
+    border-radius: 18px;
+    background:
+      linear-gradient(135deg, rgba(133,221,255,0.16), rgba(7,28,60,0.6)),
+      repeating-linear-gradient(90deg, rgba(130,220,255,0.10) 0 1px, transparent 1px 26px),
+      repeating-linear-gradient(0deg, rgba(130,220,255,0.08) 0 1px, transparent 1px 20px);
+    border: 1px solid rgba(117,219,255,0.24);
+    box-shadow: 0 26px 44px rgba(0,6,18,0.4);
+    transform: skewX(-16deg) rotate(-3deg);
+    z-index: 1;
+  }
+
+  .tv-desk {
+    position: absolute;
+    z-index: 2;
+    border-radius: 8px 8px 12px 12px;
+    background:
+      linear-gradient(135deg, rgba(210,244,255,0.22), rgba(0,168,255,0.08)),
+      linear-gradient(145deg, rgba(13,54,98,0.92), rgba(5,18,42,0.94));
+    border: 1px solid rgba(170,235,255,0.28);
+    box-shadow: 0 12px 22px rgba(0,8,22,0.36);
+    transform: skewX(-16deg);
+  }
+
+  .tv-desk-a { width: 70px; height: 28px; right: 30%; top: 60%; }
+  .tv-desk-b { width: 52px; height: 22px; left: 31%; top: 33%; }
+
+  .tv-core {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    z-index: 3;
+    background: radial-gradient(circle, #eafcff 0 12%, #4fd9ff 13% 34%, rgba(0,168,255,0.25) 35% 62%, rgba(6,22,50,0.85) 63% 100%);
+    box-shadow: 0 0 34px rgba(0,213,255,0.6), 0 0 0 1px rgba(175,235,255,0.5) inset;
+  }
+
+  .tv-core::before {
+    content: '';
+    position: absolute;
+    inset: -14px;
+    border-radius: 50%;
+    border: 1px solid rgba(136,228,255,0.42);
+    animation: tvPulse 3.6s ease-in-out infinite;
+  }
+
+  .tv-core::after {
+    content: '';
+    position: absolute;
+    inset: -26px;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    border-top-color: rgba(136,228,255,0.55);
+    animation: rotate 9s linear infinite;
+  }
+
+  .tv-route {
+    position: absolute;
+    z-index: 2;
+    height: 2px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(0,168,255,0.05), rgba(128,224,255,0.5), rgba(0,168,255,0.05));
+    opacity: 0.75;
+  }
+
+  .tv-route i {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0 34%, rgba(224,250,255,0.95) 50%, transparent 66% 100%);
+    transform: translateX(-100%);
+    animation: tvFlow 3.4s linear infinite;
+  }
+
+  .tv-route-client { right: 14%; top: 45.5%; width: 29%; transform: rotate(-10deg); }
+  .tv-route-wa { left: 14%; top: 45.5%; width: 29%; transform: rotate(10deg); }
+  .tv-route-report { left: 0; right: 0; margin-inline: auto; width: 30%; top: 24%; transform: rotate(90deg); }
+  .tv-route-orders { right: 20%; top: 71%; width: 28%; transform: rotate(40deg); }
+  .tv-route-growth { left: 20%; top: 71%; width: 28%; transform: rotate(-40deg); }
+
+  .tv-route-wa i { animation-delay: 0.6s; }
+  .tv-route-report i { animation-delay: 1.1s; }
+  .tv-route-orders i { animation-delay: 1.7s; }
+  .tv-route-growth i { animation-delay: 2.3s; }
+
+  .tv-node {
+    position: absolute;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    color: rgba(228,246,255,0.85);
+  }
+
+  .tv-node::before {
+    content: '';
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #0bd6ff;
+    box-shadow: 0 0 16px rgba(0,213,255,0.75);
+  }
+
+  .tv-node span {
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(0,12,32,0.55);
+    border: 1px solid rgba(128,224,255,0.2);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .tv-node-client { right: 5%; top: 40%; }
+  .tv-node-wa { left: 5%; top: 40%; }
+  .tv-node-report { left: 0; right: 0; top: 2%; margin-inline: auto; width: max-content; }
+  .tv-node-orders { right: 17%; bottom: 4%; }
+  .tv-node-growth { left: 17%; bottom: 4%; }
+
+  .tv-node-wa::before { background: #49e6c8; box-shadow: 0 0 16px rgba(73,230,200,0.7); }
+  .tv-node-report::before { background: #9ee8ff; }
+  .tv-node-growth::before { background: #7cf29c; box-shadow: 0 0 16px rgba(124,242,156,0.7); }
+
+  .tv-visitor {
+    position: absolute;
+    right: 3.5%;
+    top: 31%;
+    z-index: 5;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #ffffff 0 32%, #35d3ff 33% 100%);
+    box-shadow: 0 0 18px rgba(0,213,255,0.9);
+    animation: tvPulse 2.6s ease-in-out infinite;
+  }
+
+  .tv-growth {
+    position: absolute;
+    left: 2%;
+    top: 4%;
+    z-index: 5;
+    direction: ltr;
+    text-align: center;
+    padding: 8px 13px;
+    border-radius: 14px;
+    font-size: 0.95rem;
+    font-weight: 900;
+    color: #90f4ff;
+    background: rgba(0,168,255,0.10);
+    border: 1px solid rgba(128,224,255,0.28);
+    box-shadow: 0 0 18px rgba(0,213,255,0.16);
+  }
+
+  .tv-growth small {
+    display: block;
+    margin-top: 2px;
+    font-size: 0.55rem;
+    font-weight: 700;
+    color: rgba(174,232,255,0.75);
+  }
+
+  .tv-actions {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 30px;
+  }
+
+  .tv-enter-btn {
+    appearance: none;
+    cursor: pointer;
+    min-height: 54px;
+    padding: 14px 30px;
+    border-radius: 16px;
+    color: #eafbff;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 900;
+    background: rgba(0,168,255,0.10);
+    border: 1px solid rgba(134,228,255,0.4);
+    box-shadow: 0 0 22px rgba(0,168,255,0.14);
+    transform: translateY(0);
+    transition: transform 0.28s ease, opacity 0.28s ease, border-color 0.28s ease, background-color 0.28s ease;
+  }
+
+  .tv-enter-btn:hover {
+    transform: translateY(-2px);
+    border-color: rgba(134,228,255,0.7);
+  }
+
+  .tv-enter-btn[aria-pressed="true"] {
+    background: rgba(0,168,255,0.22);
+    border-color: rgba(180,238,255,0.8);
+  }
+
+  .tv-scan-btn {
+    appearance: none;
+    cursor: pointer;
+    min-height: 54px;
+    padding: 14px 30px;
+    border-radius: 16px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 900;
+    background:
+      linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.02) 36%, rgba(0,168,255,0.10)),
+      linear-gradient(145deg, #071634 0%, #0b2552 48%, #031022 100%);
+    border: 1px solid rgba(159,220,255,0.52);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.3) inset,
+      0 14px 36px rgba(0,10,28,0.5),
+      0 0 30px rgba(0,168,255,0.32);
+    transform: translateY(0);
+    transition: transform 0.28s ease, opacity 0.28s ease;
+  }
+
+  .tv-scan-btn:hover {
+    transform: translateY(-3px);
+  }
+
+  #twinverse.tv-live .tv-world {
+    border-color: rgba(0,168,255,0.45);
+    box-shadow: 0 30px 80px rgba(0,6,20,0.55), 0 0 60px rgba(0,168,255,0.18), inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+
+  #twinverse.tv-live .tv-stage { transform: scale(1.02); }
+
+  #twinverse.tv-live .tv-portal {
+    box-shadow: inset 0 0 90px rgba(0,168,255,0.2), 0 0 70px rgba(0,168,255,0.2);
+  }
+
+  #twinverse.tv-live .tv-portal::before {
+    animation-duration: 6s;
+    border-top-color: rgba(198,240,255,0.95);
+  }
+
+  #twinverse.tv-live .tv-route i { animation-duration: 1.8s; }
+  #twinverse.tv-live .tv-core::before { animation-duration: 1.8s; }
+  #twinverse.tv-live .tv-card { border-color: rgba(0,168,255,0.4); }
+
+  @media (max-width: 640px) {
+    .tv-world {
+      padding: 20px 12px 22px;
+      border-radius: 26px;
+    }
+
+    .tv-layout {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .tv-stage {
+      grid-column: 1;
+      grid-row: 1;
+      height: 340px;
+    }
+
+    .tv-side {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      grid-column: 1;
+    }
+
+    .tv-card {
+      padding: 12px 13px;
+    }
+
+    .tv-card-growth {
+      grid-column: 1;
+      width: 100%;
+    }
+
+    .tv-portal { width: min(100%, 330px); }
+
+    .tv-plane {
+      width: 72%;
+      height: 150px;
+    }
+
+    .tv-core { width: 52px; height: 52px; }
+    .tv-core::before { inset: -11px; }
+    .tv-core::after { inset: -20px; }
+
+    .tv-desk-a { width: 56px; height: 23px; }
+    .tv-desk-b { width: 42px; height: 18px; }
+
+    .tv-node { font-size: 0.6rem; gap: 5px; }
+    .tv-node span { padding: 3px 8px; }
+    .tv-node::before { width: 10px; height: 10px; }
+
+    .tv-node-client { right: 2%; }
+    .tv-node-wa { left: 2%; }
+    .tv-node-orders { right: 13%; }
+    .tv-node-growth { left: 13%; }
+
+    .tv-route-client { right: 13%; width: 30%; }
+    .tv-route-wa { left: 13%; width: 30%; }
+    .tv-route-report { width: 42%; top: 25%; }
+    .tv-route-orders { right: 18%; width: 30%; top: 70%; }
+    .tv-route-growth { left: 18%; width: 30%; top: 70%; }
+
+    .tv-visitor { right: 1.5%; top: 26%; width: 13px; height: 13px; }
+
+    .tv-growth {
+      left: 1%;
+      top: 2%;
+      padding: 6px 10px;
+      font-size: 0.8rem;
+    }
+
+    .tv-actions {
+      margin-top: 22px;
+      flex-direction: column;
+    }
+
+    .tv-enter-btn,
+    .tv-scan-btn {
+      width: min(100%, 340px);
+    }
+  }
+
+  @media (max-width: 640px) {
+    #hero {
+      direction: ltr;
+    }
+
+    #hero > .relative.z-10 {
+      width: min(100%, 100vw);
+      max-width: 100vw;
+      min-width: 0;
+      margin-inline: auto;
+      overflow-x: clip;
+      contain: inline-size;
+      direction: rtl;
+    }
+
+    #hero .hero-title,
+    #hero .hero-sub {
+      max-width: calc(100vw - 32px);
+      margin-inline: auto;
+    }
+
+    .hero-cta-cluster {
+      position: relative;
+      right: auto;
+      left: auto;
+      width: 100%;
+      max-width: 380px;
+      margin-inline: auto;
+      padding-inline: 16px;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hero-scan-btn,
+    .hero-packages-link {
+      width: min(100%, 360px);
+      max-width: 100%;
+      min-width: 0;
+      justify-content: center;
+    }
+
+    .hero-scan-inner {
+      justify-content: center;
+    }
+
+    .hero-scan-btn {
+      padding-inline: 14px;
+    }
+
+    .hero-cta-ar {
+      font-size: 1rem;
+    }
+
+    .hero-cta-en {
+      font-size: 0.66rem;
+    }
+
+    .scan-core {
+      width: 38px;
+      height: 38px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-scan-btn,
+    .hero-scan-btn::before,
+    .hero-scan-btn::after,
+    .scan-core::before,
+    .hero-packages-link,
+    .tv-world,
+    .tv-stage,
+    .tv-portal,
+    .tv-portal::before,
+    .tv-portal::after,
+    .tv-core::before,
+    .tv-core::after,
+    .tv-route i,
+    .tv-visitor,
+    .tv-card,
+    .tv-enter-btn,
+    .tv-scan-btn {
+      transition: none;
+      animation: none;
+    }
   }
 
   /* NAVBAR */
@@ -760,23 +1472,22 @@
     </p>
 
     <!-- CTAs -->
-    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center fade-up delay-3">
-      <button onclick="FS.open()" class="fs-hero-sim-btn">
-        <span class="fs-hsb-icon">
-          <span class="fs-hsb-ring"></span>
-        </span>
-        <span class="fs-hsb-text">
-          <span class="fs-hsb-label">Blumark24 Business X-Ray</span>
-          <span class="fs-hsb-main">اكشف فرصة النمو المخفية</span>
+    <div class="hero-cta-cluster fade-up delay-3">
+      <button type="button" onclick="FS.open()" class="hero-scan-btn" aria-label="افحص مشروعك - Blumark24 Digital Twin Scan">
+        <span class="hero-scan-inner">
+          <span class="scan-core" aria-hidden="true"></span>
+          <span class="hero-cta-copy">
+            <span class="hero-cta-ar">افحص مشروعك</span>
+            <span class="hero-cta-en">Blumark24 Digital Twin Scan</span>
+          </span>
         </span>
       </button>
       <a href="#pricing"
-         class="btn-secondary flex items-center gap-3 px-8 py-4 rounded-2xl text-white text-lg font-bold">
+         class="btn-secondary hero-packages-link flex items-center gap-3 px-7 py-3 rounded-2xl text-white text-base font-bold">
         <svg class="w-5 h-5 text-[#00A8FF]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
         شاهد الباقات
       </a>
     </div>
-
     <!-- Stats -->
     <div class="grid grid-cols-3 gap-6 max-w-2xl mx-auto mt-16 fade-up delay-4">
       <div class="glass-card rounded-2xl p-4 text-center float-anim" style="animation-delay: 0s">
@@ -800,6 +1511,70 @@
         <div class="w-6 h-10 rounded-full border border-gray-600 flex items-start justify-center p-1">
           <div class="w-1.5 h-3 bg-[#00A8FF] rounded-full animate-bounce"></div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════ BLUMARK24 TWINVERSE 360
+══════════════════════════════════════ -->
+<section id="twinverse" class="py-24 relative z-10">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-14 reveal">
+      <div class="inline-block px-4 py-1.5 rounded-full glass neon-border text-sm text-[#00A8FF] font-semibold mb-4" style="direction: ltr">Blumark24 TwinVerse 360</div>
+      <h2 class="text-4xl md:text-5xl font-black text-white mb-4">ادخل <span class="gradient-text">النسخة الرقمية</span> لمشروعك</h2>
+      <p class="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">شاهد كيف يتحول مشروعك إلى عالم تشغيل ذكي: عميل، واتساب، طلبات، تقارير، ونمو.</p>
+    </div>
+
+    <div class="tv-world reveal">
+      <div class="tv-layout">
+        <div class="tv-side">
+          <div class="tv-card">
+            <strong><i class="fas fa-route text-[#00A8FF] ml-2"></i>رحلة العميل</strong>
+            <p>تتبع مسار عميلك من أول تفاعل حتى الطلب المكتمل.</p>
+          </div>
+          <div class="tv-card">
+            <strong><i class="fas fa-receipt text-[#00A8FF] ml-2"></i>الطلبات</strong>
+            <p>الطلبات تتدفق وتُسجَّل داخل نظام واحد منظم.</p>
+          </div>
+        </div>
+        <div class="tv-stage" role="img" aria-label="مشهد TwinVerse 360: نسخة رقمية لمشروعك تربط العميل بواتساب والطلبات والتقارير والنمو">
+          <div class="tv-portal" aria-hidden="true"></div>
+          <div class="tv-plane" aria-hidden="true"></div>
+          <div class="tv-desk tv-desk-a" aria-hidden="true"></div>
+          <div class="tv-desk tv-desk-b" aria-hidden="true"></div>
+          <div class="tv-route tv-route-client" aria-hidden="true"><i></i></div>
+          <div class="tv-route tv-route-wa" aria-hidden="true"><i></i></div>
+          <div class="tv-route tv-route-report" aria-hidden="true"><i></i></div>
+          <div class="tv-route tv-route-orders" aria-hidden="true"><i></i></div>
+          <div class="tv-route tv-route-growth" aria-hidden="true"><i></i></div>
+          <div class="tv-core" aria-hidden="true"></div>
+          <span class="tv-visitor" aria-hidden="true"></span>
+          <div class="tv-node tv-node-client" aria-hidden="true"><span>عميل</span></div>
+          <div class="tv-node tv-node-wa" aria-hidden="true"><span>واتساب</span></div>
+          <div class="tv-node tv-node-report" aria-hidden="true"><span>تقرير</span></div>
+          <div class="tv-node tv-node-orders" aria-hidden="true"><span>طلبات</span></div>
+          <div class="tv-node tv-node-growth" aria-hidden="true"><span>نمو</span></div>
+          <div class="tv-growth" aria-hidden="true">+32%<small>مؤشر نمو</small></div>
+        </div>
+        <div class="tv-side">
+          <div class="tv-card">
+            <strong><i class="fas fa-comment-dots text-[#00A8FF] ml-2"></i>الرد الذكي</strong>
+            <p>واتساب يرد ويخدم عملاءك تلقائيًا على مدار الساعة.</p>
+          </div>
+          <div class="tv-card">
+            <strong><i class="fas fa-chart-column text-[#00A8FF] ml-2"></i>التقارير</strong>
+            <p>تقارير لحظية توضح أداء مشروعك بدقة.</p>
+          </div>
+        </div>
+        <div class="tv-card tv-card-growth">
+          <strong><i class="fas fa-arrow-trend-up text-[#00A8FF] ml-2"></i>فرص النمو</strong>
+          <p>يرصد النظام فرص نمو حقيقية ويحوّلها إلى قرارات تشغيلية.</p>
+        </div>
+      </div>
+      <div class="tv-actions">
+        <button type="button" class="tv-enter-btn" aria-pressed="false" onclick="var s=document.getElementById('twinverse');this.setAttribute('aria-pressed',s.classList.toggle('tv-live'))">ادخل المحاكي</button>
+        <button type="button" class="tv-scan-btn" onclick="FS.open()">افحص مشروعك الآن</button>
       </div>
     </div>
   </div>
