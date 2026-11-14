@@ -7,6 +7,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="domain-verification" content="ff69c064a3057e59720643e485ae738ba76895908f188a534e6a243127c0b02b">
 <title>Blumark24</title>
+<link rel="canonical" href="https://www.blumark24.com/">
+<meta property="og:site_name" content="Blumark24">
+<meta property="og:title" content="Blumark24">
+<meta name="twitter:title" content="Blumark24">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"Blumark24","url":"https://www.blumark24.com/"}
+</script>
 <meta name="description" content="Blumark24 تقدم حلول AI للأعمال في السعودية: مواقع احترافية، واتساب بوت ذكي، منيو رقمي، CRM، أتمتة تشغيلية وتحسين Google Maps للمطاعم والشركات.">
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,10 +21,10 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon-brand-96.png">
 <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="16x16 32x32 48x48 96x96">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<meta property="og:image" content="assets/branding/blumark24-logo-new.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-blue.png">
+<meta property="og:image" content="https://www.blumark24.com/assets/branding/blumark24-official-blue.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="assets/branding/blumark24-logo-new.png">
+<meta name="twitter:image" content="https://www.blumark24.com/assets/branding/blumark24-official-blue.png">
 <style>
   :root {
     --navy: #0A0F2C;
@@ -666,7 +673,7 @@
   }
 </style>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Organization","name":"Blumark24","url":"https://blumark24.com","logo":"https://blumark24.com/assets/branding/blumark24-logo-new.png","sameAs":["https://www.instagram.com/blumark24","https://x.com/blumark24","https://www.linkedin.com/company/blumark24ksa/","https://www.tiktok.com/@blumark24"]}
+{"@context":"https://schema.org","@type":"Organization","name":"Blumark24","url":"https://www.blumark24.com/","logo":"https://www.blumark24.com/assets/branding/blumark24-official-blue.png","sameAs":["https://www.instagram.com/blumark24","https://x.com/blumark24","https://www.linkedin.com/company/blumark24ksa/","https://www.tiktok.com/@blumark24"]}
 </script>
   <link rel="stylesheet" href="assets/css/future-simulator.css">
 </head>
@@ -687,7 +694,7 @@
 
       <!-- Logo (Left) -->
       <a href="#hero" class="flex-shrink-0 flex items-center" onclick="closeMenu()">
-        <img src="assets/branding/blumark24-logo-new.png" alt="Blumark24" style="width:160px;height:auto;object-fit:contain;max-width:180px">
+        <img src="assets/branding/blumark24-official-blue.png" alt="Blumark24" style="width:160px;height:auto;object-fit:contain;max-width:180px">
       </a>
 
       <!-- Menu Toggle (Right — all sizes) -->
@@ -1563,7 +1570,7 @@
       <!-- Brand -->
       <div class="md:col-span-2">
         <div class="mb-4">
-          <img src="assets/branding/blumark24-logo-new.png" alt="Blumark24" style="width:125px;height:auto;object-fit:contain;max-width:160px;opacity:0.95">
+          <img src="assets/branding/blumark24-official-blue.png" alt="Blumark24" style="width:125px;height:auto;object-fit:contain;max-width:160px;opacity:0.95">
         </div>
         <p class="text-gray-400 text-sm leading-relaxed max-w-sm">
           وكالة تسويق رقمي سعودية متخصصة في حلول الذكاء الاصطناعي لتحويل الأعمال ومواكبة رؤية 2030
@@ -1588,11 +1595,11 @@
       <div>
         <h4 class="font-black text-white mb-4 text-sm">الخدمات</h4>
         <ul class="space-y-2 text-sm text-gray-400">
-          <li><a href="#" class="hover:text-[#00A8FF] transition-colors">تصميم المواقع</a></li>
-          <li><a href="#" class="hover:text-[#00A8FF] transition-colors">بوت واتساب الذكي</a></li>
-          <li><a href="#" class="hover:text-[#00A8FF] transition-colors">المنيو الرقمي</a></li>
-          <li><a href="#" class="hover:text-[#00A8FF] transition-colors">CRM وإدارة العملاء</a></li>
-          <li><a href="#" class="hover:text-[#00A8FF] transition-colors">تقارير AI</a></li>
+          <li><a href="#services" class="hover:text-[#00A8FF] transition-colors">تصميم المواقع</a></li>
+          <li><a href="#services" class="hover:text-[#00A8FF] transition-colors">بوت واتساب الذكي</a></li>
+          <li><a href="#services" class="hover:text-[#00A8FF] transition-colors">المنيو الرقمي</a></li>
+          <li><a href="#services" class="hover:text-[#00A8FF] transition-colors">CRM وإدارة العملاء</a></li>
+          <li><a href="#services" class="hover:text-[#00A8FF] transition-colors">تقارير AI</a></li>
         </ul>
       </div>
 
@@ -1802,6 +1809,7 @@ function closeChat() {
 
 // ── OpenRouter chat integration ──
 const _chatHistory = [];
+let chatRequestPending = false;
 
 function _escapeHtml(s) {
   return String(s == null ? '' : s)
@@ -1859,13 +1867,17 @@ function _addLoadingBubble() {
 }
 
 async function _fetchReply(userMessage) {
-  _chatHistory.push({ role: 'user', content: userMessage });
+  chatRequestPending = true;
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 12000);
+  const userTurn = { role: 'user', content: userMessage };
   _addLoadingBubble();
   try {
     const res = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: _chatHistory })
+      signal: controller.signal,
+      body: JSON.stringify({ messages: [..._chatHistory.slice(-10), userTurn] })
     });
     const loading = document.getElementById('chat-loading');
     if (loading) loading.remove();
@@ -1873,16 +1885,21 @@ async function _fetchReply(userMessage) {
     const data = await res.json();
     const reply = data.text || '';
     if (!reply) throw new Error('empty');
-    _chatHistory.push({ role: 'assistant', content: reply });
+    _chatHistory.push(userTurn, { role: 'assistant', content: reply });
+    if (_chatHistory.length > 10) _chatHistory.splice(0, _chatHistory.length - 10);
     addMessage(reply, true);
   } catch (_err) {
     const loading = document.getElementById('chat-loading');
     if (loading) loading.remove();
     addMessage('عذراً، حدثت مشكلة مؤقتة. فضلاً جرّب مرة أخرى أو تواصل عبر واتساب:\nhttps://wa.me/966507006849', true);
+  } finally {
+    clearTimeout(timeout);
+    chatRequestPending = false;
   }
 }
 
 function sendChat() {
+  if (chatRequestPending) return;
   const inp = document.getElementById('chat-input');
   const text = inp.value.trim();
   if (!text) return;
@@ -1892,6 +1909,7 @@ function sendChat() {
 }
 
 function quickReply(type) {
+  if (chatRequestPending) return;
   addMessage(type, false);
   if (type === 'استشارة') {
     setTimeout(() => window.open('https://wa.me/966507006849?text=أريد استشارة مجانية', '_blank'), 2000);
@@ -1902,7 +1920,8 @@ function quickReply(type) {
 // ══════ SMOOTH SCROLL ══════
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
-    const target = document.querySelector(a.getAttribute('href'));
+    const anchor = a.getAttribute('href');
+    const target = anchor && anchor.length > 1 ? document.getElementById(anchor.slice(1)) : null;
     if (target) {
       e.preventDefault();
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
